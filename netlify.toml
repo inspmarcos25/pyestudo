@@ -1,0 +1,12 @@
+# Deploy estático do build web do Flutter (já compilado localmente com
+# `flutter build web --release`). O Netlify apenas publica os arquivos —
+# não roda build no servidor (não há Flutter lá).
+[build]
+  publish = "build/web"
+  command = ""
+
+# Headers para o WebAssembly do Pyodide carregar corretamente.
+[[headers]]
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"

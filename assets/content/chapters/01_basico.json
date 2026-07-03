@@ -1,0 +1,144 @@
+{
+  "id": "cap01",
+  "title": "Fundamentos",
+  "order": 1,
+  "difficulty": "iniciante",
+  "lessons": [
+    {
+      "id": "cap01_l1",
+      "title": "print e variáveis",
+      "body": "Em Python, `print()` mostra algo na tela e variáveis guardam valores. Uma variável é criada na hora em que você atribui um valor a ela com `=`. Experimente mudar o nome e rodar o exemplo.",
+      "example": "# print() mostra texto na tela\nprint('Olá, mundo!')\n\n# Uma variável guarda um valor para usar depois\nnome = 'Ana'\nidade = 21\n\n# f-strings inserem variáveis dentro do texto\nprint(f'{nome} tem {idade} anos')"
+    },
+    {
+      "id": "cap01_l2",
+      "title": "Números e operações",
+      "body": "Python tem inteiros (`int`) e decimais (`float`). Os operadores são `+`, `-`, `*`, `/` (divisão sempre dá float), `//` (divisão inteira), `%` (resto) e `**` (potência).",
+      "example": "# Operações básicas\na = 7\nb = 2\n\nprint(a + b)   # 9\nprint(a / b)   # 3.5  (divisão sempre retorna float)\nprint(a // b)  # 3    (divisão inteira descarta o resto)\nprint(a % b)   # 1    (resto da divisão)\nprint(a ** b)  # 49   (7 elevado a 2)"
+    },
+    {
+      "id": "cap01_l3",
+      "title": "Strings",
+      "body": "Strings são textos entre aspas. Você pode juntá-las com `+`, repetir com `*`, medir com `len()` e transformar com métodos como `.upper()` e `.lower()`.",
+      "example": "frase = 'python é divertido'\n\n# len() conta os caracteres\nprint(len(frase))\n\n# Métodos transformam a string (sem alterar a original)\nprint(frase.upper())\nprint(frase.capitalize())\n\n# Fatias pegam pedaços: [início:fim]\nprint(frase[0:6])"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap01_e1",
+      "title": "Sua primeira saudação",
+      "prompt": "Crie uma variável chamada `mensagem` com o texto 'Olá, Python!' e mostre-a na tela com print().",
+      "starterCode": "# Crie a variável e use print()\n",
+      "tests": [
+        { "name": "variável mensagem existe com o texto certo", "code": "assert mensagem == 'Olá, Python!', f\"esperado 'Olá, Python!', obtido {mensagem!r}\"" }
+      ],
+      "hints": ["Texto em Python fica entre aspas simples ou duplas."]
+    },
+    {
+      "id": "cap01_e2",
+      "title": "Função soma",
+      "prompt": "Escreva uma função `soma(a, b)` que retorna a soma dos dois números.",
+      "starterCode": "def soma(a, b):\n    pass\n",
+      "tests": [
+        { "name": "soma(2, 3) == 5", "code": "assert soma(2, 3) == 5, f'esperado 5, obtido {soma(2, 3)}'" },
+        { "name": "soma(-1, 1) == 0", "code": "assert soma(-1, 1) == 0, f'esperado 0, obtido {soma(-1, 1)}'" },
+        { "name": "soma(0.5, 0.5) == 1.0", "code": "assert soma(0.5, 0.5) == 1.0" }
+      ],
+      "hints": ["Use a palavra-chave return para devolver o resultado."]
+    },
+    {
+      "id": "cap01_e3",
+      "title": "Dobro do número",
+      "prompt": "Escreva uma função `dobro(n)` que retorna o dobro de n.",
+      "starterCode": "def dobro(n):\n    pass\n",
+      "tests": [
+        { "name": "dobro(4) == 8", "code": "assert dobro(4) == 8, f'esperado 8, obtido {dobro(4)}'" },
+        { "name": "dobro(0) == 0", "code": "assert dobro(0) == 0" },
+        { "name": "dobro(-3) == -6", "code": "assert dobro(-3) == -6" }
+      ],
+      "hints": ["Multiplique n por 2 e retorne o resultado."]
+    },
+    {
+      "id": "cap01_e4",
+      "title": "Gritando o texto",
+      "prompt": "Escreva uma função `gritar(texto)` que retorna o texto em MAIÚSCULAS seguido de '!'. Ex.: gritar('oi') → 'OI!'",
+      "starterCode": "def gritar(texto):\n    pass\n",
+      "tests": [
+        { "name": "gritar('oi') == 'OI!'", "code": "assert gritar('oi') == 'OI!', f\"obtido {gritar('oi')!r}\"" },
+        { "name": "gritar('python') == 'PYTHON!'", "code": "assert gritar('python') == 'PYTHON!'" }
+      ],
+      "hints": ["O método .upper() deixa a string em maiúsculas.", "Junte strings com +."]
+    },
+    {
+      "id": "cap01_e5",
+      "title": "Área do retângulo",
+      "prompt": "Escreva uma função `area(base, altura)` que retorna a área de um retângulo.",
+      "starterCode": "def area(base, altura):\n    pass\n",
+      "tests": [
+        { "name": "area(3, 4) == 12", "code": "assert area(3, 4) == 12, f'obtido {area(3, 4)}'" },
+        { "name": "area(5, 5) == 25", "code": "assert area(5, 5) == 25" },
+        { "name": "area(2.5, 4) == 10.0", "code": "assert area(2.5, 4) == 10.0" }
+      ],
+      "hints": ["A área é base vezes altura (base * altura)."]
+    },
+    {
+      "id": "cap01_e6",
+      "title": "Média de dois números",
+      "prompt": "Escreva uma função `media(a, b)` que retorna a média aritmética de dois números.",
+      "starterCode": "def media(a, b):\n    pass\n",
+      "tests": [
+        { "name": "media(4, 6) == 5", "code": "assert media(4, 6) == 5, f'obtido {media(4, 6)}'" },
+        { "name": "media(10, 0) == 5", "code": "assert media(10, 0) == 5" },
+        { "name": "media(3, 4) == 3.5", "code": "assert media(3, 4) == 3.5" }
+      ],
+      "hints": ["Some os dois números e divida por 2."]
+    },
+    {
+      "id": "cap01_e7",
+      "title": "Segundos em minutos",
+      "prompt": "Escreva uma função `minutos(segundos)` que retorna quantos minutos inteiros cabem na quantidade de segundos. Ex.: minutos(130) → 2",
+      "starterCode": "def minutos(segundos):\n    pass\n",
+      "tests": [
+        { "name": "minutos(130) == 2", "code": "assert minutos(130) == 2, f'obtido {minutos(130)}'" },
+        { "name": "minutos(60) == 1", "code": "assert minutos(60) == 1" },
+        { "name": "minutos(59) == 0", "code": "assert minutos(59) == 0" }
+      ],
+      "hints": ["A divisão inteira // descarta o resto: 130 // 60 == 2."]
+    },
+    {
+      "id": "cap01_e8",
+      "title": "Iniciais do nome",
+      "prompt": "Escreva uma função `inicial(nome)` que retorna a primeira letra do nome em maiúscula. Ex.: inicial('ana') → 'A'",
+      "starterCode": "def inicial(nome):\n    pass\n",
+      "tests": [
+        { "name": "inicial('ana') == 'A'", "code": "assert inicial('ana') == 'A', f\"obtido {inicial('ana')!r}\"" },
+        { "name": "inicial('python') == 'P'", "code": "assert inicial('python') == 'P'" }
+      ],
+      "hints": ["nome[0] pega a primeira letra.", "Use .upper() para deixá-la maiúscula."]
+    },
+    {
+      "id": "cap01_e9",
+      "title": "Preço com desconto",
+      "prompt": "Escreva uma função `com_desconto(preco, percentual)` que retorna o preço após aplicar o desconto em porcentagem. Ex.: com_desconto(100, 20) → 80.0",
+      "starterCode": "def com_desconto(preco, percentual):\n    pass\n",
+      "tests": [
+        { "name": "com_desconto(100, 20) == 80.0", "code": "assert com_desconto(100, 20) == 80.0, f'obtido {com_desconto(100, 20)}'" },
+        { "name": "com_desconto(50, 10) == 45.0", "code": "assert com_desconto(50, 10) == 45.0" },
+        { "name": "com_desconto(80, 0) == 80.0", "code": "assert com_desconto(80, 0) == 80.0" }
+      ],
+      "hints": ["Desconto em reais = preco * percentual / 100.", "Subtraia o desconto do preço."]
+    },
+    {
+      "id": "cap01_e10",
+      "title": "Tamanho do texto",
+      "prompt": "Escreva uma função `tamanho(texto)` que retorna quantos caracteres o texto tem.",
+      "starterCode": "def tamanho(texto):\n    pass\n",
+      "tests": [
+        { "name": "tamanho('python') == 6", "code": "assert tamanho('python') == 6, f\"obtido {tamanho('python')}\"" },
+        { "name": "tamanho('') == 0", "code": "assert tamanho('') == 0" },
+        { "name": "tamanho('a b') == 3", "code": "assert tamanho('a b') == 3" }
+      ],
+      "hints": ["A função len() conta os caracteres de uma string."]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "id": "cap02",
+  "title": "Controle de fluxo",
+  "order": 2,
+  "difficulty": "iniciante",
+  "lessons": [
+    {
+      "id": "cap02_l1",
+      "title": "if, elif e else",
+      "body": "Condições permitem que o programa tome decisões. O bloco só executa se a condição for verdadeira. A indentação (4 espaços) define o que está dentro do bloco.",
+      "example": "nota = 7.5\n\n# O programa testa as condições de cima para baixo\nif nota >= 9:\n    print('Excelente!')\nelif nota >= 6:\n    print('Aprovado')\nelse:\n    print('Reprovado')"
+    },
+    {
+      "id": "cap02_l2",
+      "title": "Laço for",
+      "body": "O `for` repete um bloco para cada item de uma sequência. `range(n)` gera os números de 0 até n-1, muito usado para repetir n vezes.",
+      "example": "# Repete 5 vezes: i vale 0, 1, 2, 3, 4\nfor i in range(5):\n    print(f'volta {i}')\n\n# Também percorre listas diretamente\nfrutas = ['maçã', 'banana', 'uva']\nfor fruta in frutas:\n    print(fruta)"
+    },
+    {
+      "id": "cap02_l3",
+      "title": "Laço while",
+      "body": "O `while` repete enquanto a condição for verdadeira. Cuidado: se a condição nunca ficar falsa, o laço roda para sempre (o app interrompe após 10 segundos).",
+      "example": "contador = 3\n\n# Repete enquanto contador for maior que zero\nwhile contador > 0:\n    print(contador)\n    contador = contador - 1  # sem esta linha, seria um laço infinito\n\nprint('Fim!')"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap02_e1",
+      "title": "Par ou ímpar",
+      "prompt": "Escreva uma função `par_ou_impar(n)` que retorna 'par' se n for par e 'ímpar' se for ímpar.",
+      "starterCode": "def par_ou_impar(n):\n    pass\n",
+      "tests": [
+        { "name": "par_ou_impar(4) == 'par'", "code": "assert par_ou_impar(4) == 'par', f'obtido {par_ou_impar(4)!r}'" },
+        { "name": "par_ou_impar(7) == 'ímpar'", "code": "assert par_ou_impar(7) == 'ímpar', f'obtido {par_ou_impar(7)!r}'" },
+        { "name": "par_ou_impar(0) == 'par'", "code": "assert par_ou_impar(0) == 'par'" }
+      ],
+      "hints": ["Um número é par quando n % 2 == 0."]
+    },
+    {
+      "id": "cap02_e2",
+      "title": "Maior de dois",
+      "prompt": "Escreva uma função `maior(a, b)` que retorna o maior dos dois números (sem usar max()).",
+      "starterCode": "def maior(a, b):\n    pass\n",
+      "tests": [
+        { "name": "maior(3, 8) == 8", "code": "assert maior(3, 8) == 8" },
+        { "name": "maior(10, 2) == 10", "code": "assert maior(10, 2) == 10" },
+        { "name": "não usa max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(maior), 'use if/else em vez de max()'" }
+      ],
+      "hints": ["Compare com if a > b e retorne o valor adequado em cada ramo."]
+    },
+    {
+      "id": "cap02_e3",
+      "title": "Soma de 1 até n",
+      "prompt": "Escreva uma função `soma_ate(n)` que retorna a soma de todos os inteiros de 1 até n usando um laço for.",
+      "starterCode": "def soma_ate(n):\n    total = 0\n    # complete com um laço for\n    return total\n",
+      "tests": [
+        { "name": "soma_ate(5) == 15", "code": "assert soma_ate(5) == 15, f'obtido {soma_ate(5)}'" },
+        { "name": "soma_ate(1) == 1", "code": "assert soma_ate(1) == 1" },
+        { "name": "soma_ate(100) == 5050", "code": "assert soma_ate(100) == 5050" }
+      ],
+      "hints": ["range(1, n + 1) gera os números de 1 até n.", "Acumule com total = total + i dentro do laço."]
+    },
+    {
+      "id": "cap02_e4",
+      "title": "Contagem regressiva",
+      "prompt": "Escreva uma função `contagem(n)` que retorna uma lista com a contagem regressiva de n até 1. Ex.: contagem(3) → [3, 2, 1]",
+      "starterCode": "def contagem(n):\n    resultado = []\n    # complete com um laço\n    return resultado\n",
+      "tests": [
+        { "name": "contagem(3) == [3, 2, 1]", "code": "assert contagem(3) == [3, 2, 1], f'obtido {contagem(3)}'" },
+        { "name": "contagem(1) == [1]", "code": "assert contagem(1) == [1]" }
+      ],
+      "hints": ["range(n, 0, -1) conta de n até 1 de trás para frente.", "Use resultado.append(i) para adicionar à lista."]
+    },
+    {
+      "id": "cap02_e5",
+      "title": "Sinal do número",
+      "prompt": "Escreva uma função `sinal(n)` que retorna 'positivo' se n > 0, 'negativo' se n < 0 e 'zero' se n == 0.",
+      "starterCode": "def sinal(n):\n    pass\n",
+      "tests": [
+        { "name": "sinal(5) == 'positivo'", "code": "assert sinal(5) == 'positivo', f'obtido {sinal(5)!r}'" },
+        { "name": "sinal(-3) == 'negativo'", "code": "assert sinal(-3) == 'negativo'" },
+        { "name": "sinal(0) == 'zero'", "code": "assert sinal(0) == 'zero'" }
+      ],
+      "hints": ["Use if, elif e else para os três casos."]
+    },
+    {
+      "id": "cap02_e6",
+      "title": "Maior de três",
+      "prompt": "Escreva uma função `maior3(a, b, c)` que retorna o maior dos três números.",
+      "starterCode": "def maior3(a, b, c):\n    pass\n",
+      "tests": [
+        { "name": "maior3(1, 2, 3) == 3", "code": "assert maior3(1, 2, 3) == 3" },
+        { "name": "maior3(9, 4, 7) == 9", "code": "assert maior3(9, 4, 7) == 9" },
+        { "name": "maior3(5, 8, 2) == 8", "code": "assert maior3(5, 8, 2) == 8" }
+      ],
+      "hints": ["Você pode usar max(a, b, c) ou comparar dois a dois com if."]
+    },
+    {
+      "id": "cap02_e7",
+      "title": "Fatorial",
+      "prompt": "Escreva uma função `fatorial(n)` que retorna n! (o produto de 1 até n). Considere fatorial(0) == 1.",
+      "starterCode": "def fatorial(n):\n    resultado = 1\n    # complete com um laço\n    return resultado\n",
+      "tests": [
+        { "name": "fatorial(5) == 120", "code": "assert fatorial(5) == 120, f'obtido {fatorial(5)}'" },
+        { "name": "fatorial(0) == 1", "code": "assert fatorial(0) == 1" },
+        { "name": "fatorial(1) == 1", "code": "assert fatorial(1) == 1" }
+      ],
+      "hints": ["Multiplique resultado por cada i em range(1, n + 1)."]
+    },
+    {
+      "id": "cap02_e8",
+      "title": "Contar pares",
+      "prompt": "Escreva uma função `contar_pares(n)` que retorna quantos números pares existem de 1 até n (inclusive).",
+      "starterCode": "def contar_pares(n):\n    pass\n",
+      "tests": [
+        { "name": "contar_pares(10) == 5", "code": "assert contar_pares(10) == 5, f'obtido {contar_pares(10)}'" },
+        { "name": "contar_pares(1) == 0", "code": "assert contar_pares(1) == 0" },
+        { "name": "contar_pares(7) == 3", "code": "assert contar_pares(7) == 3" }
+      ],
+      "hints": ["Percorra range(1, n + 1) e conte quando i % 2 == 0."]
+    },
+    {
+      "id": "cap02_e9",
+      "title": "Tabuada",
+      "prompt": "Escreva uma função `tabuada(n)` que retorna uma lista com os 10 primeiros múltiplos de n (de n*1 até n*10). Ex.: tabuada(3) → [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]",
+      "starterCode": "def tabuada(n):\n    resultado = []\n    # complete com um laço\n    return resultado\n",
+      "tests": [
+        { "name": "tabuada(3)[0] == 3", "code": "assert tabuada(3)[0] == 3" },
+        { "name": "tabuada(3) tem 10 itens", "code": "assert len(tabuada(3)) == 10, f'obtido {len(tabuada(3))} itens'" },
+        { "name": "tabuada(5)[-1] == 50", "code": "assert tabuada(5)[-1] == 50, f'obtido {tabuada(5)[-1]}'" }
+      ],
+      "hints": ["Para i em range(1, 11), adicione n * i à lista."]
+    },
+    {
+      "id": "cap02_e10",
+      "title": "É primo?",
+      "prompt": "Escreva uma função `eh_primo(n)` que retorna True se n for primo e False caso contrário. Lembre: 1 não é primo.",
+      "starterCode": "def eh_primo(n):\n    pass\n",
+      "tests": [
+        { "name": "eh_primo(7) é True", "code": "assert eh_primo(7) == True" },
+        { "name": "eh_primo(10) é False", "code": "assert eh_primo(10) == False" },
+        { "name": "eh_primo(1) é False", "code": "assert eh_primo(1) == False" },
+        { "name": "eh_primo(2) é True", "code": "assert eh_primo(2) == True" }
+      ],
+      "hints": ["Um primo só é divisível por 1 e por ele mesmo.", "Teste os divisores de 2 até n-1: se algum divide n (n % d == 0), não é primo."]
+    }
+  ]
+}

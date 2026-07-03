@@ -1,0 +1,61 @@
+{
+  "id": "cap04",
+  "title": "Bibliotecas: numpy e pandas",
+  "order": 4,
+  "difficulty": "intermediário",
+  "lessons": [
+    {
+      "id": "cap04_l1",
+      "title": "numpy: arrays e cálculos",
+      "body": "O numpy (importado como `np`) trabalha com arrays numéricos e faz cálculos rápidos sobre todos os elementos de uma vez. Já vem instalado no app — é só importar. Toque em 'Abrir no editor' e execute.",
+      "example": "import numpy as np\n\n# Um array é como uma lista otimizada para números\nnotas = np.array([7.5, 8.0, 6.5, 9.0, 10.0])\n\nprint('média:', np.mean(notas))\nprint('maior:', np.max(notas))\nprint('desvio padrão:', round(np.std(notas), 2))\n\n# Operações valem para todos os itens de uma vez\nprint('em base 10:', notas * 10)"
+    },
+    {
+      "id": "cap04_l2",
+      "title": "pandas: tabelas (DataFrame)",
+      "body": "O pandas (importado como `pd`) organiza dados em tabelas chamadas DataFrame, com colunas nomeadas. É a biblioteca mais usada para análise de dados em Python. Também já vem instalada.",
+      "example": "import pandas as pd\n\n# Um DataFrame é uma tabela: cada chave vira uma coluna\ndados = {\n    'produto': ['Caneta', 'Caderno', 'Mochila'],\n    'preco': [2.50, 15.00, 90.00],\n    'estoque': [100, 40, 12],\n}\ndf = pd.DataFrame(dados)\nprint(df)\n\n# Selecionar uma coluna e resumir\nprint('\\npreço médio:', df['preco'].mean())\nprint('total em estoque:', df['estoque'].sum())"
+    },
+    {
+      "id": "cap04_l3",
+      "title": "Filtrando dados com pandas",
+      "body": "Você pode filtrar linhas de um DataFrame com uma condição, como faria com um 'WHERE' no banco de dados. O resultado é uma nova tabela só com as linhas que passam no teste.",
+      "example": "import pandas as pd\n\ndf = pd.DataFrame({\n    'nome': ['Ana', 'Bruno', 'Carla', 'Davi'],\n    'idade': [23, 35, 19, 41],\n})\n\n# Só as pessoas com 30 anos ou mais\nadultos = df[df['idade'] >= 30]\nprint(adultos)\n\n# Ordenar por idade (da maior para a menor)\nprint('\\nPor idade:')\nprint(df.sort_values('idade', ascending=False))"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap04_e1",
+      "title": "Média com numpy",
+      "prompt": "Use o numpy para escrever uma função `media_np(numeros)` que retorna a média de uma lista de números usando np.mean.",
+      "starterCode": "import numpy as np\n\ndef media_np(numeros):\n    pass\n",
+      "tests": [
+        { "name": "media_np([2, 4, 6]) == 4", "code": "assert media_np([2, 4, 6]) == 4, f'obtido {media_np([2, 4, 6])}'" },
+        { "name": "media_np([10, 20]) == 15", "code": "assert media_np([10, 20]) == 15" }
+      ],
+      "hints": ["np.mean(numeros) calcula a média.", "Retorne float(np.mean(numeros)) para comparar com números comuns."]
+    },
+    {
+      "id": "cap04_e2",
+      "title": "Soma de array",
+      "prompt": "Escreva uma função `soma_array(numeros)` que cria um np.array a partir da lista e retorna a soma de todos os elementos (como int).",
+      "starterCode": "import numpy as np\n\ndef soma_array(numeros):\n    pass\n",
+      "tests": [
+        { "name": "soma_array([1, 2, 3, 4]) == 10", "code": "assert soma_array([1, 2, 3, 4]) == 10, f'obtido {soma_array([1, 2, 3, 4])}'" },
+        { "name": "soma_array([]) == 0", "code": "assert soma_array([]) == 0" }
+      ],
+      "hints": ["np.array(numeros).sum() soma o array.", "Envolva com int(...) para devolver um inteiro comum."]
+    },
+    {
+      "id": "cap04_e3",
+      "title": "Coluna de um DataFrame",
+      "prompt": "Escreva uma função `precos(dados)` que recebe um dicionário com as chaves 'produto' e 'preco', cria um DataFrame e retorna a soma da coluna 'preco' (como float).",
+      "starterCode": "import pandas as pd\n\ndef precos(dados):\n    pass\n",
+      "tests": [
+        { "name": "soma dos preços", "code": "assert precos({'produto': ['A', 'B'], 'preco': [10.0, 5.0]}) == 15.0, 'esperado 15.0'" },
+        { "name": "um produto", "code": "assert precos({'produto': ['X'], 'preco': [7.5]}) == 7.5" }
+      ],
+      "hints": ["Crie o DataFrame com pd.DataFrame(dados).", "df['preco'].sum() soma a coluna; use float(...) no resultado."]
+    }
+  ]
+}

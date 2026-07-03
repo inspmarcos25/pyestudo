@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Pyodide runtime</title></head>
+<body>
+<script src="pyodide.js"></script>
+<script>
+  // Ponte de comunicação única para os dois hospedeiros deste arquivo:
+  //  - mobile: WebView do webview_flutter, com JavaScriptChannel (PyStdout,
+  //    PyReady, PyResult) já registrados pelo Dart antes de navegar aqui;
+  //  - web: <iframe> oculto — sem canais nomeados, então usamos
+  //    postMessage para a janela pai, com um token para o Dart filtrar
+  //    mensagens de outras origens.
+  const TOKEN = new URLSearchParams(location.search).get('token');
+  function emit(channel, data) {
+    if (window[channel]) { window[channel].postMessage(data); return; }
+    if (window.parent !== window) {
+      window.parent.postMessage({ channel, data, token: TOKEN }, '*');
+    }
+  }
+
+  let pyodide;
+
+  async function boot() {
+    try {
+      // O runner.py é buscado por fetch relativo — funciona tanto sob o
+      // virtual host do loadFlutterAsset (mobile) quanto num <iframe> comum
+      // (web), pois ambos resolvem caminhos relativos como um servidor normal.
+      const runnerSource = await (await fetch('../python/runner.py')).text();
+      pyodide = await loadPyodide({ indexURL: './' });
+      pyodide.setStdout({ batched: (s) => emit('PyStdout', s + '\n') });
+      pyodide.setStderr({ batched: (s) => emit('PyStdout', s + '\n') });
+      pyodide.runPython(runnerSource);
+      emit('PyReady', 'ok');
+    } catch (e) {
+      emit('PyReady', String(e));
+    }
+  }
+
+  // Único ponto de entrada para execução, chamado pelo Dart (mobile via
+  // runJavaScript; web via contentWindow.execRequest). O resultado NUNCA
+  // vem pelo valor de retorno da chamada — vai sempre pelo canal PyResult,
+  // porque nem toda ponte aguarda Promises de forma confiável.
+  window.execRequest = async (argsJson) => {
+    const { kind, requestId, a, b } = JSON.parse(argsJson);
+    try {
+      let resultJson;
+      if (kind === 'run') {
+        await pyodide.loadPackagesFromImports(a);
+        resultJson = await pyodide.globals.get('run_user_code')(a, b || '');
+      } else if (kind === 'tests') {
+        await pyodide.loadPackagesFromImports(a);
+        resultJson = await pyodide.globals.get('run_with_tests')(a, b);
+      } else {
+        throw new Error('kind desconhecido: ' + kind);
+      }
+      emit('PyResult', JSON.stringify({ requestId, resultJson }));
+    } catch (e) {
+      const errorJson = JSON.stringify({
+        ok: false, needInput: false, stdout: '',
+        error: { type: 'RuntimeHostError', message: String(e), line: null, traceback: '' },
+      });
+      emit('PyResult', JSON.stringify({ requestId, resultJson: errorJson }));
+    }
+  };
+
+  boot();
+</script>
+</body>
+</html>

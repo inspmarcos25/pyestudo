@@ -1,0 +1,145 @@
+{
+  "id": "cap03",
+  "title": "Funções e listas",
+  "order": 3,
+  "difficulty": "intermediário",
+  "lessons": [
+    {
+      "id": "cap03_l1",
+      "title": "Funções com valor padrão",
+      "body": "Parâmetros podem ter valores padrão, usados quando o argumento não é passado. Parâmetros com padrão vêm sempre depois dos obrigatórios.",
+      "example": "# 'saudacao' tem valor padrão: passar é opcional\ndef cumprimentar(nome, saudacao='Olá'):\n    return f'{saudacao}, {nome}!'\n\nprint(cumprimentar('Ana'))            # usa o padrão\nprint(cumprimentar('Ana', 'Bom dia')) # sobrescreve"
+    },
+    {
+      "id": "cap03_l2",
+      "title": "Listas",
+      "body": "Listas guardam vários valores em ordem. Você acessa por índice (começando em 0), adiciona com `.append()`, e `len()` dá o tamanho.",
+      "example": "notas = [8.5, 7.0, 9.2]\n\nprint(notas[0])      # primeiro item: 8.5\nprint(notas[-1])     # último item: 9.2\n\nnotas.append(6.8)    # adiciona ao final\nprint(len(notas))    # 4\n\n# sum() soma todos os itens\nmedia = sum(notas) / len(notas)\nprint(f'média: {media:.1f}')"
+    },
+    {
+      "id": "cap03_l3",
+      "title": "List comprehension",
+      "body": "Uma forma compacta de criar listas a partir de outras: `[expressão for item in lista if condição]`. Faz em uma linha o que um for com append faria em três.",
+      "example": "numeros = [1, 2, 3, 4, 5, 6]\n\n# O jeito compacto de transformar e filtrar\ndobros = [n * 2 for n in numeros]\nprint(dobros)  # [2, 4, 6, 8, 10, 12]\n\npares = [n for n in numeros if n % 2 == 0]\nprint(pares)   # [2, 4, 6]"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap03_e1",
+      "title": "Média da turma",
+      "prompt": "Escreva uma função `media(notas)` que recebe uma lista de números e retorna a média.",
+      "starterCode": "def media(notas):\n    pass\n",
+      "tests": [
+        { "name": "media([10, 8, 6]) == 8", "code": "assert media([10, 8, 6]) == 8, f'obtido {media([10, 8, 6])}'" },
+        { "name": "media([5]) == 5", "code": "assert media([5]) == 5" }
+      ],
+      "hints": ["sum(lista) soma tudo; len(lista) dá a quantidade."]
+    },
+    {
+      "id": "cap03_e2",
+      "title": "Filtrar positivos",
+      "prompt": "Escreva uma função `positivos(numeros)` que retorna uma nova lista só com os números maiores que zero.",
+      "starterCode": "def positivos(numeros):\n    pass\n",
+      "tests": [
+        { "name": "positivos([1, -2, 3, 0]) == [1, 3]", "code": "assert positivos([1, -2, 3, 0]) == [1, 3], f'obtido {positivos([1, -2, 3, 0])}'" },
+        { "name": "positivos([-1, -5]) == []", "code": "assert positivos([-1, -5]) == []" }
+      ],
+      "hints": ["Uma list comprehension com if resolve em uma linha."]
+    },
+    {
+      "id": "cap03_e3",
+      "title": "Inverter string",
+      "prompt": "Escreva uma função `inverter(texto)` que retorna o texto de trás para frente. Ex.: inverter('amor') → 'roma'",
+      "starterCode": "def inverter(texto):\n    pass\n",
+      "tests": [
+        { "name": "inverter('amor') == 'roma'", "code": "assert inverter('amor') == 'roma', f\"obtido {inverter('amor')!r}\"" },
+        { "name": "inverter('a') == 'a'", "code": "assert inverter('a') == 'a'" },
+        { "name": "inverter('') == ''", "code": "assert inverter('') == ''" }
+      ],
+      "hints": ["A fatia texto[::-1] percorre a string de trás para frente."]
+    },
+    {
+      "id": "cap03_e4",
+      "title": "Contar vogais",
+      "prompt": "Escreva uma função `contar_vogais(texto)` que retorna quantas vogais (a, e, i, o, u, minúsculas) o texto tem.",
+      "starterCode": "def contar_vogais(texto):\n    pass\n",
+      "tests": [
+        { "name": "contar_vogais('banana') == 3", "code": "assert contar_vogais('banana') == 3, f\"obtido {contar_vogais('banana')}\"" },
+        { "name": "contar_vogais('xyz') == 0", "code": "assert contar_vogais('xyz') == 0" }
+      ],
+      "hints": ["Percorra o texto com for e teste if letra in 'aeiou'."]
+    },
+    {
+      "id": "cap03_e5",
+      "title": "Maior da lista",
+      "prompt": "Escreva uma função `maximo(numeros)` que retorna o maior número de uma lista, sem usar max().",
+      "starterCode": "def maximo(numeros):\n    pass\n",
+      "tests": [
+        { "name": "maximo([3, 7, 2]) == 7", "code": "assert maximo([3, 7, 2]) == 7, f'obtido {maximo([3, 7, 2])}'" },
+        { "name": "maximo([-5, -2, -9]) == -2", "code": "assert maximo([-5, -2, -9]) == -2" },
+        { "name": "não usa max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(maximo), 'resolva com um laço, sem max()'" }
+      ],
+      "hints": ["Comece supondo que o primeiro item é o maior.", "Percorra a lista e atualize quando encontrar um valor maior."]
+    },
+    {
+      "id": "cap03_e6",
+      "title": "Somar a lista",
+      "prompt": "Escreva uma função `somar(numeros)` que retorna a soma de todos os itens de uma lista (retorne 0 para lista vazia).",
+      "starterCode": "def somar(numeros):\n    pass\n",
+      "tests": [
+        { "name": "somar([1, 2, 3, 4]) == 10", "code": "assert somar([1, 2, 3, 4]) == 10, f'obtido {somar([1, 2, 3, 4])}'" },
+        { "name": "somar([]) == 0", "code": "assert somar([]) == 0" },
+        { "name": "somar([5]) == 5", "code": "assert somar([5]) == 5" }
+      ],
+      "hints": ["Acumule com total = total + n num laço, ou use sum(numeros)."]
+    },
+    {
+      "id": "cap03_e7",
+      "title": "Quadrados",
+      "prompt": "Escreva uma função `quadrados(numeros)` que retorna uma nova lista com o quadrado de cada número. Ex.: quadrados([1, 2, 3]) → [1, 4, 9]",
+      "starterCode": "def quadrados(numeros):\n    pass\n",
+      "tests": [
+        { "name": "quadrados([1, 2, 3]) == [1, 4, 9]", "code": "assert quadrados([1, 2, 3]) == [1, 4, 9], f'obtido {quadrados([1, 2, 3])}'" },
+        { "name": "quadrados([]) == []", "code": "assert quadrados([]) == []" },
+        { "name": "quadrados([-2]) == [4]", "code": "assert quadrados([-2]) == [4]" }
+      ],
+      "hints": ["A list comprehension [n ** 2 for n in numeros] resolve em uma linha."]
+    },
+    {
+      "id": "cap03_e8",
+      "title": "Contar palavras",
+      "prompt": "Escreva uma função `contar_palavras(frase)` que retorna quantas palavras a frase tem (separadas por espaço).",
+      "starterCode": "def contar_palavras(frase):\n    pass\n",
+      "tests": [
+        { "name": "conta 3 palavras", "code": "assert contar_palavras('eu amo python') == 3, f\"obtido {contar_palavras('eu amo python')}\"" },
+        { "name": "uma palavra", "code": "assert contar_palavras('python') == 1" },
+        { "name": "frase vazia == 0", "code": "assert contar_palavras('') == 0" }
+      ],
+      "hints": ["O método .split() quebra a frase numa lista de palavras.", "Cuidado com a string vazia: len(''.split()) é 0."]
+    },
+    {
+      "id": "cap03_e9",
+      "title": "Remover duplicados",
+      "prompt": "Escreva uma função `sem_repetir(itens)` que retorna uma lista sem itens duplicados, mantendo a ordem da primeira aparição. Ex.: sem_repetir([1, 2, 2, 3, 1]) → [1, 2, 3]",
+      "starterCode": "def sem_repetir(itens):\n    resultado = []\n    # complete\n    return resultado\n",
+      "tests": [
+        { "name": "remove duplicados", "code": "assert sem_repetir([1, 2, 2, 3, 1]) == [1, 2, 3], f'obtido {sem_repetir([1, 2, 2, 3, 1])}'" },
+        { "name": "lista já única", "code": "assert sem_repetir([4, 5, 6]) == [4, 5, 6]" },
+        { "name": "lista vazia", "code": "assert sem_repetir([]) == []" }
+      ],
+      "hints": ["Percorra a lista e só adicione o item se ele ainda não estiver em resultado.", "Use if item not in resultado."]
+    },
+    {
+      "id": "cap03_e10",
+      "title": "É palíndromo?",
+      "prompt": "Escreva uma função `eh_palindromo(texto)` que retorna True se o texto for igual de trás para frente. Ex.: eh_palindromo('arara') → True",
+      "starterCode": "def eh_palindromo(texto):\n    pass\n",
+      "tests": [
+        { "name": "arara é palíndromo", "code": "assert eh_palindromo('arara') == True" },
+        { "name": "python não é", "code": "assert eh_palindromo('python') == False" },
+        { "name": "ovo é palíndromo", "code": "assert eh_palindromo('ovo') == True" }
+      ],
+      "hints": ["texto[::-1] devolve o texto invertido.", "Compare o texto com a sua versão invertida."]
+    }
+  ]
+}

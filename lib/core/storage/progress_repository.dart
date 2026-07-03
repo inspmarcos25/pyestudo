@@ -1,0 +1,36 @@
+import 'package:sqflite/sqflite.dart';
+
+/// Progresso do aluno: exercícios concluídos, agregados por capítulo.
+class ProgressRepository {
+  final Database db;
+
+  ProgressRepository(this.db);
+
+  Future<void> markCompleted(String chapterId, String exerciseId) async {
+    await db.insert('progress', {
+      'exercise_id': exerciseId,
+      'chapter_id': chapterId,
+      'completed_at': DateTime.now().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+  }
+
+  Future<Set<String>> completedExercises() async {
+    final rows = await db.query('progress', columns: ['exercise_id']);
+    return {for (final r in rows) r['exercise_id'] as String};
+  }
+
+  /// {chapterId: quantidade de exercícios concluídos}
+  Future<Map<String, int>> completedByChapter() async {
+    final rows = await db.rawQuery(
+      'SELECT chapter_id, COUNT(*) AS total FROM progress GROUP BY chapter_id',
+    );
+    return {for (final r in rows) r['chapter_id'] as String: r['total'] as int};
+  }
+
+  /// Uma data por exercício concluído — usada para calcular a sequência
+  /// (streak) de dias seguidos estudando.
+  Future<List<DateTime>> completionDates() async {
+    final rows = await db.query('progress', columns: ['completed_at']);
+    return [for (final r in rows) DateTime.parse(r['completed_at'] as String)];
+  }
+}
