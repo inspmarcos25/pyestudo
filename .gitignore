@@ -46,3 +46,6 @@ app.*.map.json
 
 # Configuração local do ambiente de desenvolvimento (preview/agendamentos)
 .claude/
+
+# Local Netlify folder
+.netlify
