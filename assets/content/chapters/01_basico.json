@@ -139,6 +139,101 @@
         { "name": "tamanho('a b') == 3", "code": "assert tamanho('a b') == 3" }
       ],
       "hints": ["A função len() conta os caracteres de uma string."]
+    },
+    {
+      "id": "cap01_e11",
+      "title": "Nome completo",
+      "prompt": "Escreva uma função `nome_completo(primeiro, sobrenome)` que retorna os dois nomes juntos, separados por espaço. Ex.: nome_completo('Ana', 'Silva') → 'Ana Silva'",
+      "starterCode": "def nome_completo(primeiro, sobrenome):\n    pass\n",
+      "tests": [
+        { "name": "nome_completo('Ana', 'Silva') == 'Ana Silva'", "code": "assert nome_completo('Ana', 'Silva') == 'Ana Silva', f\"obtido {nome_completo('Ana', 'Silva')!r}\"" },
+        { "name": "nome_completo('João', 'Souza') == 'João Souza'", "code": "assert nome_completo('João', 'Souza') == 'João Souza'" }
+      ],
+      "hints": ["Use uma f-string: f'{primeiro} {sobrenome}'.", "Ou concatene com +: primeiro + ' ' + sobrenome."]
+    },
+    {
+      "id": "cap01_e12",
+      "title": "Quadrado do número",
+      "prompt": "Escreva uma função `quadrado(n)` que retorna n elevado ao quadrado.",
+      "starterCode": "def quadrado(n):\n    pass\n",
+      "tests": [
+        { "name": "quadrado(4) == 16", "code": "assert quadrado(4) == 16, f'obtido {quadrado(4)}'" },
+        { "name": "quadrado(-3) == 9", "code": "assert quadrado(-3) == 9" },
+        { "name": "quadrado(0) == 0", "code": "assert quadrado(0) == 0" }
+      ],
+      "hints": ["O operador ** eleva a potência: n ** 2."]
+    },
+    {
+      "id": "cap01_e13",
+      "title": "Troco",
+      "prompt": "Escreva uma função `troco(pago, preco)` que retorna quanto de troco deve ser devolvido.",
+      "starterCode": "def troco(pago, preco):\n    pass\n",
+      "tests": [
+        { "name": "troco(50, 35) == 15", "code": "assert troco(50, 35) == 15, f'obtido {troco(50, 35)}'" },
+        { "name": "troco(100, 100) == 0", "code": "assert troco(100, 100) == 0" },
+        { "name": "troco(20.5, 10) == 10.5", "code": "assert troco(20.5, 10) == 10.5" }
+      ],
+      "hints": ["O troco é o valor pago menos o preço (pago - preco)."]
+    },
+    {
+      "id": "cap01_e14",
+      "title": "Média de três números",
+      "prompt": "Escreva uma função `media3(a, b, c)` que retorna a média aritmética dos três números.",
+      "starterCode": "def media3(a, b, c):\n    pass\n",
+      "tests": [
+        { "name": "media3(3, 6, 9) == 6", "code": "assert media3(3, 6, 9) == 6, f'obtido {media3(3, 6, 9)}'" },
+        { "name": "media3(0, 0, 0) == 0", "code": "assert media3(0, 0, 0) == 0" },
+        { "name": "media3(10, 20, 30) == 20.0", "code": "assert media3(10, 20, 30) == 20.0" }
+      ],
+      "hints": ["Some os três números e divida por 3."]
+    },
+    {
+      "id": "cap01_e15",
+      "title": "Texto invertido",
+      "prompt": "Escreva uma função `inverter(texto)` que retorna o texto de trás para frente. Ex.: inverter('python') → 'nohtyp'",
+      "starterCode": "def inverter(texto):\n    pass\n",
+      "tests": [
+        { "name": "inverter('python') == 'nohtyp'", "code": "assert inverter('python') == 'nohtyp', f\"obtido {inverter('python')!r}\"" },
+        { "name": "inverter('ana') == 'ana'", "code": "assert inverter('ana') == 'ana'" },
+        { "name": "inverter('') == ''", "code": "assert inverter('') == ''" }
+      ],
+      "hints": ["Fatiar com passo negativo inverte a string: texto[::-1]."]
+    },
+    {
+      "id": "cap01_e16",
+      "title": "Repetir texto",
+      "prompt": "Escreva uma função `repetir(texto, vezes)` que retorna o texto repetido a quantidade de vezes indicada. Ex.: repetir('ab', 3) → 'ababab'",
+      "starterCode": "def repetir(texto, vezes):\n    pass\n",
+      "tests": [
+        { "name": "repetir('ab', 3) == 'ababab'", "code": "assert repetir('ab', 3) == 'ababab', f\"obtido {repetir('ab', 3)!r}\"" },
+        { "name": "repetir('x', 1) == 'x'", "code": "assert repetir('x', 1) == 'x'" },
+        { "name": "repetir('oi', 0) == ''", "code": "assert repetir('oi', 0) == ''" }
+      ],
+      "hints": ["O operador * repete strings: texto * vezes."]
+    },
+    {
+      "id": "cap01_e17",
+      "title": "Celsius para Fahrenheit",
+      "prompt": "Escreva uma função `celsius_para_fahrenheit(c)` que converte uma temperatura em Celsius para Fahrenheit. Fórmula: F = C * 9/5 + 32",
+      "starterCode": "def celsius_para_fahrenheit(c):\n    pass\n",
+      "tests": [
+        { "name": "celsius_para_fahrenheit(0) == 32.0", "code": "assert celsius_para_fahrenheit(0) == 32.0, f'obtido {celsius_para_fahrenheit(0)}'" },
+        { "name": "celsius_para_fahrenheit(100) == 212.0", "code": "assert celsius_para_fahrenheit(100) == 212.0" },
+        { "name": "celsius_para_fahrenheit(20) == 68.0", "code": "assert celsius_para_fahrenheit(20) == 68.0" }
+      ],
+      "hints": ["Aplique a fórmula diretamente: c * 9 / 5 + 32."]
+    },
+    {
+      "id": "cap01_e18",
+      "title": "Espaços por hífen",
+      "prompt": "Escreva uma função `texto_com_hifen(texto)` que retorna o texto com todos os espaços trocados por hífen. Ex.: texto_com_hifen('a b c') → 'a-b-c'",
+      "starterCode": "def texto_com_hifen(texto):\n    pass\n",
+      "tests": [
+        { "name": "texto_com_hifen('a b c') == 'a-b-c'", "code": "assert texto_com_hifen('a b c') == 'a-b-c', f\"obtido {texto_com_hifen('a b c')!r}\"" },
+        { "name": "texto_com_hifen('oi') == 'oi'", "code": "assert texto_com_hifen('oi') == 'oi'" },
+        { "name": "texto_com_hifen('python é legal') == 'python-é-legal'", "code": "assert texto_com_hifen('python é legal') == 'python-é-legal'" }
+      ],
+      "hints": ["O método .replace(' ', '-') troca cada espaço por hífen."]
     }
   ]
 }
