@@ -160,6 +160,11 @@ class _EditorScreenState extends State<EditorScreen> {
                       ),
                 onPressed: state.isRunning ? null : _run,
               ),
+              IconButton(
+                tooltip: 'Sair da conta',
+                icon: const Icon(Icons.logout),
+                onPressed: () => state.signOut(),
+              ),
             ],
           ),
           drawer: _FileDrawer(

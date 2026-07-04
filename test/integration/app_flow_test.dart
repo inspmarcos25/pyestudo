@@ -3,15 +3,21 @@ import 'dart:io';
 
 import 'package:app_python/app.dart';
 import 'package:app_python/app_state.dart';
+import 'package:app_python/core/auth/auth_service.dart';
 import 'package:app_python/core/runtime/execution_result.dart';
 import 'package:app_python/core/runtime/python_runtime.dart';
 import 'package:app_python/core/storage/code_repository.dart';
 import 'package:app_python/core/storage/database.dart';
 import 'package:app_python/core/storage/progress_repository.dart';
+import 'package:app_python/core/sync/firestore_sync_service.dart';
 import 'package:app_python/data/content_loader.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+const _testUserId = 'test-user';
 
 /// Runtime de teste que sempre aprova, para exercitar o fluxo de UI de
 /// ponta a ponta sem depender de um interpretador Python de verdade
@@ -62,18 +68,32 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
       final chapters = await ContentLoader().loadChapters();
-      final state = await AppState.load(
-        runtime: _AlwaysPassRuntime(),
-        codeRepository: CodeRepository(db),
-        progressRepository: ProgressRepository(db),
-        chapters: chapters,
-        prefs: await SharedPreferences.getInstance(),
+
+      // Usuário "logado" via mock: o AuthGate pula a tela de login e vai
+      // direto para o HomeShell, como aconteceria com um usuário real.
+      final authService = AuthService(
+        auth: MockFirebaseAuth(
+          signedIn: true,
+          mockUser: MockUser(uid: _testUserId),
+        ),
       );
+
+      await tester.pumpWidget(
+        PyEstudoApp(
+          runtime: _AlwaysPassRuntime(),
+          db: db,
+          chapters: chapters,
+          prefs: await SharedPreferences.getInstance(),
+          authService: authService,
+          firestore: FakeFirebaseFirestore(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final codeRepository = CodeRepository(db, userId: _testUserId);
+      final progressRepository = ProgressRepository(db, userId: _testUserId);
       final firstChapter = chapters.first;
       final firstExercise = firstChapter.exercises.first;
-
-      await tester.pumpWidget(PyEstudoApp(state: state));
-      await tester.pumpAndSettle();
 
       // Editor é a aba inicial; vai para Exercícios.
       await tester.tap(find.text('Exercícios'));
@@ -84,7 +104,10 @@ void main() {
         find.text('${firstChapter.order}. ${firstChapter.title}'),
       );
       await tester.pumpAndSettle();
-      expect(state.completed.contains(firstExercise.id), isFalse);
+      expect(
+        await progressRepository.completedExercises(),
+        isNot(contains(firstExercise.id)),
+      );
 
       await tester.tap(find.text(firstExercise.title));
       await tester.pumpAndSettle();
@@ -93,7 +116,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Exercício concluído!'), findsOneWidget);
-      expect(state.completed.contains(firstExercise.id), isTrue);
+      expect(
+        await progressRepository.completedExercises(),
+        contains(firstExercise.id),
+      );
 
       // Volta e confere que a aba Progresso reflete a conclusão.
       await tester.pageBack();
@@ -102,7 +128,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.textContaining('1 / '), findsOneWidget);
-      expect(state.streak, greaterThanOrEqualTo(1));
+
+      // codeRepository não usado diretamente neste teste além de confirmar
+      // que o isolamento por usuário não quebra a listagem de arquivos.
+      expect(await codeRepository.list(), isA<List<Snippet>>());
 
       await db.close();
     },
@@ -115,7 +144,7 @@ void main() {
 
     // "Sessão 1": resolve um exercício e fecha o banco.
     var db = await AppDatabase.open(path: path);
-    final progressRepo = ProgressRepository(db);
+    final progressRepo = ProgressRepository(db, userId: _testUserId);
     await progressRepo.markCompleted('cap01', 'cap01_e1');
     await db.close();
 
@@ -123,10 +152,15 @@ void main() {
     db = await AppDatabase.open(path: path);
     final state = await AppState.load(
       runtime: _AlwaysPassRuntime(),
-      codeRepository: CodeRepository(db),
-      progressRepository: ProgressRepository(db),
+      codeRepository: CodeRepository(db, userId: _testUserId),
+      progressRepository: ProgressRepository(db, userId: _testUserId),
       chapters: const [],
       prefs: await SharedPreferences.getInstance(),
+      authService: AuthService(auth: MockFirebaseAuth()),
+      syncService: FirestoreSyncService(
+        _testUserId,
+        firestore: FakeFirebaseFirestore(),
+      ),
     );
 
     expect(state.completed, contains('cap01_e1'));

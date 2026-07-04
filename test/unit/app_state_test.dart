@@ -1,12 +1,18 @@
 import 'package:app_python/app_state.dart';
+import 'package:app_python/core/auth/auth_service.dart';
 import 'package:app_python/core/storage/code_repository.dart';
 import 'package:app_python/core/storage/database.dart';
 import 'package:app_python/core/storage/progress_repository.dart';
 import 'package:app_python/core/runtime/simulated_python_runtime.dart';
+import 'package:app_python/core/sync/firestore_sync_service.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+const _testUserId = 'test-user';
 
 void main() {
   setUpAll(() {
@@ -19,10 +25,15 @@ void main() {
     final db = await AppDatabase.open(path: inMemoryDatabasePath);
     return AppState.load(
       runtime: SimulatedPythonRuntime(),
-      codeRepository: CodeRepository(db),
-      progressRepository: ProgressRepository(db),
+      codeRepository: CodeRepository(db, userId: _testUserId),
+      progressRepository: ProgressRepository(db, userId: _testUserId),
       chapters: const [],
       prefs: await SharedPreferences.getInstance(),
+      authService: AuthService(auth: MockFirebaseAuth()),
+      syncService: FirestoreSyncService(
+        _testUserId,
+        firestore: FakeFirebaseFirestore(),
+      ),
     );
   }
 
@@ -44,10 +55,15 @@ void main() {
     final db = await AppDatabase.open(path: inMemoryDatabasePath);
     final state = await AppState.load(
       runtime: SimulatedPythonRuntime(),
-      codeRepository: CodeRepository(db),
-      progressRepository: ProgressRepository(db),
+      codeRepository: CodeRepository(db, userId: _testUserId),
+      progressRepository: ProgressRepository(db, userId: _testUserId),
       chapters: const [],
       prefs: await SharedPreferences.getInstance(),
+      authService: AuthService(auth: MockFirebaseAuth()),
+      syncService: FirestoreSyncService(
+        _testUserId,
+        firestore: FakeFirebaseFirestore(),
+      ),
     );
     expect(state.brightness, Brightness.light);
   });

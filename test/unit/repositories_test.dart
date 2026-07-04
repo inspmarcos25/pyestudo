@@ -14,7 +14,7 @@ void main() {
   group('CodeRepository', () {
     test('salva, lista e recarrega um snippet', () async {
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final repo = CodeRepository(db);
+      final repo = CodeRepository(db, userId: 'test-user');
 
       await repo.save('principal.py', "print('oi')");
       final loaded = await repo.load('principal.py');
@@ -29,7 +29,7 @@ void main() {
 
     test('renomeia um snippet preservando o código', () async {
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final repo = CodeRepository(db);
+      final repo = CodeRepository(db, userId: 'test-user');
 
       await repo.save('rascunho.py', "print('x')");
       await repo.rename('rascunho.py', 'final.py');
@@ -42,7 +42,7 @@ void main() {
 
     test('renomear para um nome já existente falha', () async {
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final repo = CodeRepository(db);
+      final repo = CodeRepository(db, userId: 'test-user');
 
       await repo.save('a.py', '1');
       await repo.save('b.py', '2');
@@ -57,7 +57,7 @@ void main() {
 
     test('apaga um snippet', () async {
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final repo = CodeRepository(db);
+      final repo = CodeRepository(db, userId: 'test-user');
 
       await repo.save('temp.py', 'x = 1');
       await repo.delete('temp.py');
@@ -70,7 +70,7 @@ void main() {
   group('ProgressRepository', () {
     test('marca exercícios e agrega por capítulo', () async {
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final repo = ProgressRepository(db);
+      final repo = ProgressRepository(db, userId: 'test-user');
 
       await repo.markCompleted('cap01', 'cap01_e1');
       await repo.markCompleted('cap01', 'cap01_e2');

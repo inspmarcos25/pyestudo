@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/auth/auth_service.dart';
 import 'core/progress/streak.dart';
 import 'core/runtime/exercise_checker.dart';
 import 'core/runtime/execution_result.dart';
 import 'core/runtime/python_runtime.dart';
 import 'core/storage/code_repository.dart';
 import 'core/storage/progress_repository.dart';
+import 'core/sync/firestore_sync_service.dart';
 import 'data/models/models.dart';
 
 /// Estado global do app (injetado via ListenableBuilder/InheritedNotifier).
@@ -16,6 +20,8 @@ class AppState extends ChangeNotifier {
   final ProgressRepository progressRepository;
   final List<Chapter> chapters;
   final SharedPreferences prefs;
+  final AuthService authService;
+  final FirestoreSyncService syncService;
 
   late final ExerciseChecker checker = ExerciseChecker(runtime);
 
@@ -45,6 +51,8 @@ class AppState extends ChangeNotifier {
     required this.progressRepository,
     required this.chapters,
     required this.prefs,
+    required this.authService,
+    required this.syncService,
     required this.currentFileName,
     required this.currentCode,
     required this.completed,
@@ -52,13 +60,16 @@ class AppState extends ChangeNotifier {
     this.brightness = Brightness.dark,
   });
 
-  /// Restaura último arquivo, tema e progresso salvos.
+  /// Restaura último arquivo, tema e progresso salvos (já filtrado pela
+  /// conta logada, via `codeRepository`/`progressRepository.userId`).
   static Future<AppState> load({
     required PythonRuntime runtime,
     required CodeRepository codeRepository,
     required ProgressRepository progressRepository,
     required List<Chapter> chapters,
     required SharedPreferences prefs,
+    required AuthService authService,
+    required FirestoreSyncService syncService,
   }) async {
     final lastFile = prefs.getString(_lastFileKey) ?? defaultFileName;
     final snippet = await codeRepository.load(lastFile);
@@ -73,6 +84,8 @@ class AppState extends ChangeNotifier {
       progressRepository: progressRepository,
       chapters: chapters,
       prefs: prefs,
+      authService: authService,
+      syncService: syncService,
       currentFileName: snippet?.name ?? defaultFileName,
       currentCode: snippet?.code ?? defaultCode,
       completed: completed,
@@ -94,6 +107,8 @@ class AppState extends ChangeNotifier {
       )
       .length;
 
+  Future<void> signOut() => authService.signOut();
+
   Future<void> toggleBrightness() async {
     brightness = brightness == Brightness.dark
         ? Brightness.light
@@ -110,6 +125,12 @@ class AppState extends ChangeNotifier {
   Future<void> saveCurrentFile() async {
     await codeRepository.save(currentFileName, currentCode);
     await prefs.setString(_lastFileKey, currentFileName);
+    final saved = await codeRepository.load(currentFileName);
+    if (saved != null) {
+      unawaited(
+        syncService.pushSnippet(saved.name, saved.code, saved.updatedAt),
+      );
+    }
     notifyListeners();
   }
 
@@ -130,6 +151,12 @@ class AppState extends ChangeNotifier {
     lastResult = null;
     await codeRepository.save(name, '');
     await prefs.setString(_lastFileKey, name);
+    final saved = await codeRepository.load(name);
+    if (saved != null) {
+      unawaited(
+        syncService.pushSnippet(saved.name, saved.code, saved.updatedAt),
+      );
+    }
     notifyListeners();
   }
 
@@ -137,6 +164,7 @@ class AppState extends ChangeNotifier {
   /// para o arquivo padrão (recriando-o se necessário).
   Future<void> deleteFile(String name) async {
     await codeRepository.delete(name);
+    unawaited(syncService.deleteSnippet(name));
     if (currentFileName == name) {
       final fallback = await codeRepository.load(defaultFileName);
       currentFileName = defaultFileName;
@@ -150,6 +178,17 @@ class AppState extends ChangeNotifier {
   /// Renomeia um arquivo salvo. Lança [StateError] se o novo nome já existir.
   Future<void> renameFile(String oldName, String newName) async {
     await codeRepository.rename(oldName, newName);
+    final renamed = await codeRepository.load(newName);
+    if (renamed != null) {
+      unawaited(
+        syncService.renameSnippet(
+          oldName,
+          renamed.name,
+          renamed.code,
+          renamed.updatedAt,
+        ),
+      );
+    }
     if (currentFileName == oldName) {
       currentFileName = newName;
       await prefs.setString(_lastFileKey, newName);
@@ -231,6 +270,9 @@ class AppState extends ChangeNotifier {
       await progressRepository.markCompleted(chapter.id, exercise.id);
       completed = await progressRepository.completedExercises();
       completionDays = await progressRepository.completionDates();
+      unawaited(
+        syncService.pushProgress(chapter.id, exercise.id, DateTime.now()),
+      );
       notifyListeners();
     }
     return results;

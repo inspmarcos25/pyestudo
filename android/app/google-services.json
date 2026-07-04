@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "151285529193",
+    "project_id": "apppython-77dff",
+    "storage_bucket": "apppython-77dff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151285529193:android:43ca89070e9517355f40f8",
+        "android_client_info": {
+          "package_name": "com.marcos.pyestudo.app_python"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151285529193-oqiit014tihi5p13o4qv4ob9bel5rqni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzCaGqAn5g9PO0bt_ZxomniXxMMI0qcXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151285529193-oqiit014tihi5p13o4qv4ob9bel5rqni.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "151285529193-bno7rqcc74m91mj8nckkqmnj4fbedugc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.marcos.pyestudo.appPython"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
