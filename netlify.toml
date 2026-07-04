@@ -1,9 +1,8 @@
-# Deploy estático do build web do Flutter (já compilado localmente com
-# `flutter build web --release`). O Netlify apenas publica os arquivos —
-# não roda build no servidor (não há Flutter lá).
+# O Netlify não tem Flutter instalado por padrão: o comando de build baixa
+# o SDK (canal stable) antes de compilar a versão web.
 [build]
   publish = "build/web"
-  command = ""
+  command = "git clone https://github.com/flutter/flutter.git --depth 1 -b stable _flutter && export PATH=\"$PATH:$(pwd)/_flutter/bin\" && flutter pub get && flutter build web --release"
 
 # Headers para o WebAssembly do Pyodide carregar corretamente.
 [[headers]]
