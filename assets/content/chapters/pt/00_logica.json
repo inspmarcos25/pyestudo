@@ -1,0 +1,90 @@
+{
+  "id": "cap00",
+  "title": "Lógica de Programação",
+  "order": 1,
+  "difficulty": "iniciante",
+  "lessons": [
+    {
+      "id": "cap00_l1",
+      "title": "O que é um algoritmo",
+      "body": "Um algoritmo é uma sequência de passos bem definidos para resolver um problema — como uma receita de bolo. Um programa é só um algoritmo escrito numa linguagem que o computador entende. Antes de aprender a sintaxe do Python, o mais importante é aprender a pensar em passos.",
+      "example": "# Um algoritmo é uma sequência de passos para resolver um problema.\n# Este programa calcula o troco de uma compra, passo a passo:\n\npreco = 12.50          # passo 1: guardar o preço do produto\npago = 20.00           # passo 2: guardar quanto a pessoa pagou\ntroco = pago - preco   # passo 3: calcular o troco\nprint(troco)           # passo 4: mostrar o resultado"
+    },
+    {
+      "id": "cap00_l2",
+      "title": "Sequência e decisão",
+      "body": "Um programa roda de cima para baixo, uma linha de cada vez — isso é a sequência. Mas às vezes o programa precisa escolher entre dois caminhos diferentes, dependendo de uma condição. Isso é uma decisão, e em Python ela é feita com `if` e `else`.",
+      "example": "# Sequência: as linhas rodam de cima para baixo, uma de cada vez.\nidade = 16\n\n# Decisão: o programa escolhe um caminho dependendo da condição.\nif idade >= 18:\n    print('Pode dirigir')\nelse:\n    print('Ainda não pode dirigir')"
+    },
+    {
+      "id": "cap00_l3",
+      "title": "Repetição",
+      "body": "Às vezes é preciso repetir um mesmo passo várias vezes. Em vez de escrever o mesmo código de novo e de novo, usamos um laço de repetição — em Python, o `for`. É a mesma ideia de uma receita que diz 'bata o ovo 50 vezes' em vez de escrever a instrução 50 vezes.",
+      "example": "# Repetição: em vez de repetir o código, usamos um laço.\nfor volta in range(3):\n    print('Bom dia!')\n\n# Isso é bem mais curto do que escrever\n# print('Bom dia!') três vezes seguidas."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap00_e1",
+      "title": "Some passo a passo",
+      "prompt": "Escreva uma função `total_da_compra(preco, quantidade)` que segue esta sequência de passos: primeiro calcula o total multiplicando preço pela quantidade e guarda numa variável chamada `total`, depois retorna essa variável.",
+      "starterCode": "def total_da_compra(preco, quantidade):\n    # passo 1: calcule o total\n    total = 0\n    # passo 2: retorne o total\n    return total\n",
+      "tests": [
+        { "name": "total_da_compra(2, 3) == 6", "code": "assert total_da_compra(2, 3) == 6, f'obtido {total_da_compra(2, 3)}'" },
+        { "name": "total_da_compra(10, 0) == 0", "code": "assert total_da_compra(10, 0) == 0" },
+        { "name": "total_da_compra(1.5, 4) == 6.0", "code": "assert total_da_compra(1.5, 4) == 6.0" }
+      ],
+      "hints": ["Multiplique preco por quantidade e guarde em total."]
+    },
+    {
+      "id": "cap00_e2",
+      "title": "Escolha o caminho",
+      "prompt": "Escreva uma função `pode_dirigir(idade)` que retorna 'sim' se idade for maior ou igual a 18, e 'não' caso contrário — o programa decide o caminho de acordo com a condição.",
+      "starterCode": "def pode_dirigir(idade):\n    if idade >= 18:\n        pass\n    else:\n        pass\n",
+      "tests": [
+        { "name": "pode_dirigir(20) == 'sim'", "code": "assert pode_dirigir(20) == 'sim', f'obtido {pode_dirigir(20)!r}'" },
+        { "name": "pode_dirigir(15) == 'não'", "code": "assert pode_dirigir(15) == 'não'" },
+        { "name": "pode_dirigir(18) == 'sim'", "code": "assert pode_dirigir(18) == 'sim'" }
+      ],
+      "hints": ["Dentro do if, retorne 'sim'.", "Dentro do else, retorne 'não'."]
+    },
+    {
+      "id": "cap00_e3",
+      "title": "Repita sem repetir",
+      "prompt": "Escreva uma função `repetir_saudacao(vezes)` que retorna uma lista com o texto 'Oi!' repetido `vezes` vezes — use um laço em vez de escrever 'Oi!' várias vezes no código.",
+      "starterCode": "def repetir_saudacao(vezes):\n    resultado = []\n    # use um laço for para repetir\n    return resultado\n",
+      "tests": [
+        { "name": "repetir_saudacao(3) == ['Oi!','Oi!','Oi!']", "code": "assert repetir_saudacao(3) == ['Oi!','Oi!','Oi!'], f'obtido {repetir_saudacao(3)}'" },
+        { "name": "repetir_saudacao(0) == []", "code": "assert repetir_saudacao(0) == []" },
+        { "name": "repetir_saudacao(1) == ['Oi!']", "code": "assert repetir_saudacao(1) == ['Oi!']" }
+      ],
+      "hints": ["for _ in range(vezes): repete o bloco vezes vezes.", "resultado.append('Oi!') adiciona um item a cada volta."]
+    },
+    {
+      "id": "cap00_e4",
+      "title": "Conte até onde pedir",
+      "prompt": "Escreva uma função `contar_ate(n)` que retorna uma lista com os números de 1 até n, na ordem — um algoritmo clássico de contagem, passo a passo.",
+      "starterCode": "def contar_ate(n):\n    numeros = []\n    # complete com um laço\n    return numeros\n",
+      "tests": [
+        { "name": "contar_ate(5) == [1,2,3,4,5]", "code": "assert contar_ate(5) == [1,2,3,4,5], f'obtido {contar_ate(5)}'" },
+        { "name": "contar_ate(1) == [1]", "code": "assert contar_ate(1) == [1]" },
+        { "name": "contar_ate(0) == []", "code": "assert contar_ate(0) == []" }
+      ],
+      "hints": ["range(1, n + 1) gera os números de 1 até n, na ordem certa."]
+    },
+    {
+      "id": "cap00_e5",
+      "title": "Decisão em cadeia",
+      "prompt": "Escreva uma função `classificar(nota)` que segue esta lógica, na ordem: se nota for maior ou igual a 7, retorna 'aprovado'; senão, se for maior ou igual a 5, retorna 'recuperação'; senão, retorna 'reprovado'.",
+      "starterCode": "def classificar(nota):\n    pass\n",
+      "tests": [
+        { "name": "classificar(8) == 'aprovado'", "code": "assert classificar(8) == 'aprovado', f'obtido {classificar(8)!r}'" },
+        { "name": "classificar(6) == 'recuperação'", "code": "assert classificar(6) == 'recuperação'" },
+        { "name": "classificar(3) == 'reprovado'", "code": "assert classificar(3) == 'reprovado'" },
+        { "name": "classificar(7) == 'aprovado'", "code": "assert classificar(7) == 'aprovado'" },
+        { "name": "classificar(5) == 'recuperação'", "code": "assert classificar(5) == 'recuperação'" }
+      ],
+      "hints": ["Use if, elif e else, nessa ordem — o programa testa cada condição até achar uma verdadeira."]
+    }
+  ]
+}

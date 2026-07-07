@@ -13,6 +13,7 @@ class ContentLoader {
 
   /// Nomes dos arquivos (iguais em todos os idiomas; muda só a pasta).
   static const _fileNames = [
+    '00_logica.json',
     '01_basico.json',
     '02_controle.json',
     '03_funcoes.json',

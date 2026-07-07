@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('carrega os 7 capítulos dos assets com lições e exercícios', () async {
+  test('carrega os 8 capítulos dos assets com lições e exercícios', () async {
     final chapters = await ContentLoader().loadChapters();
 
-    expect(chapters, hasLength(7));
-    expect(chapters.map((c) => c.order), [1, 2, 3, 4, 5, 6, 7]);
+    expect(chapters, hasLength(8));
+    expect(chapters.map((c) => c.order), [1, 2, 3, 4, 5, 6, 7, 8]);
     for (final chapter in chapters) {
       expect(
         chapter.lessons,

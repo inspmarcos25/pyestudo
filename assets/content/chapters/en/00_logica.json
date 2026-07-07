@@ -1,0 +1,90 @@
+{
+  "id": "cap00",
+  "title": "Programming Logic",
+  "order": 1,
+  "difficulty": "beginner",
+  "lessons": [
+    {
+      "id": "cap00_l1",
+      "title": "What is an algorithm",
+      "body": "An algorithm is a sequence of well-defined steps to solve a problem — like a cooking recipe. A program is just an algorithm written in a language the computer understands. Before learning Python's syntax, the most important thing is learning to think in steps.",
+      "example": "# An algorithm is a sequence of steps to solve a problem.\n# This program calculates the change for a purchase, step by step:\n\nprice = 12.50           # step 1: store the product's price\npaid = 20.00            # step 2: store how much the person paid\nchange = paid - price   # step 3: calculate the change\nprint(change)           # step 4: show the result"
+    },
+    {
+      "id": "cap00_l2",
+      "title": "Sequence and decision",
+      "body": "A program runs from top to bottom, one line at a time — that's sequence. But sometimes the program needs to choose between two different paths, depending on a condition. That's a decision, and in Python it's done with `if` and `else`.",
+      "example": "# Sequence: lines run from top to bottom, one at a time.\nage = 16\n\n# Decision: the program chooses a path depending on the condition.\nif age >= 18:\n    print('Can drive')\nelse:\n    print('Cannot drive yet')"
+    },
+    {
+      "id": "cap00_l3",
+      "title": "Repetition",
+      "body": "Sometimes you need to repeat the same step several times. Instead of writing the same code over and over, we use a loop — in Python, `for`. It's the same idea as a recipe that says 'beat the egg 50 times' instead of writing the instruction 50 times.",
+      "example": "# Repetition: instead of repeating the code, we use a loop.\nfor lap in range(3):\n    print('Good morning!')\n\n# That's much shorter than writing\n# print('Good morning!') three times in a row."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap00_e1",
+      "title": "Add step by step",
+      "prompt": "Write a function `purchase_total(price, quantity)` that follows this sequence of steps: first calculate the total by multiplying price by quantity and store it in a variable called `total`, then return that variable.",
+      "starterCode": "def purchase_total(price, quantity):\n    # step 1: calculate the total\n    total = 0\n    # step 2: return the total\n    return total\n",
+      "tests": [
+        { "name": "purchase_total(2, 3) == 6", "code": "assert purchase_total(2, 3) == 6, f'got {purchase_total(2, 3)}'" },
+        { "name": "purchase_total(10, 0) == 0", "code": "assert purchase_total(10, 0) == 0" },
+        { "name": "purchase_total(1.5, 4) == 6.0", "code": "assert purchase_total(1.5, 4) == 6.0" }
+      ],
+      "hints": ["Multiply price by quantity and store it in total."]
+    },
+    {
+      "id": "cap00_e2",
+      "title": "Choose the path",
+      "prompt": "Write a function `can_drive(age)` that returns 'yes' if age is 18 or older, and 'no' otherwise — the program decides the path based on the condition.",
+      "starterCode": "def can_drive(age):\n    if age >= 18:\n        pass\n    else:\n        pass\n",
+      "tests": [
+        { "name": "can_drive(20) == 'yes'", "code": "assert can_drive(20) == 'yes', f'got {can_drive(20)!r}'" },
+        { "name": "can_drive(15) == 'no'", "code": "assert can_drive(15) == 'no'" },
+        { "name": "can_drive(18) == 'yes'", "code": "assert can_drive(18) == 'yes'" }
+      ],
+      "hints": ["Inside the if, return 'yes'.", "Inside the else, return 'no'."]
+    },
+    {
+      "id": "cap00_e3",
+      "title": "Repeat without repeating",
+      "prompt": "Write a function `repeat_greeting(times)` that returns a list with the text 'Hi!' repeated `times` times — use a loop instead of writing 'Hi!' several times in the code.",
+      "starterCode": "def repeat_greeting(times):\n    result = []\n    # use a for loop to repeat\n    return result\n",
+      "tests": [
+        { "name": "repeat_greeting(3) == ['Hi!','Hi!','Hi!']", "code": "assert repeat_greeting(3) == ['Hi!','Hi!','Hi!'], f'got {repeat_greeting(3)}'" },
+        { "name": "repeat_greeting(0) == []", "code": "assert repeat_greeting(0) == []" },
+        { "name": "repeat_greeting(1) == ['Hi!']", "code": "assert repeat_greeting(1) == ['Hi!']" }
+      ],
+      "hints": ["for _ in range(times): repeats the block that many times.", "result.append('Hi!') adds one item on each pass."]
+    },
+    {
+      "id": "cap00_e4",
+      "title": "Count as high as asked",
+      "prompt": "Write a function `count_to(n)` that returns a list with the numbers from 1 to n, in order — a classic step-by-step counting algorithm.",
+      "starterCode": "def count_to(n):\n    numbers = []\n    # complete with a loop\n    return numbers\n",
+      "tests": [
+        { "name": "count_to(5) == [1,2,3,4,5]", "code": "assert count_to(5) == [1,2,3,4,5], f'got {count_to(5)}'" },
+        { "name": "count_to(1) == [1]", "code": "assert count_to(1) == [1]" },
+        { "name": "count_to(0) == []", "code": "assert count_to(0) == []" }
+      ],
+      "hints": ["range(1, n + 1) generates the numbers from 1 to n, in the right order."]
+    },
+    {
+      "id": "cap00_e5",
+      "title": "Chained decision",
+      "prompt": "Write a function `classify(grade)` that follows this logic, in order: if grade is 7 or higher, return 'passed'; otherwise, if it's 5 or higher, return 'retake'; otherwise, return 'failed'.",
+      "starterCode": "def classify(grade):\n    pass\n",
+      "tests": [
+        { "name": "classify(8) == 'passed'", "code": "assert classify(8) == 'passed', f'got {classify(8)!r}'" },
+        { "name": "classify(6) == 'retake'", "code": "assert classify(6) == 'retake'" },
+        { "name": "classify(3) == 'failed'", "code": "assert classify(3) == 'failed'" },
+        { "name": "classify(7) == 'passed'", "code": "assert classify(7) == 'passed'" },
+        { "name": "classify(5) == 'retake'", "code": "assert classify(5) == 'retake'" }
+      ],
+      "hints": ["Use if, elif and else, in that order — the program tests each condition until it finds a true one."]
+    }
+  ]
+}
