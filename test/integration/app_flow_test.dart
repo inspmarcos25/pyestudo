@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:app_python/app.dart';
 import 'package:app_python/app_state.dart';
 import 'package:app_python/core/auth/auth_service.dart';
+import 'package:app_python/core/i18n/app_language.dart';
+import 'package:app_python/core/i18n/locale_controller.dart';
 import 'package:app_python/core/runtime/execution_result.dart';
 import 'package:app_python/core/runtime/python_runtime.dart';
 import 'package:app_python/core/storage/code_repository.dart';
@@ -14,7 +16,7 @@ import 'package:app_python/data/content_loader.dart';
 import 'package:app_python/features/exercises/exercises_screen.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -67,9 +69,13 @@ void main() {
   testWidgets(
     'resolver um exercício atualiza o progresso e reflete na aba Progresso',
     (tester) async {
-      SharedPreferences.setMockInitialValues({});
+      // Fixa o idioma em português: este teste verifica textos em PT-BR
+      // ('Exercícios', 'Verificar', 'Exercício concluído!'). Sem isso, o
+      // locale do ambiente de teste (en) escolheria o inglês por padrão.
+      SharedPreferences.setMockInitialValues({'app_language': 'pt'});
       final db = await AppDatabase.open(path: inMemoryDatabasePath);
-      final chapters = await ContentLoader().loadChapters();
+      final chaptersByLanguage = await ContentLoader().loadAllLanguages();
+      final chapters = chaptersByLanguage[AppLanguage.pt]!;
 
       // Usuário "logado" via mock: o AuthGate pula a tela de login e vai
       // direto para o HomeShell, como aconteceria com um usuário real.
@@ -84,7 +90,7 @@ void main() {
         PyEstudoApp(
           runtime: _AlwaysPassRuntime(),
           db: db,
-          chapters: chapters,
+          chaptersByLanguage: chaptersByLanguage,
           prefs: await SharedPreferences.getInstance(),
           authService: authService,
           firestore: FakeFirebaseFirestore(),
@@ -132,7 +138,10 @@ void main() {
       );
 
       // Volta e confere que a aba Progresso reflete a conclusão.
-      await tester.pageBack();
+      // (Usa o BackButton por tipo em vez de tester.pageBack(): com o app
+      // em português, o tooltip do botão é "Voltar", e pageBack() procura
+      // fixo por "Back".)
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Progresso'));
       await tester.pumpAndSettle();
@@ -164,12 +173,14 @@ void main() {
 
     // "Sessão 2": reabre do zero, como se o app tivesse sido reiniciado.
     db = await AppDatabase.open(path: path);
+    final prefs = await SharedPreferences.getInstance();
     final state = await AppState.load(
       runtime: _AlwaysPassRuntime(),
       codeRepository: CodeRepository(db, userId: _testUserId),
       progressRepository: ProgressRepository(db, userId: _testUserId),
-      chapters: const [],
-      prefs: await SharedPreferences.getInstance(),
+      chaptersByLanguage: const {},
+      locale: LocaleController(prefs),
+      prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(
         _testUserId,

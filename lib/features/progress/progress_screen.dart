@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app_state.dart';
+import '../../core/i18n/app_strings.dart';
 import '../../core/progress/achievements.dart';
 import '../../core/theme/duo_theme.dart';
 
@@ -18,6 +19,7 @@ class ProgressScreen extends StatelessWidget {
       listenable: state,
       builder: (context, _) {
         final duo = DuoColors.of(context);
+        final strings = state.strings;
         final total = state.chapters.fold<int>(
           0,
           (s, c) => s + c.exercises.length,
@@ -47,12 +49,12 @@ class ProgressScreen extends StatelessWidget {
                     vertical: 8,
                   ),
                   child: Text(
-                    'Seu progresso',
+                    strings.progressTitle,
                     style: DuoText.display.copyWith(color: duo.text),
                   ),
                 ),
                 const SizedBox(height: 12),
-                _StreakHero(streak: state.streak),
+                _StreakHero(streak: state.streak, strings: strings),
                 const SizedBox(height: 16),
                 Row(
                   children: [
@@ -61,9 +63,11 @@ class ProgressScreen extends StatelessWidget {
                         icon: Icons.check_circle_rounded,
                         iconColor: DuoPalette.green,
                         value: '$done / $total',
-                        label: 'exercícios',
-                        semantics:
-                            'Progresso geral: $done de $total exercícios',
+                        label: strings.statExercises,
+                        semantics: strings.overallProgressSemantics(
+                          done,
+                          total,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -74,11 +78,11 @@ class ProgressScreen extends StatelessWidget {
                         value:
                             '${state.chaptersFullyCompleted} / '
                             '$chaptersWithExercises',
-                        label: 'capítulos',
-                        semantics:
-                            'Capítulos completos: '
-                            '${state.chaptersFullyCompleted} de '
-                            '$chaptersWithExercises',
+                        label: strings.statChapters,
+                        semantics: strings.chaptersDoneSemantics(
+                          state.chaptersFullyCompleted,
+                          chaptersWithExercises,
+                        ),
                       ),
                     ),
                   ],
@@ -91,10 +95,11 @@ class ProgressScreen extends StatelessWidget {
                         icon: Icons.workspace_premium_rounded,
                         iconColor: DuoPalette.gold,
                         value: '$unlockedCount / ${achievements.length}',
-                        label: 'conquistas',
-                        semantics:
-                            'Conquistas desbloqueadas: $unlockedCount de '
-                            '${achievements.length}',
+                        label: strings.statAchievements,
+                        semantics: strings.achievementsCountSemantics(
+                          unlockedCount,
+                          achievements.length,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -105,17 +110,16 @@ class ProgressScreen extends StatelessWidget {
                         value: total == 0
                             ? '0%'
                             : '${(done / total * 100).round()}%',
-                        label: 'do curso',
-                        semantics: total == 0
-                            ? 'Curso 0% concluído'
-                            : 'Curso ${(done / total * 100).round()}% '
-                                  'concluído',
+                        label: strings.statCourse,
+                        semantics: strings.courseSemantics(
+                          total == 0 ? 0 : (done / total * 100).round(),
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 28),
-                _SectionTitle('Conquistas'),
+                _SectionTitle(strings.achievementsSection),
                 const SizedBox(height: 12),
                 GridView.builder(
                   shrinkWrap: true,
@@ -132,16 +136,18 @@ class ProgressScreen extends StatelessWidget {
                     achievement: achievements[i],
                     color: duoUnitColors[i % duoUnitColors.length],
                     unlocked: achievements[i].isUnlocked(progress),
+                    strings: strings,
                   ),
                 ),
                 const SizedBox(height: 28),
-                _SectionTitle('Capítulos'),
+                _SectionTitle(strings.chaptersSection),
                 const SizedBox(height: 12),
                 for (final chapter in state.chapters)
                   _ChapterProgressCard(
                     title: '${chapter.order}. ${chapter.title}',
                     unit: duoUnitColorFor(chapter.order),
                     value: state.chapterProgress(chapter),
+                    strings: strings,
                   ),
               ],
             ),
@@ -170,17 +176,16 @@ class _SectionTitle extends StatelessWidget {
 /// Card laranja em destaque com a chama e os dias seguidos.
 class _StreakHero extends StatelessWidget {
   final int streak;
+  final AppStrings strings;
 
-  const _StreakHero({required this.streak});
+  const _StreakHero({required this.streak, required this.strings});
 
   @override
   Widget build(BuildContext context) {
     final duo = DuoColors.of(context);
     final active = streak > 0;
     return Semantics(
-      label: active
-          ? 'Sequência de $streak dias estudando'
-          : 'Sem sequência ativa hoje',
+      label: strings.streakSemantics(streak),
       child: DuoButton3D(
         color: active ? DuoPalette.orange : duo.surface,
         shadowColor: active ? DuoPalette.orangeShadow : duo.lockedShadow,
@@ -202,11 +207,7 @@ class _StreakHero extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      active
-                          ? (streak == 1
-                                ? '1 dia de sequência'
-                                : '$streak dias seguidos')
-                          : 'Sem sequência',
+                      strings.streakHeroTitle(streak),
                       style: DuoText.stat.copyWith(
                         color: active ? Colors.white : duo.text,
                       ),
@@ -214,10 +215,8 @@ class _StreakHero extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       active
-                          ? 'Continue assim! Resolva um exercício '
-                                'por dia para manter a chama acesa.'
-                          : 'Resolva um exercício hoje para '
-                                'acender a chama!',
+                          ? strings.streakBodyActive
+                          : strings.streakBodyInactive,
                       style: DuoText.body.copyWith(
                         color: active
                             ? Colors.white.withValues(alpha: 0.9)
@@ -302,20 +301,22 @@ class _AchievementBadge extends StatelessWidget {
   final Achievement achievement;
   final DuoUnitColor color;
   final bool unlocked;
+  final AppStrings strings;
 
   const _AchievementBadge({
     required this.achievement,
     required this.color,
     required this.unlocked,
+    required this.strings,
   });
 
   @override
   Widget build(BuildContext context) {
     final duo = DuoColors.of(context);
+    final title = strings.achievementTitle(achievement.id);
+    final description = strings.achievementDescription(achievement.id);
     return Semantics(
-      label:
-          '${achievement.title}: ${achievement.description}'
-          '${unlocked ? ' (desbloqueada)' : ' (bloqueada)'}',
+      label: strings.achievementSemantics(title, description, unlocked),
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -357,7 +358,7 @@ class _AchievementBadge extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    achievement.title,
+                    title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: DuoText.bold.copyWith(
@@ -368,7 +369,7 @@ class _AchievementBadge extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    achievement.description,
+                    description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: DuoText.small.copyWith(
@@ -391,11 +392,13 @@ class _ChapterProgressCard extends StatelessWidget {
   final String title;
   final DuoUnitColor unit;
   final double value;
+  final AppStrings strings;
 
   const _ChapterProgressCard({
     required this.title,
     required this.unit,
     required this.value,
+    required this.strings,
   });
 
   @override
@@ -403,7 +406,7 @@ class _ChapterProgressCard extends StatelessWidget {
     final duo = DuoColors.of(context);
     final percent = (value * 100).round();
     return Semantics(
-      label: '$title: $percent% concluído',
+      label: strings.chapterProgressSemantics(title, percent),
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

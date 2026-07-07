@@ -1,0 +1,239 @@
+{
+  "id": "cap01",
+  "title": "Fundamentals",
+  "order": 1,
+  "difficulty": "beginner",
+  "lessons": [
+    {
+      "id": "cap01_l1",
+      "title": "print and variables",
+      "body": "In Python, `print()` shows something on the screen and variables store values. A variable is created the moment you assign a value to it with `=`. Try changing the name and running the example.",
+      "example": "# print() shows text on the screen\nprint('Hello, world!')\n\n# A variable stores a value to use later\nname = 'Ana'\nage = 21\n\n# f-strings insert variables inside the text\nprint(f'{name} is {age} years old')"
+    },
+    {
+      "id": "cap01_l2",
+      "title": "Numbers and operations",
+      "body": "Python has integers (`int`) and decimals (`float`). The operators are `+`, `-`, `*`, `/` (division always gives a float), `//` (integer division), `%` (remainder) and `**` (power).",
+      "example": "# Basic operations\na = 7\nb = 2\n\nprint(a + b)   # 9\nprint(a / b)   # 3.5  (division always returns a float)\nprint(a // b)  # 3    (integer division drops the remainder)\nprint(a % b)   # 1    (remainder of the division)\nprint(a ** b)  # 49   (7 to the power of 2)"
+    },
+    {
+      "id": "cap01_l3",
+      "title": "Strings",
+      "body": "Strings are text between quotes. You can join them with `+`, repeat them with `*`, measure them with `len()` and transform them with methods like `.upper()` and `.lower()`.",
+      "example": "phrase = 'python is fun'\n\n# len() counts the characters\nprint(len(phrase))\n\n# Methods transform the string (without changing the original)\nprint(phrase.upper())\nprint(phrase.capitalize())\n\n# Slices take pieces: [start:end]\nprint(phrase[0:6])"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap01_e1",
+      "title": "Your first greeting",
+      "prompt": "Create a variable called `message` with the text 'Hello, Python!' and print it on the screen with print().",
+      "starterCode": "# Create the variable and use print()\n",
+      "tests": [
+        { "name": "variable message exists with the right text", "code": "assert message == 'Hello, Python!', f\"expected 'Hello, Python!', got {message!r}\"" }
+      ],
+      "hints": ["Text in Python goes between single or double quotes."]
+    },
+    {
+      "id": "cap01_e2",
+      "title": "Sum function",
+      "prompt": "Write a function `add(a, b)` that returns the sum of the two numbers.",
+      "starterCode": "def add(a, b):\n    pass\n",
+      "tests": [
+        { "name": "add(2, 3) == 5", "code": "assert add(2, 3) == 5, f'expected 5, got {add(2, 3)}'" },
+        { "name": "add(-1, 1) == 0", "code": "assert add(-1, 1) == 0, f'expected 0, got {add(-1, 1)}'" },
+        { "name": "add(0.5, 0.5) == 1.0", "code": "assert add(0.5, 0.5) == 1.0" }
+      ],
+      "hints": ["Use the return keyword to give back the result."]
+    },
+    {
+      "id": "cap01_e3",
+      "title": "Double the number",
+      "prompt": "Write a function `double(n)` that returns twice n.",
+      "starterCode": "def double(n):\n    pass\n",
+      "tests": [
+        { "name": "double(4) == 8", "code": "assert double(4) == 8, f'expected 8, got {double(4)}'" },
+        { "name": "double(0) == 0", "code": "assert double(0) == 0" },
+        { "name": "double(-3) == -6", "code": "assert double(-3) == -6" }
+      ],
+      "hints": ["Multiply n by 2 and return the result."]
+    },
+    {
+      "id": "cap01_e4",
+      "title": "Shouting the text",
+      "prompt": "Write a function `shout(text)` that returns the text in UPPERCASE followed by '!'. E.g.: shout('hi') → 'HI!'",
+      "starterCode": "def shout(text):\n    pass\n",
+      "tests": [
+        { "name": "shout('hi') == 'HI!'", "code": "assert shout('hi') == 'HI!', f\"got {shout('hi')!r}\"" },
+        { "name": "shout('python') == 'PYTHON!'", "code": "assert shout('python') == 'PYTHON!'" }
+      ],
+      "hints": ["The .upper() method makes the string uppercase.", "Join strings with +."]
+    },
+    {
+      "id": "cap01_e5",
+      "title": "Rectangle area",
+      "prompt": "Write a function `area(base, height)` that returns the area of a rectangle.",
+      "starterCode": "def area(base, height):\n    pass\n",
+      "tests": [
+        { "name": "area(3, 4) == 12", "code": "assert area(3, 4) == 12, f'got {area(3, 4)}'" },
+        { "name": "area(5, 5) == 25", "code": "assert area(5, 5) == 25" },
+        { "name": "area(2.5, 4) == 10.0", "code": "assert area(2.5, 4) == 10.0" }
+      ],
+      "hints": ["The area is base times height (base * height)."]
+    },
+    {
+      "id": "cap01_e6",
+      "title": "Average of two numbers",
+      "prompt": "Write a function `average(a, b)` that returns the arithmetic mean of two numbers.",
+      "starterCode": "def average(a, b):\n    pass\n",
+      "tests": [
+        { "name": "average(4, 6) == 5", "code": "assert average(4, 6) == 5, f'got {average(4, 6)}'" },
+        { "name": "average(10, 0) == 5", "code": "assert average(10, 0) == 5" },
+        { "name": "average(3, 4) == 3.5", "code": "assert average(3, 4) == 3.5" }
+      ],
+      "hints": ["Add the two numbers and divide by 2."]
+    },
+    {
+      "id": "cap01_e7",
+      "title": "Seconds to minutes",
+      "prompt": "Write a function `minutes(seconds)` that returns how many whole minutes fit in the given number of seconds. E.g.: minutes(130) → 2",
+      "starterCode": "def minutes(seconds):\n    pass\n",
+      "tests": [
+        { "name": "minutes(130) == 2", "code": "assert minutes(130) == 2, f'got {minutes(130)}'" },
+        { "name": "minutes(60) == 1", "code": "assert minutes(60) == 1" },
+        { "name": "minutes(59) == 0", "code": "assert minutes(59) == 0" }
+      ],
+      "hints": ["Integer division // drops the remainder: 130 // 60 == 2."]
+    },
+    {
+      "id": "cap01_e8",
+      "title": "Name initial",
+      "prompt": "Write a function `initial(name)` that returns the first letter of the name in uppercase. E.g.: initial('ana') → 'A'",
+      "starterCode": "def initial(name):\n    pass\n",
+      "tests": [
+        { "name": "initial('ana') == 'A'", "code": "assert initial('ana') == 'A', f\"got {initial('ana')!r}\"" },
+        { "name": "initial('python') == 'P'", "code": "assert initial('python') == 'P'" }
+      ],
+      "hints": ["name[0] takes the first letter.", "Use .upper() to make it uppercase."]
+    },
+    {
+      "id": "cap01_e9",
+      "title": "Discounted price",
+      "prompt": "Write a function `discounted(price, percent)` that returns the price after applying the percentage discount. E.g.: discounted(100, 20) → 80.0",
+      "starterCode": "def discounted(price, percent):\n    pass\n",
+      "tests": [
+        { "name": "discounted(100, 20) == 80.0", "code": "assert discounted(100, 20) == 80.0, f'got {discounted(100, 20)}'" },
+        { "name": "discounted(50, 10) == 45.0", "code": "assert discounted(50, 10) == 45.0" },
+        { "name": "discounted(80, 0) == 80.0", "code": "assert discounted(80, 0) == 80.0" }
+      ],
+      "hints": ["Discount amount = price * percent / 100.", "Subtract the discount from the price."]
+    },
+    {
+      "id": "cap01_e10",
+      "title": "Text length",
+      "prompt": "Write a function `length(text)` that returns how many characters the text has.",
+      "starterCode": "def length(text):\n    pass\n",
+      "tests": [
+        { "name": "length('python') == 6", "code": "assert length('python') == 6, f\"got {length('python')}\"" },
+        { "name": "length('') == 0", "code": "assert length('') == 0" },
+        { "name": "length('a b') == 3", "code": "assert length('a b') == 3" }
+      ],
+      "hints": ["The len() function counts the characters of a string."]
+    },
+    {
+      "id": "cap01_e11",
+      "title": "Full name",
+      "prompt": "Write a function `full_name(first, last)` that returns both names joined, separated by a space. E.g.: full_name('Ana', 'Silva') → 'Ana Silva'",
+      "starterCode": "def full_name(first, last):\n    pass\n",
+      "tests": [
+        { "name": "full_name('Ana', 'Silva') == 'Ana Silva'", "code": "assert full_name('Ana', 'Silva') == 'Ana Silva', f\"got {full_name('Ana', 'Silva')!r}\"" },
+        { "name": "full_name('John', 'Souza') == 'John Souza'", "code": "assert full_name('John', 'Souza') == 'John Souza'" }
+      ],
+      "hints": ["Use an f-string: f'{first} {last}'.", "Or concatenate with +: first + ' ' + last."]
+    },
+    {
+      "id": "cap01_e12",
+      "title": "Square of a number",
+      "prompt": "Write a function `square(n)` that returns n squared.",
+      "starterCode": "def square(n):\n    pass\n",
+      "tests": [
+        { "name": "square(4) == 16", "code": "assert square(4) == 16, f'got {square(4)}'" },
+        { "name": "square(-3) == 9", "code": "assert square(-3) == 9" },
+        { "name": "square(0) == 0", "code": "assert square(0) == 0" }
+      ],
+      "hints": ["The ** operator raises to a power: n ** 2."]
+    },
+    {
+      "id": "cap01_e13",
+      "title": "Change",
+      "prompt": "Write a function `change(paid, price)` that returns how much change should be given back.",
+      "starterCode": "def change(paid, price):\n    pass\n",
+      "tests": [
+        { "name": "change(50, 35) == 15", "code": "assert change(50, 35) == 15, f'got {change(50, 35)}'" },
+        { "name": "change(100, 100) == 0", "code": "assert change(100, 100) == 0" },
+        { "name": "change(20.5, 10) == 10.5", "code": "assert change(20.5, 10) == 10.5" }
+      ],
+      "hints": ["The change is the amount paid minus the price (paid - price)."]
+    },
+    {
+      "id": "cap01_e14",
+      "title": "Average of three numbers",
+      "prompt": "Write a function `average3(a, b, c)` that returns the arithmetic mean of the three numbers.",
+      "starterCode": "def average3(a, b, c):\n    pass\n",
+      "tests": [
+        { "name": "average3(3, 6, 9) == 6", "code": "assert average3(3, 6, 9) == 6, f'got {average3(3, 6, 9)}'" },
+        { "name": "average3(0, 0, 0) == 0", "code": "assert average3(0, 0, 0) == 0" },
+        { "name": "average3(10, 20, 30) == 20.0", "code": "assert average3(10, 20, 30) == 20.0" }
+      ],
+      "hints": ["Add the three numbers and divide by 3."]
+    },
+    {
+      "id": "cap01_e15",
+      "title": "Reversed text",
+      "prompt": "Write a function `reverse(text)` that returns the text backwards. E.g.: reverse('python') → 'nohtyp'",
+      "starterCode": "def reverse(text):\n    pass\n",
+      "tests": [
+        { "name": "reverse('python') == 'nohtyp'", "code": "assert reverse('python') == 'nohtyp', f\"got {reverse('python')!r}\"" },
+        { "name": "reverse('level') == 'level'", "code": "assert reverse('level') == 'level'" },
+        { "name": "reverse('') == ''", "code": "assert reverse('') == ''" }
+      ],
+      "hints": ["Slicing with a negative step reverses the string: text[::-1]."]
+    },
+    {
+      "id": "cap01_e16",
+      "title": "Repeat text",
+      "prompt": "Write a function `repeat(text, times)` that returns the text repeated the given number of times. E.g.: repeat('ab', 3) → 'ababab'",
+      "starterCode": "def repeat(text, times):\n    pass\n",
+      "tests": [
+        { "name": "repeat('ab', 3) == 'ababab'", "code": "assert repeat('ab', 3) == 'ababab', f\"got {repeat('ab', 3)!r}\"" },
+        { "name": "repeat('x', 1) == 'x'", "code": "assert repeat('x', 1) == 'x'" },
+        { "name": "repeat('hi', 0) == ''", "code": "assert repeat('hi', 0) == ''" }
+      ],
+      "hints": ["The * operator repeats strings: text * times."]
+    },
+    {
+      "id": "cap01_e17",
+      "title": "Celsius to Fahrenheit",
+      "prompt": "Write a function `celsius_to_fahrenheit(c)` that converts a temperature in Celsius to Fahrenheit. Formula: F = C * 9/5 + 32",
+      "starterCode": "def celsius_to_fahrenheit(c):\n    pass\n",
+      "tests": [
+        { "name": "celsius_to_fahrenheit(0) == 32.0", "code": "assert celsius_to_fahrenheit(0) == 32.0, f'got {celsius_to_fahrenheit(0)}'" },
+        { "name": "celsius_to_fahrenheit(100) == 212.0", "code": "assert celsius_to_fahrenheit(100) == 212.0" },
+        { "name": "celsius_to_fahrenheit(20) == 68.0", "code": "assert celsius_to_fahrenheit(20) == 68.0" }
+      ],
+      "hints": ["Apply the formula directly: c * 9 / 5 + 32."]
+    },
+    {
+      "id": "cap01_e18",
+      "title": "Spaces to hyphens",
+      "prompt": "Write a function `text_with_hyphens(text)` that returns the text with every space replaced by a hyphen. E.g.: text_with_hyphens('a b c') → 'a-b-c'",
+      "starterCode": "def text_with_hyphens(text):\n    pass\n",
+      "tests": [
+        { "name": "text_with_hyphens('a b c') == 'a-b-c'", "code": "assert text_with_hyphens('a b c') == 'a-b-c', f\"got {text_with_hyphens('a b c')!r}\"" },
+        { "name": "text_with_hyphens('hi') == 'hi'", "code": "assert text_with_hyphens('hi') == 'hi'" },
+        { "name": "text_with_hyphens('python is cool') == 'python-is-cool'", "code": "assert text_with_hyphens('python is cool') == 'python-is-cool'" }
+      ],
+      "hints": ["The .replace(' ', '-') method swaps each space for a hyphen."]
+    }
+  ]
+}

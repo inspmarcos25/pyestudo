@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/i18n/app_strings.dart';
+import '../../core/i18n/locale_controller.dart';
 import '../../core/theme/ide_theme.dart';
 import '../../data/models/models.dart';
 
@@ -17,6 +19,7 @@ class LessonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = IdeColors.of(context);
+    final strings = AppStrings.of(LocaleScope.of(context).language);
     return Scaffold(
       appBar: AppBar(title: Text(lesson.title)),
       body: ListView(
@@ -42,7 +45,7 @@ class LessonScreen extends StatelessWidget {
           const SizedBox(height: 16),
           FilledButton.icon(
             icon: const Icon(Icons.edit_outlined),
-            label: const Text('Abrir no editor'),
+            label: Text(strings.openInEditor),
             onPressed: () {
               Navigator.pop(context);
               onOpenExample();

@@ -27,14 +27,14 @@ Future<void> main() async {
   );
 
   final db = await AppDatabase.open();
-  final chapters = await ContentLoader().loadChapters();
+  final chaptersByLanguage = await ContentLoader().loadAllLanguages();
   final prefs = await SharedPreferences.getInstance();
 
   runApp(
     PyEstudoApp(
       runtime: await createRuntime(),
       db: db,
-      chapters: chapters,
+      chaptersByLanguage: chaptersByLanguage,
       prefs: prefs,
       authService: AuthService(),
     ),

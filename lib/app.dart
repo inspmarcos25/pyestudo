@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'app_state.dart';
 import 'core/auth/auth_service.dart';
+import 'core/i18n/app_language.dart';
+import 'core/i18n/app_strings.dart';
+import 'core/i18n/locale_controller.dart';
 import 'core/runtime/pyodide_runtime.dart';
 import 'core/runtime/python_runtime.dart';
 import 'core/theme/ide_theme.dart';
@@ -15,10 +19,10 @@ import 'features/editor/editor_screen.dart';
 import 'features/exercises/exercises_screen.dart';
 import 'features/progress/progress_screen.dart';
 
-class PyEstudoApp extends StatelessWidget {
+class PyEstudoApp extends StatefulWidget {
   final PythonRuntime runtime;
   final Database db;
-  final List<Chapter> chapters;
+  final Map<AppLanguage, List<Chapter>> chaptersByLanguage;
   final SharedPreferences prefs;
   final AuthService authService;
   final FirebaseFirestore? firestore;
@@ -27,25 +31,52 @@ class PyEstudoApp extends StatelessWidget {
     super.key,
     required this.runtime,
     required this.db,
-    required this.chapters,
+    required this.chaptersByLanguage,
     required this.prefs,
     required this.authService,
     this.firestore,
   });
 
   @override
+  State<PyEstudoApp> createState() => _PyEstudoAppState();
+}
+
+class _PyEstudoAppState extends State<PyEstudoApp> {
+  late final LocaleController _locale = LocaleController(widget.prefs);
+
+  @override
+  void dispose() {
+    _locale.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PyEstudo',
-      theme: buildIdeTheme(brightness: Brightness.dark),
-      darkTheme: buildIdeTheme(brightness: Brightness.dark),
-      home: AuthGate(
-        runtime: runtime,
-        db: db,
-        chapters: chapters,
-        prefs: prefs,
-        authService: authService,
-        firestore: firestore,
+    return LocaleScope(
+      controller: _locale,
+      child: ListenableBuilder(
+        listenable: _locale,
+        builder: (context, _) => MaterialApp(
+          title: 'PyEstudo',
+          theme: buildIdeTheme(brightness: Brightness.dark),
+          darkTheme: buildIdeTheme(brightness: Brightness.dark),
+          locale: Locale(_locale.language.code),
+          supportedLocales: const [Locale('pt'), Locale('en')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: AuthGate(
+            runtime: widget.runtime,
+            db: widget.db,
+            chaptersByLanguage: widget.chaptersByLanguage,
+            locale: _locale,
+            prefs: widget.prefs,
+            authService: widget.authService,
+            firestore: widget.firestore,
+          ),
+        ),
       ),
     );
   }
@@ -70,7 +101,9 @@ class _HomeShellState extends State<HomeShell> {
     final runtime = widget.state.runtime;
     return ListenableBuilder(
       listenable: widget.state,
-      builder: (context, _) => Theme(
+      builder: (context, _) {
+        final strings = AppStrings.of(widget.state.language);
+        return Theme(
         data: buildIdeTheme(brightness: widget.state.brightness),
         child: Scaffold(
           body: Stack(
@@ -100,28 +133,29 @@ class _HomeShellState extends State<HomeShell> {
           bottomNavigationBar: NavigationBar(
             selectedIndex: _tab,
             onDestinationSelected: (i) => setState(() => _tab = i),
-            destinations: const [
+            destinations: [
               NavigationDestination(
-                icon: Icon(Icons.code),
-                label: 'Editor',
-                tooltip: 'Editor e console',
+                icon: const Icon(Icons.code),
+                label: strings.editorTab,
+                tooltip: strings.editorTooltip,
               ),
               NavigationDestination(
-                icon: Icon(Icons.school_outlined),
-                selectedIcon: Icon(Icons.school),
-                label: 'Exercícios',
-                tooltip: 'Lições e exercícios',
+                icon: const Icon(Icons.school_outlined),
+                selectedIcon: const Icon(Icons.school),
+                label: strings.exercisesTab,
+                tooltip: strings.exercisesTooltip,
               ),
               NavigationDestination(
-                icon: Icon(Icons.insights_outlined),
-                selectedIcon: Icon(Icons.insights),
-                label: 'Progresso',
-                tooltip: 'Seu progresso',
+                icon: const Icon(Icons.insights_outlined),
+                selectedIcon: const Icon(Icons.insights),
+                label: strings.progressTab,
+                tooltip: strings.progressTooltip,
               ),
             ],
           ),
         ),
-      ),
+      );
+      },
     );
   }
 }

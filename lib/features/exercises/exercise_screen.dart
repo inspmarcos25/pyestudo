@@ -49,6 +49,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     final exercise = widget.exercise;
     final allPassed = _results != null && _results!.every((r) => r.passed);
     final colors = IdeColors.of(context);
+    final strings = widget.state.strings;
     return Scaffold(
       appBar: AppBar(title: Text(exercise.title)),
       body: Column(
@@ -100,7 +101,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                           Icons.celebration,
                           color: colors.successColor,
                         ),
-                        title: const Text('Exercício concluído!'),
+                        title: Text(strings.exerciseComplete),
                       ),
                     for (final r in _results!)
                       ListTile(
@@ -126,7 +127,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   if (_hintsShown < exercise.hints.length)
                     TextButton.icon(
                       icon: const Icon(Icons.lightbulb_outline),
-                      label: const Text('Dica'),
+                      label: Text(strings.hint),
                       onPressed: () => setState(() => _hintsShown++),
                     ),
                   const Spacer(),
@@ -138,7 +139,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.play_arrow),
-                    label: const Text('Verificar'),
+                    label: Text(strings.check),
                     onPressed: _checking ? null : _check,
                   ),
                 ],

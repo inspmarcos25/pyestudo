@@ -57,27 +57,3 @@ class AuthService {
   }
 }
 
-/// Traduz códigos de erro do Firebase Auth para mensagens em PT-BR.
-String authErrorMessage(FirebaseAuthException e) {
-  switch (e.code) {
-    case 'invalid-email':
-      return 'e-mail inválido';
-    case 'user-disabled':
-      return 'esta conta foi desativada';
-    case 'user-not-found':
-      return 'nenhuma conta encontrada com esse e-mail';
-    case 'wrong-password':
-    case 'invalid-credential':
-      return 'senha incorreta';
-    case 'email-already-in-use':
-      return 'já existe uma conta com esse e-mail';
-    case 'weak-password':
-      return 'a senha precisa ter pelo menos 6 caracteres';
-    case 'sign-in-canceled':
-      return 'login cancelado';
-    case 'unauthorized-domain':
-      return 'este domínio não está autorizado para login com Google';
-    default:
-      return 'não foi possível entrar: ${e.message ?? e.code}';
-  }
-}

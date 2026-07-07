@@ -1,0 +1,145 @@
+{
+  "id": "cap03",
+  "title": "Functions and lists",
+  "order": 3,
+  "difficulty": "intermediate",
+  "lessons": [
+    {
+      "id": "cap03_l1",
+      "title": "Functions with default values",
+      "body": "Parameters can have default values, used when the argument is not passed. Parameters with defaults always come after the required ones.",
+      "example": "# 'greeting' has a default value: passing it is optional\ndef greet(name, greeting='Hello'):\n    return f'{greeting}, {name}!'\n\nprint(greet('Ana'))              # uses the default\nprint(greet('Ana', 'Good morning')) # overrides it"
+    },
+    {
+      "id": "cap03_l2",
+      "title": "Lists",
+      "body": "Lists store several values in order. You access them by index (starting at 0), add with `.append()`, and `len()` gives the size.",
+      "example": "grades = [8.5, 7.0, 9.2]\n\nprint(grades[0])     # first item: 8.5\nprint(grades[-1])    # last item: 9.2\n\ngrades.append(6.8)   # adds at the end\nprint(len(grades))   # 4\n\n# sum() adds all items\naverage = sum(grades) / len(grades)\nprint(f'average: {average:.1f}')"
+    },
+    {
+      "id": "cap03_l3",
+      "title": "List comprehension",
+      "body": "A compact way to build lists from other lists: `[expression for item in list if condition]`. It does in one line what a for loop with append would do in three.",
+      "example": "numbers = [1, 2, 3, 4, 5, 6]\n\n# The compact way to transform and filter\ndoubles = [n * 2 for n in numbers]\nprint(doubles)  # [2, 4, 6, 8, 10, 12]\n\nevens = [n for n in numbers if n % 2 == 0]\nprint(evens)    # [2, 4, 6]"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap03_e1",
+      "title": "Class average",
+      "prompt": "Write a function `average(grades)` that takes a list of numbers and returns the mean.",
+      "starterCode": "def average(grades):\n    pass\n",
+      "tests": [
+        { "name": "average([10, 8, 6]) == 8", "code": "assert average([10, 8, 6]) == 8, f'got {average([10, 8, 6])}'" },
+        { "name": "average([5]) == 5", "code": "assert average([5]) == 5" }
+      ],
+      "hints": ["sum(list) adds everything; len(list) gives the count."]
+    },
+    {
+      "id": "cap03_e2",
+      "title": "Filter positives",
+      "prompt": "Write a function `positives(numbers)` that returns a new list with only the numbers greater than zero.",
+      "starterCode": "def positives(numbers):\n    pass\n",
+      "tests": [
+        { "name": "positives([1, -2, 3, 0]) == [1, 3]", "code": "assert positives([1, -2, 3, 0]) == [1, 3], f'got {positives([1, -2, 3, 0])}'" },
+        { "name": "positives([-1, -5]) == []", "code": "assert positives([-1, -5]) == []" }
+      ],
+      "hints": ["A list comprehension with if solves it in one line."]
+    },
+    {
+      "id": "cap03_e3",
+      "title": "Reverse string",
+      "prompt": "Write a function `reverse(text)` that returns the text backwards. E.g.: reverse('hello') → 'olleh'",
+      "starterCode": "def reverse(text):\n    pass\n",
+      "tests": [
+        { "name": "reverse('hello') == 'olleh'", "code": "assert reverse('hello') == 'olleh', f\"got {reverse('hello')!r}\"" },
+        { "name": "reverse('a') == 'a'", "code": "assert reverse('a') == 'a'" },
+        { "name": "reverse('') == ''", "code": "assert reverse('') == ''" }
+      ],
+      "hints": ["The slice text[::-1] goes through the string backwards."]
+    },
+    {
+      "id": "cap03_e4",
+      "title": "Count vowels",
+      "prompt": "Write a function `count_vowels(text)` that returns how many vowels (a, e, i, o, u, lowercase) the text has.",
+      "starterCode": "def count_vowels(text):\n    pass\n",
+      "tests": [
+        { "name": "count_vowels('banana') == 3", "code": "assert count_vowels('banana') == 3, f\"got {count_vowels('banana')}\"" },
+        { "name": "count_vowels('xyz') == 0", "code": "assert count_vowels('xyz') == 0" }
+      ],
+      "hints": ["Go through the text with for and test if letter in 'aeiou'."]
+    },
+    {
+      "id": "cap03_e5",
+      "title": "Largest in the list",
+      "prompt": "Write a function `maximum(numbers)` that returns the largest number in a list, without using max().",
+      "starterCode": "def maximum(numbers):\n    pass\n",
+      "tests": [
+        { "name": "maximum([3, 7, 2]) == 7", "code": "assert maximum([3, 7, 2]) == 7, f'got {maximum([3, 7, 2])}'" },
+        { "name": "maximum([-5, -2, -9]) == -2", "code": "assert maximum([-5, -2, -9]) == -2" },
+        { "name": "does not use max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(maximum), 'solve it with a loop, without max()'" }
+      ],
+      "hints": ["Start by assuming the first item is the largest.", "Go through the list and update when you find a larger value."]
+    },
+    {
+      "id": "cap03_e6",
+      "title": "Sum the list",
+      "prompt": "Write a function `sum_list(numbers)` that returns the sum of all items in a list (return 0 for an empty list).",
+      "starterCode": "def sum_list(numbers):\n    pass\n",
+      "tests": [
+        { "name": "sum_list([1, 2, 3, 4]) == 10", "code": "assert sum_list([1, 2, 3, 4]) == 10, f'got {sum_list([1, 2, 3, 4])}'" },
+        { "name": "sum_list([]) == 0", "code": "assert sum_list([]) == 0" },
+        { "name": "sum_list([5]) == 5", "code": "assert sum_list([5]) == 5" }
+      ],
+      "hints": ["Accumulate with total = total + n in a loop, or use sum(numbers)."]
+    },
+    {
+      "id": "cap03_e7",
+      "title": "Squares",
+      "prompt": "Write a function `squares(numbers)` that returns a new list with the square of each number. E.g.: squares([1, 2, 3]) → [1, 4, 9]",
+      "starterCode": "def squares(numbers):\n    pass\n",
+      "tests": [
+        { "name": "squares([1, 2, 3]) == [1, 4, 9]", "code": "assert squares([1, 2, 3]) == [1, 4, 9], f'got {squares([1, 2, 3])}'" },
+        { "name": "squares([]) == []", "code": "assert squares([]) == []" },
+        { "name": "squares([-2]) == [4]", "code": "assert squares([-2]) == [4]" }
+      ],
+      "hints": ["The list comprehension [n ** 2 for n in numbers] solves it in one line."]
+    },
+    {
+      "id": "cap03_e8",
+      "title": "Count words",
+      "prompt": "Write a function `count_words(sentence)` that returns how many words the sentence has (separated by spaces).",
+      "starterCode": "def count_words(sentence):\n    pass\n",
+      "tests": [
+        { "name": "counts 3 words", "code": "assert count_words('i love python') == 3, f\"got {count_words('i love python')}\"" },
+        { "name": "one word", "code": "assert count_words('python') == 1" },
+        { "name": "empty sentence == 0", "code": "assert count_words('') == 0" }
+      ],
+      "hints": ["The .split() method breaks the sentence into a list of words.", "Watch out for the empty string: len(''.split()) is 0."]
+    },
+    {
+      "id": "cap03_e9",
+      "title": "Remove duplicates",
+      "prompt": "Write a function `without_repeats(items)` that returns a list without duplicate items, keeping the order of first appearance. E.g.: without_repeats([1, 2, 2, 3, 1]) → [1, 2, 3]",
+      "starterCode": "def without_repeats(items):\n    result = []\n    # complete\n    return result\n",
+      "tests": [
+        { "name": "removes duplicates", "code": "assert without_repeats([1, 2, 2, 3, 1]) == [1, 2, 3], f'got {without_repeats([1, 2, 2, 3, 1])}'" },
+        { "name": "already unique list", "code": "assert without_repeats([4, 5, 6]) == [4, 5, 6]" },
+        { "name": "empty list", "code": "assert without_repeats([]) == []" }
+      ],
+      "hints": ["Go through the list and only add the item if it is not already in result.", "Use if item not in result."]
+    },
+    {
+      "id": "cap03_e10",
+      "title": "Is it a palindrome?",
+      "prompt": "Write a function `is_palindrome(text)` that returns True if the text reads the same backwards. E.g.: is_palindrome('level') → True",
+      "starterCode": "def is_palindrome(text):\n    pass\n",
+      "tests": [
+        { "name": "level is a palindrome", "code": "assert is_palindrome('level') == True" },
+        { "name": "python is not", "code": "assert is_palindrome('python') == False" },
+        { "name": "radar is a palindrome", "code": "assert is_palindrome('radar') == True" }
+      ],
+      "hints": ["text[::-1] returns the reversed text.", "Compare the text with its reversed version."]
+    }
+  ]
+}

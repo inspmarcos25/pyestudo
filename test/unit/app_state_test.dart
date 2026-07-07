@@ -1,5 +1,6 @@
 import 'package:app_python/app_state.dart';
 import 'package:app_python/core/auth/auth_service.dart';
+import 'package:app_python/core/i18n/locale_controller.dart';
 import 'package:app_python/core/storage/code_repository.dart';
 import 'package:app_python/core/storage/database.dart';
 import 'package:app_python/core/storage/progress_repository.dart';
@@ -23,12 +24,14 @@ void main() {
   Future<AppState> buildState() async {
     SharedPreferences.setMockInitialValues({});
     final db = await AppDatabase.open(path: inMemoryDatabasePath);
+    final prefs = await SharedPreferences.getInstance();
     return AppState.load(
       runtime: SimulatedPythonRuntime(),
       codeRepository: CodeRepository(db, userId: _testUserId),
       progressRepository: ProgressRepository(db, userId: _testUserId),
-      chapters: const [],
-      prefs: await SharedPreferences.getInstance(),
+      chaptersByLanguage: const {},
+      locale: LocaleController(prefs),
+      prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(
         _testUserId,
@@ -53,12 +56,14 @@ void main() {
   test('tema salvo é restaurado ao recarregar o AppState', () async {
     SharedPreferences.setMockInitialValues({'dark_mode': false});
     final db = await AppDatabase.open(path: inMemoryDatabasePath);
+    final prefs = await SharedPreferences.getInstance();
     final state = await AppState.load(
       runtime: SimulatedPythonRuntime(),
       codeRepository: CodeRepository(db, userId: _testUserId),
       progressRepository: ProgressRepository(db, userId: _testUserId),
-      chapters: const [],
-      prefs: await SharedPreferences.getInstance(),
+      chaptersByLanguage: const {},
+      locale: LocaleController(prefs),
+      prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(
         _testUserId,

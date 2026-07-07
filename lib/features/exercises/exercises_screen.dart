@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../app_state.dart';
+import '../../core/i18n/app_strings.dart';
 import '../../core/theme/duo_theme.dart';
 import '../../data/models/models.dart';
 import '../lessons/lesson_screen.dart';
@@ -30,6 +31,7 @@ class ExercisesScreen extends StatelessWidget {
       listenable: state,
       builder: (context, _) {
         final duo = DuoColors.of(context);
+        final strings = state.strings;
         // Primeiro exercício ainda não resolvido: ganha o balão "COMEÇAR".
         String? nextExerciseId;
         for (final chapter in state.chapters) {
@@ -47,18 +49,20 @@ class ExercisesScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
               children: [
-                _ScreenHeader(streak: state.streak),
+                _ScreenHeader(streak: state.streak, strings: strings),
                 for (final chapter in state.chapters) ...[
                   const SizedBox(height: 20),
                   _UnitBanner(
                     chapter: chapter,
                     progress: state.chapterProgress(chapter),
+                    strings: strings,
                   ),
                   _UnitPath(
                     chapter: chapter,
                     state: state,
                     nextExerciseId: nextExerciseId,
                     onOpenInEditor: onOpenInEditor,
+                    strings: strings,
                   ),
                 ],
               ],
@@ -73,8 +77,9 @@ class ExercisesScreen extends StatelessWidget {
 /// Título da tela + chip de ofensiva (dias seguidos).
 class _ScreenHeader extends StatelessWidget {
   final int streak;
+  final AppStrings strings;
 
-  const _ScreenHeader({required this.streak});
+  const _ScreenHeader({required this.streak, required this.strings});
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +96,7 @@ class _ScreenHeader extends StatelessWidget {
             ),
           ),
           Semantics(
-            label: active
-                ? 'Sequência de $streak dias estudando'
-                : 'Sem sequência ativa hoje',
+            label: strings.streakSemantics(streak),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -131,17 +134,25 @@ class _ScreenHeader extends StatelessWidget {
 class _UnitBanner extends StatelessWidget {
   final Chapter chapter;
   final double progress;
+  final AppStrings strings;
 
-  const _UnitBanner({required this.chapter, required this.progress});
+  const _UnitBanner({
+    required this.chapter,
+    required this.progress,
+    required this.strings,
+  });
 
   @override
   Widget build(BuildContext context) {
     final unit = duoUnitColorFor(chapter.order);
     final percent = (progress * 100).round();
     return Semantics(
-      label:
-          'Capítulo ${chapter.order}: ${chapter.title}, '
-          '${chapter.difficulty}, $percent% concluído',
+      label: strings.chapterSemantics(
+        chapter.order,
+        chapter.title,
+        chapter.difficulty,
+        percent,
+      ),
       child: DuoButton3D(
         color: unit.main,
         shadowColor: unit.shadow,
@@ -156,7 +167,7 @@ class _UnitBanner extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CAPÍTULO ${chapter.order} · '
+                      '${strings.chapterWordUpper} ${chapter.order} · '
                       '${chapter.difficulty.toUpperCase()}',
                       style: DuoText.eyebrow.copyWith(
                         color: Colors.white.withValues(alpha: 0.85),
@@ -230,12 +241,14 @@ class _UnitPath extends StatelessWidget {
   final AppState state;
   final String? nextExerciseId;
   final VoidCallback onOpenInEditor;
+  final AppStrings strings;
 
   const _UnitPath({
     required this.chapter,
     required this.state,
     required this.nextExerciseId,
     required this.onOpenInEditor,
+    required this.strings,
   });
 
   @override
@@ -246,7 +259,7 @@ class _UnitPath extends StatelessWidget {
         _PathEntry(
           icon: Icons.menu_book_rounded,
           title: lesson.title,
-          semantics: 'Lição: ${lesson.title}',
+          semantics: strings.lessonSemantics(lesson.title),
           completedLook: false,
           coloredLook: true,
           isNext: false,
@@ -270,8 +283,8 @@ class _UnitPath extends StatelessWidget {
               : Icons.star_rounded,
           title: exercise.title,
           semantics: state.completed.contains(exercise.id)
-              ? 'Exercício concluído: ${exercise.title}'
-              : 'Exercício: ${exercise.title}',
+              ? strings.exerciseDoneSemantics(exercise.title)
+              : strings.exerciseSemantics(exercise.title),
           completedLook: state.completed.contains(exercise.id),
           coloredLook: exercise.id == nextExerciseId,
           isNext: exercise.id == nextExerciseId,
@@ -293,7 +306,12 @@ class _UnitPath extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < entries.length; i++)
-            _PathNode(entry: entries[i], unit: unit, offset: _dx(i, context)),
+            _PathNode(
+              entry: entries[i],
+              unit: unit,
+              offset: _dx(i, context),
+              strings: strings,
+            ),
         ],
       ),
     );
@@ -311,11 +329,13 @@ class _PathNode extends StatelessWidget {
   final _PathEntry entry;
   final DuoUnitColor unit;
   final double offset;
+  final AppStrings strings;
 
   const _PathNode({
     required this.entry,
     required this.unit,
     required this.offset,
+    required this.strings,
   });
 
   @override
@@ -346,7 +366,8 @@ class _PathNode extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (entry.isNext) _StartBubble(color: unit.main),
+            if (entry.isNext)
+              _StartBubble(color: unit.main, label: strings.startBubble),
             Semantics(
               label: entry.semantics,
               button: true,
@@ -391,8 +412,9 @@ class _PathNode extends StatelessWidget {
 /// Balão "COMEÇAR" flutuando sobre o próximo exercício, com leve quicar.
 class _StartBubble extends StatefulWidget {
   final Color color;
+  final String label;
 
-  const _StartBubble({required this.color});
+  const _StartBubble({required this.color, required this.label});
 
   @override
   State<_StartBubble> createState() => _StartBubbleState();
@@ -444,7 +466,7 @@ class _StartBubbleState extends State<_StartBubble>
                 border: Border.all(color: duo.border, width: 2),
               ),
               child: Text(
-                'COMEÇAR',
+                widget.label,
                 style: DuoText.eyebrow.copyWith(color: widget.color),
               ),
             ),

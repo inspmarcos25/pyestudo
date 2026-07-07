@@ -1,0 +1,148 @@
+{
+  "id": "cap02",
+  "title": "Control flow",
+  "order": 2,
+  "difficulty": "beginner",
+  "lessons": [
+    {
+      "id": "cap02_l1",
+      "title": "if, elif and else",
+      "body": "Conditions let the program make decisions. The block only runs if the condition is true. Indentation (4 spaces) defines what is inside the block.",
+      "example": "grade = 7.5\n\n# The program checks the conditions from top to bottom\nif grade >= 9:\n    print('Excellent!')\nelif grade >= 6:\n    print('Passed')\nelse:\n    print('Failed')"
+    },
+    {
+      "id": "cap02_l2",
+      "title": "for loop",
+      "body": "The `for` loop repeats a block for each item of a sequence. `range(n)` generates the numbers from 0 to n-1, often used to repeat n times.",
+      "example": "# Repeats 5 times: i is 0, 1, 2, 3, 4\nfor i in range(5):\n    print(f'lap {i}')\n\n# It also goes through lists directly\nfruits = ['apple', 'banana', 'grape']\nfor fruit in fruits:\n    print(fruit)"
+    },
+    {
+      "id": "cap02_l3",
+      "title": "while loop",
+      "body": "The `while` loop repeats as long as the condition is true. Be careful: if the condition never becomes false, the loop runs forever (the app stops it after 10 seconds).",
+      "example": "counter = 3\n\n# Repeats while counter is greater than zero\nwhile counter > 0:\n    print(counter)\n    counter = counter - 1  # without this line, it would loop forever\n\nprint('Done!')"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap02_e1",
+      "title": "Even or odd",
+      "prompt": "Write a function `even_or_odd(n)` that returns 'even' if n is even and 'odd' if it is odd.",
+      "starterCode": "def even_or_odd(n):\n    pass\n",
+      "tests": [
+        { "name": "even_or_odd(4) == 'even'", "code": "assert even_or_odd(4) == 'even', f'got {even_or_odd(4)!r}'" },
+        { "name": "even_or_odd(7) == 'odd'", "code": "assert even_or_odd(7) == 'odd', f'got {even_or_odd(7)!r}'" },
+        { "name": "even_or_odd(0) == 'even'", "code": "assert even_or_odd(0) == 'even'" }
+      ],
+      "hints": ["A number is even when n % 2 == 0."]
+    },
+    {
+      "id": "cap02_e2",
+      "title": "Larger of two",
+      "prompt": "Write a function `larger(a, b)` that returns the larger of the two numbers (without using max()).",
+      "starterCode": "def larger(a, b):\n    pass\n",
+      "tests": [
+        { "name": "larger(3, 8) == 8", "code": "assert larger(3, 8) == 8" },
+        { "name": "larger(10, 2) == 10", "code": "assert larger(10, 2) == 10" },
+        { "name": "does not use max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(larger), 'use if/else instead of max()'" }
+      ],
+      "hints": ["Compare with if a > b and return the right value in each branch."]
+    },
+    {
+      "id": "cap02_e3",
+      "title": "Sum from 1 to n",
+      "prompt": "Write a function `sum_to(n)` that returns the sum of all integers from 1 to n using a for loop.",
+      "starterCode": "def sum_to(n):\n    total = 0\n    # complete with a for loop\n    return total\n",
+      "tests": [
+        { "name": "sum_to(5) == 15", "code": "assert sum_to(5) == 15, f'got {sum_to(5)}'" },
+        { "name": "sum_to(1) == 1", "code": "assert sum_to(1) == 1" },
+        { "name": "sum_to(100) == 5050", "code": "assert sum_to(100) == 5050" }
+      ],
+      "hints": ["range(1, n + 1) generates the numbers from 1 to n.", "Accumulate with total = total + i inside the loop."]
+    },
+    {
+      "id": "cap02_e4",
+      "title": "Countdown",
+      "prompt": "Write a function `countdown(n)` that returns a list counting down from n to 1. E.g.: countdown(3) → [3, 2, 1]",
+      "starterCode": "def countdown(n):\n    result = []\n    # complete with a loop\n    return result\n",
+      "tests": [
+        { "name": "countdown(3) == [3, 2, 1]", "code": "assert countdown(3) == [3, 2, 1], f'got {countdown(3)}'" },
+        { "name": "countdown(1) == [1]", "code": "assert countdown(1) == [1]" }
+      ],
+      "hints": ["range(n, 0, -1) counts from n down to 1.", "Use result.append(i) to add to the list."]
+    },
+    {
+      "id": "cap02_e5",
+      "title": "Sign of the number",
+      "prompt": "Write a function `sign(n)` that returns 'positive' if n > 0, 'negative' if n < 0 and 'zero' if n == 0.",
+      "starterCode": "def sign(n):\n    pass\n",
+      "tests": [
+        { "name": "sign(5) == 'positive'", "code": "assert sign(5) == 'positive', f'got {sign(5)!r}'" },
+        { "name": "sign(-3) == 'negative'", "code": "assert sign(-3) == 'negative'" },
+        { "name": "sign(0) == 'zero'", "code": "assert sign(0) == 'zero'" }
+      ],
+      "hints": ["Use if, elif and else for the three cases."]
+    },
+    {
+      "id": "cap02_e6",
+      "title": "Larger of three",
+      "prompt": "Write a function `larger3(a, b, c)` that returns the largest of the three numbers.",
+      "starterCode": "def larger3(a, b, c):\n    pass\n",
+      "tests": [
+        { "name": "larger3(1, 2, 3) == 3", "code": "assert larger3(1, 2, 3) == 3" },
+        { "name": "larger3(9, 4, 7) == 9", "code": "assert larger3(9, 4, 7) == 9" },
+        { "name": "larger3(5, 8, 2) == 8", "code": "assert larger3(5, 8, 2) == 8" }
+      ],
+      "hints": ["You can use max(a, b, c) or compare them two at a time with if."]
+    },
+    {
+      "id": "cap02_e7",
+      "title": "Factorial",
+      "prompt": "Write a function `factorial(n)` that returns n! (the product from 1 to n). Consider factorial(0) == 1.",
+      "starterCode": "def factorial(n):\n    result = 1\n    # complete with a loop\n    return result\n",
+      "tests": [
+        { "name": "factorial(5) == 120", "code": "assert factorial(5) == 120, f'got {factorial(5)}'" },
+        { "name": "factorial(0) == 1", "code": "assert factorial(0) == 1" },
+        { "name": "factorial(1) == 1", "code": "assert factorial(1) == 1" }
+      ],
+      "hints": ["Multiply result by each i in range(1, n + 1)."]
+    },
+    {
+      "id": "cap02_e8",
+      "title": "Count evens",
+      "prompt": "Write a function `count_evens(n)` that returns how many even numbers there are from 1 to n (inclusive).",
+      "starterCode": "def count_evens(n):\n    pass\n",
+      "tests": [
+        { "name": "count_evens(10) == 5", "code": "assert count_evens(10) == 5, f'got {count_evens(10)}'" },
+        { "name": "count_evens(1) == 0", "code": "assert count_evens(1) == 0" },
+        { "name": "count_evens(7) == 3", "code": "assert count_evens(7) == 3" }
+      ],
+      "hints": ["Go through range(1, n + 1) and count when i % 2 == 0."]
+    },
+    {
+      "id": "cap02_e9",
+      "title": "Times table",
+      "prompt": "Write a function `times_table(n)` that returns a list with the first 10 multiples of n (from n*1 to n*10). E.g.: times_table(3) → [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]",
+      "starterCode": "def times_table(n):\n    result = []\n    # complete with a loop\n    return result\n",
+      "tests": [
+        { "name": "times_table(3)[0] == 3", "code": "assert times_table(3)[0] == 3" },
+        { "name": "times_table(3) has 10 items", "code": "assert len(times_table(3)) == 10, f'got {len(times_table(3))} items'" },
+        { "name": "times_table(5)[-1] == 50", "code": "assert times_table(5)[-1] == 50, f'got {times_table(5)[-1]}'" }
+      ],
+      "hints": ["For i in range(1, 11), add n * i to the list."]
+    },
+    {
+      "id": "cap02_e10",
+      "title": "Is it prime?",
+      "prompt": "Write a function `is_prime(n)` that returns True if n is prime and False otherwise. Remember: 1 is not prime.",
+      "starterCode": "def is_prime(n):\n    pass\n",
+      "tests": [
+        { "name": "is_prime(7) is True", "code": "assert is_prime(7) == True" },
+        { "name": "is_prime(10) is False", "code": "assert is_prime(10) == False" },
+        { "name": "is_prime(1) is False", "code": "assert is_prime(1) == False" },
+        { "name": "is_prime(2) is True", "code": "assert is_prime(2) == True" }
+      ],
+      "hints": ["A prime is only divisible by 1 and by itself.", "Test the divisors from 2 to n-1: if any divides n (n % d == 0), it is not prime."]
+    }
+  ]
+}

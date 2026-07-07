@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:highlight/languages/python.dart';
 
+import '../../core/i18n/app_strings.dart';
+import '../../core/i18n/locale_controller.dart';
 import '../../core/theme/editor_syntax_theme.dart';
 import '../../core/theme/ide_theme.dart';
 
@@ -59,7 +61,9 @@ class CodeEditorWidgetState extends State<CodeEditorWidget> {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Editor de código Python',
+      label: AppStrings.of(
+        LocaleScope.languageOf(context),
+      ).codeEditorSemantics,
       textField: true,
       child: CodeTheme(
         data: CodeThemeData(

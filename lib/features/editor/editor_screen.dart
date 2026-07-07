@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_state.dart';
 import '../../core/theme/ide_theme.dart';
 import '../console/console_panel.dart';
+import '../settings/language_selector.dart';
 import 'code_editor_widget.dart';
 
 /// Tela principal estilo IDE: toolbar, editor, console inferior e gaveta
@@ -26,24 +27,25 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<void> _newFile() async {
-    final controller = TextEditingController(text: 'novo.py');
+    final strings = state.strings;
+    final controller = TextEditingController(text: strings.newFileDefaultName);
     final name = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Novo arquivo'),
+        title: Text(strings.newFile),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(labelText: 'Nome do arquivo'),
+          decoration: InputDecoration(labelText: strings.fileNameLabel),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(strings.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: const Text('Criar'),
+            child: Text(strings.create),
           ),
         ],
       ),
@@ -57,24 +59,25 @@ class _EditorScreenState extends State<EditorScreen> {
     final base = oldName.endsWith('.py')
         ? oldName.substring(0, oldName.length - 3)
         : oldName;
+    final strings = state.strings;
     final controller = TextEditingController(text: base);
     final newName = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Renomear arquivo'),
+        title: Text(strings.renameFile),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(labelText: 'Novo nome'),
+          decoration: InputDecoration(labelText: strings.newNameLabel),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(strings.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
-            child: const Text('Renomear'),
+            child: Text(strings.rename),
           ),
         ],
       ),
@@ -93,22 +96,23 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<void> _deleteFile(String name) async {
+    final strings = state.strings;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar arquivo?'),
-        content: Text('"$name" será apagado permanentemente.'),
+        title: Text(strings.deleteFileTitle),
+        content: Text(strings.deleteFileBody(name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar'),
+            child: Text(strings.cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Apagar'),
+            child: Text(strings.delete),
           ),
         ],
       ),
@@ -123,6 +127,7 @@ class _EditorScreenState extends State<EditorScreen> {
     return ListenableBuilder(
       listenable: state,
       builder: (context, _) {
+        final strings = state.strings;
         return Scaffold(
           appBar: AppBar(
             title: Text(
@@ -130,10 +135,11 @@ class _EditorScreenState extends State<EditorScreen> {
               style: const TextStyle(fontSize: 16),
             ),
             actions: [
+              const LanguageSelector(),
               IconButton(
                 tooltip: state.brightness == Brightness.dark
-                    ? 'Tema claro'
-                    : 'Tema escuro',
+                    ? strings.lightTheme
+                    : strings.darkTheme,
                 icon: Icon(
                   state.brightness == Brightness.dark
                       ? Icons.light_mode_outlined
@@ -142,12 +148,12 @@ class _EditorScreenState extends State<EditorScreen> {
                 onPressed: state.toggleBrightness,
               ),
               IconButton(
-                tooltip: 'Salvar arquivo',
+                tooltip: strings.saveFile,
                 icon: const Icon(Icons.save_outlined),
                 onPressed: state.saveCurrentFile,
               ),
               IconButton(
-                tooltip: 'Executar código',
+                tooltip: strings.runCode,
                 icon: state.isRunning
                     ? const SizedBox(
                         width: 20,
@@ -161,7 +167,7 @@ class _EditorScreenState extends State<EditorScreen> {
                 onPressed: state.isRunning ? null : _run,
               ),
               IconButton(
-                tooltip: 'Sair da conta',
+                tooltip: strings.signOut,
                 icon: const Icon(Icons.logout),
                 onPressed: () => state.signOut(),
               ),
@@ -219,13 +225,14 @@ class _FileDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = state.strings;
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
             ListTile(
               leading: const Icon(Icons.note_add_outlined),
-              title: const Text('Novo arquivo'),
+              title: Text(strings.newFile),
               onTap: () {
                 Navigator.pop(context);
                 onNewFile();
@@ -238,7 +245,7 @@ class _FileDrawer extends StatelessWidget {
                 builder: (context, snapshot) {
                   final files = snapshot.data ?? [];
                   if (files.isEmpty) {
-                    return const Center(child: Text('Nenhum arquivo salvo'));
+                    return Center(child: Text(strings.noSavedFiles));
                   }
                   return ListView(
                     children: [
@@ -252,24 +259,24 @@ class _FileDrawer extends StatelessWidget {
                             state.openFile(f.name);
                           },
                           trailing: PopupMenuButton<String>(
-                            tooltip: 'Mais opções',
+                            tooltip: strings.moreOptions,
                             onSelected: (action) {
                               if (action == 'rename') onRename(f.name);
                               if (action == 'delete') onDelete(f.name);
                             },
-                            itemBuilder: (context) => const [
+                            itemBuilder: (context) => [
                               PopupMenuItem(
                                 value: 'rename',
                                 child: ListTile(
-                                  leading: Icon(Icons.edit_outlined),
-                                  title: Text('Renomear'),
+                                  leading: const Icon(Icons.edit_outlined),
+                                  title: Text(strings.rename),
                                 ),
                               ),
                               PopupMenuItem(
                                 value: 'delete',
                                 child: ListTile(
-                                  leading: Icon(Icons.delete_outline),
-                                  title: Text('Apagar'),
+                                  leading: const Icon(Icons.delete_outline),
+                                  title: Text(strings.delete),
                                 ),
                               ),
                             ],

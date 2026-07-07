@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/i18n/app_strings.dart';
+import '../../core/i18n/locale_controller.dart';
 import '../../core/runtime/execution_result.dart';
 import '../../core/theme/ide_theme.dart';
 
@@ -71,6 +73,7 @@ class _ConsolePanelState extends State<ConsolePanel> {
     final result = widget.result;
     final error = result?.error;
     final colors = IdeColors.of(context);
+    final strings = AppStrings.of(LocaleScope.languageOf(context));
     return Container(
       color: colors.consoleBackground,
       child: Column(
@@ -87,7 +90,7 @@ class _ConsolePanelState extends State<ConsolePanel> {
                 const Spacer(),
                 if (widget.isRunning)
                   IconButton(
-                    tooltip: 'Parar execução',
+                    tooltip: strings.stopExecution,
                     icon: const Icon(Icons.stop_circle_outlined),
                     onPressed: widget.onStop,
                   ),
@@ -140,14 +143,14 @@ class _ConsolePanelState extends State<ConsolePanel> {
                   children: [
                     SelectableText(
                       widget.isRunning
-                          ? '${result?.stdout ?? ''}Executando...'
+                          ? '${result?.stdout ?? ''}${strings.running}'
                           : (result?.stdout.isNotEmpty ?? false)
                           ? result!.stdout
                           : (result == null
-                                ? 'Toque em ▶ para executar o código.'
+                                ? strings.consoleEmptyHint
                                 : _awaitingInput
                                 ? ''
-                                : '(sem saída)'),
+                                : strings.noOutput),
                       style: codeTextStyle.copyWith(
                         color: colors.consoleText,
                         fontSize: 14,
@@ -155,7 +158,7 @@ class _ConsolePanelState extends State<ConsolePanel> {
                     ),
                     if (_awaitingInput)
                       Semantics(
-                        label: 'Resposta do input, digite e confirme',
+                        label: strings.inputSemantics,
                         textField: true,
                         child: Row(
                           children: [
@@ -174,15 +177,15 @@ class _ConsolePanelState extends State<ConsolePanel> {
                                   fontSize: 14,
                                 ),
                                 cursorColor: colors.successColor,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   isDense: true,
                                   border: InputBorder.none,
-                                  hintText: 'digite a resposta e Enter…',
+                                  hintText: strings.inputHint,
                                 ),
                               ),
                             ),
                             IconButton(
-                              tooltip: 'Enviar resposta',
+                              tooltip: strings.sendAnswer,
                               icon: Icon(
                                 Icons.keyboard_return,
                                 size: 20,

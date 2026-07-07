@@ -7,6 +7,8 @@ import 'package:sqflite/sqflite.dart';
 import '../../app.dart';
 import '../../app_state.dart';
 import '../../core/auth/auth_service.dart';
+import '../../core/i18n/app_language.dart';
+import '../../core/i18n/locale_controller.dart';
 import '../../core/runtime/python_runtime.dart';
 import '../../core/storage/code_repository.dart';
 import '../../core/storage/progress_repository.dart';
@@ -24,7 +26,8 @@ import 'login_screen.dart';
 class AuthGate extends StatefulWidget {
   final PythonRuntime runtime;
   final Database db;
-  final List<Chapter> chapters;
+  final Map<AppLanguage, List<Chapter>> chaptersByLanguage;
+  final LocaleController locale;
   final SharedPreferences prefs;
   final AuthService authService;
 
@@ -36,7 +39,8 @@ class AuthGate extends StatefulWidget {
     super.key,
     required this.runtime,
     required this.db,
-    required this.chapters,
+    required this.chaptersByLanguage,
+    required this.locale,
     required this.prefs,
     required this.authService,
     this.firestore,
@@ -66,7 +70,8 @@ class _AuthGateState extends State<AuthGate> {
       runtime: widget.runtime,
       codeRepository: codeRepository,
       progressRepository: progressRepository,
-      chapters: widget.chapters,
+      chaptersByLanguage: widget.chaptersByLanguage,
+      locale: widget.locale,
       prefs: widget.prefs,
       authService: widget.authService,
       syncService: syncService,

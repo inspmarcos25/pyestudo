@@ -1,0 +1,61 @@
+{
+  "id": "cap04",
+  "title": "Libraries: numpy and pandas",
+  "order": 4,
+  "difficulty": "intermediate",
+  "lessons": [
+    {
+      "id": "cap04_l1",
+      "title": "numpy: arrays and calculations",
+      "body": "numpy (imported as `np`) works with numeric arrays and runs fast calculations over all elements at once. It comes preinstalled in the app — just import it. Tap 'Open in editor' and run it.",
+      "example": "import numpy as np\n\n# An array is like a list optimized for numbers\ngrades = np.array([7.5, 8.0, 6.5, 9.0, 10.0])\n\nprint('mean:', np.mean(grades))\nprint('max:', np.max(grades))\nprint('standard deviation:', round(np.std(grades), 2))\n\n# Operations apply to every item at once\nprint('times 10:', grades * 10)"
+    },
+    {
+      "id": "cap04_l2",
+      "title": "pandas: tables (DataFrame)",
+      "body": "pandas (imported as `pd`) organizes data into tables called DataFrames, with named columns. It is the most used library for data analysis in Python. It also comes preinstalled.",
+      "example": "import pandas as pd\n\n# A DataFrame is a table: each key becomes a column\ndata = {\n    'product': ['Pen', 'Notebook', 'Backpack'],\n    'price': [2.50, 15.00, 90.00],\n    'stock': [100, 40, 12],\n}\ndf = pd.DataFrame(data)\nprint(df)\n\n# Select a column and summarize it\nprint('\\naverage price:', df['price'].mean())\nprint('total in stock:', df['stock'].sum())"
+    },
+    {
+      "id": "cap04_l3",
+      "title": "Filtering data with pandas",
+      "body": "You can filter rows of a DataFrame with a condition, like you would with a 'WHERE' in a database. The result is a new table with only the rows that pass the test.",
+      "example": "import pandas as pd\n\ndf = pd.DataFrame({\n    'name': ['Ana', 'Bruno', 'Carla', 'Davi'],\n    'age': [23, 35, 19, 41],\n})\n\n# Only people aged 30 or older\nadults = df[df['age'] >= 30]\nprint(adults)\n\n# Sort by age (highest to lowest)\nprint('\\nBy age:')\nprint(df.sort_values('age', ascending=False))"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap04_e1",
+      "title": "Mean with numpy",
+      "prompt": "Use numpy to write a function `mean_np(numbers)` that returns the mean of a list of numbers using np.mean.",
+      "starterCode": "import numpy as np\n\ndef mean_np(numbers):\n    pass\n",
+      "tests": [
+        { "name": "mean_np([2, 4, 6]) == 4", "code": "assert mean_np([2, 4, 6]) == 4, f'got {mean_np([2, 4, 6])}'" },
+        { "name": "mean_np([10, 20]) == 15", "code": "assert mean_np([10, 20]) == 15" }
+      ],
+      "hints": ["np.mean(numbers) computes the mean.", "Return float(np.mean(numbers)) to compare with plain numbers."]
+    },
+    {
+      "id": "cap04_e2",
+      "title": "Array sum",
+      "prompt": "Write a function `sum_array(numbers)` that creates an np.array from the list and returns the sum of all elements (as an int).",
+      "starterCode": "import numpy as np\n\ndef sum_array(numbers):\n    pass\n",
+      "tests": [
+        { "name": "sum_array([1, 2, 3, 4]) == 10", "code": "assert sum_array([1, 2, 3, 4]) == 10, f'got {sum_array([1, 2, 3, 4])}'" },
+        { "name": "sum_array([]) == 0", "code": "assert sum_array([]) == 0" }
+      ],
+      "hints": ["np.array(numbers).sum() sums the array.", "Wrap it with int(...) to return a plain integer."]
+    },
+    {
+      "id": "cap04_e3",
+      "title": "Column of a DataFrame",
+      "prompt": "Write a function `prices(data)` that takes a dictionary with the keys 'product' and 'price', creates a DataFrame and returns the sum of the 'price' column (as a float).",
+      "starterCode": "import pandas as pd\n\ndef prices(data):\n    pass\n",
+      "tests": [
+        { "name": "sum of prices", "code": "assert prices({'product': ['A', 'B'], 'price': [10.0, 5.0]}) == 15.0, 'expected 15.0'" },
+        { "name": "one product", "code": "assert prices({'product': ['X'], 'price': [7.5]}) == 7.5" }
+      ],
+      "hints": ["Create the DataFrame with pd.DataFrame(data).", "df['price'].sum() sums the column; use float(...) on the result."]
+    }
+  ]
+}

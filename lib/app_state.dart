@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/auth/auth_service.dart';
+import 'core/i18n/app_language.dart';
+import 'core/i18n/app_strings.dart';
+import 'core/i18n/locale_controller.dart';
 import 'core/progress/streak.dart';
 import 'core/runtime/exercise_checker.dart';
 import 'core/runtime/execution_result.dart';
@@ -18,7 +21,14 @@ class AppState extends ChangeNotifier {
   final PythonRuntime runtime;
   final CodeRepository codeRepository;
   final ProgressRepository progressRepository;
-  final List<Chapter> chapters;
+
+  /// Conteúdo dos capítulos por idioma. O getter [chapters] devolve o do
+  /// idioma escolhido no momento.
+  final Map<AppLanguage, List<Chapter>> chaptersByLanguage;
+
+  /// Idioma escolhido (compartilhado com o resto da árvore via LocaleScope).
+  final LocaleController locale;
+
   final SharedPreferences prefs;
   final AuthService authService;
   final FirestoreSyncService syncService;
@@ -28,13 +38,17 @@ class AppState extends ChangeNotifier {
   static const _lastFileKey = 'last_file';
   static const _darkModeKey = 'dark_mode';
   static const defaultFileName = 'principal.py';
-  static const defaultCode =
-      "# Escreva seu código Python aqui\n"
-      "print('Olá, mundo!')\n";
 
   String currentFileName;
   String currentCode;
   Brightness brightness;
+
+  /// Idioma atual e textos da interface no idioma atual.
+  AppLanguage get language => locale.language;
+  AppStrings get strings => AppStrings.of(language);
+
+  /// Capítulos do idioma atual (lista vazia se não houver conteúdo carregado).
+  List<Chapter> get chapters => chaptersByLanguage[language] ?? const [];
 
   /// Respostas já dadas aos input() da execução atual (uma por linha).
   String _stdinBuffer = '';
@@ -49,7 +63,8 @@ class AppState extends ChangeNotifier {
     required this.runtime,
     required this.codeRepository,
     required this.progressRepository,
-    required this.chapters,
+    required this.chaptersByLanguage,
+    required this.locale,
     required this.prefs,
     required this.authService,
     required this.syncService,
@@ -58,7 +73,17 @@ class AppState extends ChangeNotifier {
     required this.completed,
     this.completionDays = const [],
     this.brightness = Brightness.dark,
-  });
+  }) {
+    // Ao trocar o idioma, os capítulos e textos mudam: reemite para que as
+    // telas que ouvem o AppState se reconstruam.
+    locale.addListener(notifyListeners);
+  }
+
+  @override
+  void dispose() {
+    locale.removeListener(notifyListeners);
+    super.dispose();
+  }
 
   /// Restaura último arquivo, tema e progresso salvos (já filtrado pela
   /// conta logada, via `codeRepository`/`progressRepository.userId`).
@@ -66,7 +91,8 @@ class AppState extends ChangeNotifier {
     required PythonRuntime runtime,
     required CodeRepository codeRepository,
     required ProgressRepository progressRepository,
-    required List<Chapter> chapters,
+    required Map<AppLanguage, List<Chapter>> chaptersByLanguage,
+    required LocaleController locale,
     required SharedPreferences prefs,
     required AuthService authService,
     required FirestoreSyncService syncService,
@@ -78,11 +104,13 @@ class AppState extends ChangeNotifier {
     // Escuro é o padrão (estilo IDE clássico); só vira claro se o aluno
     // já tiver escolhido isso antes.
     final isDark = prefs.getBool(_darkModeKey) ?? true;
+    final defaultCode = AppStrings.of(locale.language).defaultCode;
     return AppState(
       runtime: runtime,
       codeRepository: codeRepository,
       progressRepository: progressRepository,
-      chapters: chapters,
+      chaptersByLanguage: chaptersByLanguage,
+      locale: locale,
       prefs: prefs,
       authService: authService,
       syncService: syncService,
@@ -168,7 +196,7 @@ class AppState extends ChangeNotifier {
     if (currentFileName == name) {
       final fallback = await codeRepository.load(defaultFileName);
       currentFileName = defaultFileName;
-      currentCode = fallback?.code ?? defaultCode;
+      currentCode = fallback?.code ?? strings.defaultCode;
       lastResult = null;
       await prefs.setString(_lastFileKey, defaultFileName);
     }
@@ -234,7 +262,7 @@ class AppState extends ChangeNotifier {
         stdout: '',
         error: PyError(
           type: 'RuntimeError',
-          message: 'não foi possível executar: $e',
+          message: strings.runFailed(e),
           traceback: '',
         ),
       );
@@ -260,9 +288,9 @@ class AppState extends ChangeNotifier {
     } catch (e) {
       results = [
         TestResult(
-          name: 'Execução',
+          name: strings.executionLabel,
           passed: false,
-          message: 'não foi possível verificar: $e',
+          message: strings.checkFailed(e),
         ),
       ];
     }
