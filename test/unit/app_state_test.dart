@@ -6,6 +6,7 @@ import 'package:app_python/core/storage/database.dart';
 import 'package:app_python/core/storage/progress_repository.dart';
 import 'package:app_python/core/runtime/simulated_python_runtime.dart';
 import 'package:app_python/core/sync/firestore_sync_service.dart';
+import 'package:app_python/core/theme/brightness_controller.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ void main() {
       progressRepository: ProgressRepository(db, userId: _testUserId),
       chaptersByLanguage: const {},
       locale: LocaleController(prefs),
+      brightnessController: BrightnessController(prefs),
       prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(
@@ -63,6 +65,7 @@ void main() {
       progressRepository: ProgressRepository(db, userId: _testUserId),
       chaptersByLanguage: const {},
       locale: LocaleController(prefs),
+      brightnessController: BrightnessController(prefs),
       prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(

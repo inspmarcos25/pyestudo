@@ -10,6 +10,7 @@ import '../../core/auth/auth_service.dart';
 import '../../core/i18n/app_language.dart';
 import '../../core/i18n/locale_controller.dart';
 import '../../core/runtime/python_runtime.dart';
+import '../../core/theme/brightness_controller.dart';
 import '../../core/storage/code_repository.dart';
 import '../../core/storage/progress_repository.dart';
 import '../../core/sync/firestore_sync_service.dart';
@@ -28,6 +29,7 @@ class AuthGate extends StatefulWidget {
   final Database db;
   final Map<AppLanguage, List<Chapter>> chaptersByLanguage;
   final LocaleController locale;
+  final BrightnessController brightnessController;
   final SharedPreferences prefs;
   final AuthService authService;
 
@@ -41,6 +43,7 @@ class AuthGate extends StatefulWidget {
     required this.db,
     required this.chaptersByLanguage,
     required this.locale,
+    required this.brightnessController,
     required this.prefs,
     required this.authService,
     this.firestore,
@@ -72,6 +75,7 @@ class _AuthGateState extends State<AuthGate> {
       progressRepository: progressRepository,
       chaptersByLanguage: widget.chaptersByLanguage,
       locale: widget.locale,
+      brightnessController: widget.brightnessController,
       prefs: widget.prefs,
       authService: widget.authService,
       syncService: syncService,

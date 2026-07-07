@@ -14,6 +14,7 @@ import 'core/runtime/python_runtime.dart';
 import 'core/storage/code_repository.dart';
 import 'core/storage/progress_repository.dart';
 import 'core/sync/firestore_sync_service.dart';
+import 'core/theme/brightness_controller.dart';
 import 'data/models/models.dart';
 
 /// Estado global do app (injetado via ListenableBuilder/InheritedNotifier).
@@ -29,6 +30,11 @@ class AppState extends ChangeNotifier {
   /// Idioma escolhido (compartilhado com o resto da árvore via LocaleScope).
   final LocaleController locale;
 
+  /// Preferência de tema, compartilhada com o MaterialApp (ver
+  /// [BrightnessController] — precisa viver acima do HomeShell para que
+  /// rotas empurradas via Navigator.push também sigam o tema escolhido).
+  final BrightnessController brightnessController;
+
   final SharedPreferences prefs;
   final AuthService authService;
   final FirestoreSyncService syncService;
@@ -36,12 +42,12 @@ class AppState extends ChangeNotifier {
   late final ExerciseChecker checker = ExerciseChecker(runtime);
 
   static const _lastFileKey = 'last_file';
-  static const _darkModeKey = 'dark_mode';
   static const defaultFileName = 'principal.py';
 
   String currentFileName;
   String currentCode;
-  Brightness brightness;
+
+  Brightness get brightness => brightnessController.brightness;
 
   /// Idioma atual e textos da interface no idioma atual.
   AppLanguage get language => locale.language;
@@ -65,6 +71,7 @@ class AppState extends ChangeNotifier {
     required this.progressRepository,
     required this.chaptersByLanguage,
     required this.locale,
+    required this.brightnessController,
     required this.prefs,
     required this.authService,
     required this.syncService,
@@ -72,16 +79,17 @@ class AppState extends ChangeNotifier {
     required this.currentCode,
     required this.completed,
     this.completionDays = const [],
-    this.brightness = Brightness.dark,
   }) {
-    // Ao trocar o idioma, os capítulos e textos mudam: reemite para que as
-    // telas que ouvem o AppState se reconstruam.
+    // Ao trocar o idioma ou o tema, reemite para que as telas que ouvem o
+    // AppState se reconstruam.
     locale.addListener(notifyListeners);
+    brightnessController.addListener(notifyListeners);
   }
 
   @override
   void dispose() {
     locale.removeListener(notifyListeners);
+    brightnessController.removeListener(notifyListeners);
     super.dispose();
   }
 
@@ -93,6 +101,7 @@ class AppState extends ChangeNotifier {
     required ProgressRepository progressRepository,
     required Map<AppLanguage, List<Chapter>> chaptersByLanguage,
     required LocaleController locale,
+    required BrightnessController brightnessController,
     required SharedPreferences prefs,
     required AuthService authService,
     required FirestoreSyncService syncService,
@@ -101,9 +110,6 @@ class AppState extends ChangeNotifier {
     final snippet = await codeRepository.load(lastFile);
     final completed = await progressRepository.completedExercises();
     final completionDays = await progressRepository.completionDates();
-    // Escuro é o padrão (estilo IDE clássico); só vira claro se o aluno
-    // já tiver escolhido isso antes.
-    final isDark = prefs.getBool(_darkModeKey) ?? true;
     final defaultCode = AppStrings.of(locale.language).defaultCode;
     return AppState(
       runtime: runtime,
@@ -111,6 +117,7 @@ class AppState extends ChangeNotifier {
       progressRepository: progressRepository,
       chaptersByLanguage: chaptersByLanguage,
       locale: locale,
+      brightnessController: brightnessController,
       prefs: prefs,
       authService: authService,
       syncService: syncService,
@@ -118,7 +125,6 @@ class AppState extends ChangeNotifier {
       currentCode: snippet?.code ?? defaultCode,
       completed: completed,
       completionDays: completionDays,
-      brightness: isDark ? Brightness.dark : Brightness.light,
     );
   }
 
@@ -137,13 +143,7 @@ class AppState extends ChangeNotifier {
 
   Future<void> signOut() => authService.signOut();
 
-  Future<void> toggleBrightness() async {
-    brightness = brightness == Brightness.dark
-        ? Brightness.light
-        : Brightness.dark;
-    await prefs.setBool(_darkModeKey, brightness == Brightness.dark);
-    notifyListeners();
-  }
+  Future<void> toggleBrightness() => brightnessController.toggle();
 
   void updateCode(String code) {
     currentCode = code;

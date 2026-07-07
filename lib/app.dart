@@ -12,6 +12,7 @@ import 'core/i18n/app_strings.dart';
 import 'core/i18n/locale_controller.dart';
 import 'core/runtime/pyodide_runtime.dart';
 import 'core/runtime/python_runtime.dart';
+import 'core/theme/brightness_controller.dart';
 import 'core/theme/ide_theme.dart';
 import 'data/models/models.dart';
 import 'features/auth/auth_gate.dart';
@@ -43,10 +44,14 @@ class PyEstudoApp extends StatefulWidget {
 
 class _PyEstudoAppState extends State<PyEstudoApp> {
   late final LocaleController _locale = LocaleController(widget.prefs);
+  late final BrightnessController _brightness = BrightnessController(
+    widget.prefs,
+  );
 
   @override
   void dispose() {
     _locale.dispose();
+    _brightness.dispose();
     super.dispose();
   }
 
@@ -55,11 +60,13 @@ class _PyEstudoAppState extends State<PyEstudoApp> {
     return LocaleScope(
       controller: _locale,
       child: ListenableBuilder(
-        listenable: _locale,
+        listenable: Listenable.merge([_locale, _brightness]),
         builder: (context, _) => MaterialApp(
           title: 'PyEstudo',
-          theme: buildIdeTheme(brightness: Brightness.dark),
-          darkTheme: buildIdeTheme(brightness: Brightness.dark),
+          // Só `theme` (sem `darkTheme`): o MaterialApp segue exatamente a
+          // preferência do usuário, nunca o tema do sistema — e isso vale
+          // para toda rota empurrada via Navigator.push, não só o HomeShell.
+          theme: buildIdeTheme(brightness: _brightness.brightness),
           locale: Locale(_locale.language.code),
           supportedLocales: const [Locale('pt'), Locale('en')],
           localizationsDelegates: const [
@@ -72,6 +79,7 @@ class _PyEstudoAppState extends State<PyEstudoApp> {
             db: widget.db,
             chaptersByLanguage: widget.chaptersByLanguage,
             locale: _locale,
+            brightnessController: _brightness,
             prefs: widget.prefs,
             authService: widget.authService,
             firestore: widget.firestore,

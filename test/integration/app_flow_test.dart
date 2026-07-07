@@ -7,6 +7,7 @@ import 'package:app_python/core/auth/auth_service.dart';
 import 'package:app_python/core/i18n/app_language.dart';
 import 'package:app_python/core/i18n/locale_controller.dart';
 import 'package:app_python/core/runtime/execution_result.dart';
+import 'package:app_python/core/theme/brightness_controller.dart';
 import 'package:app_python/core/runtime/python_runtime.dart';
 import 'package:app_python/core/storage/code_repository.dart';
 import 'package:app_python/core/storage/database.dart';
@@ -180,6 +181,7 @@ void main() {
       progressRepository: ProgressRepository(db, userId: _testUserId),
       chaptersByLanguage: const {},
       locale: LocaleController(prefs),
+      brightnessController: BrightnessController(prefs),
       prefs: prefs,
       authService: AuthService(auth: MockFirebaseAuth()),
       syncService: FirestoreSyncService(
