@@ -15,6 +15,7 @@ import 'package:app_python/core/storage/progress_repository.dart';
 import 'package:app_python/core/sync/firestore_sync_service.dart';
 import 'package:app_python/data/content_loader.dart';
 import 'package:app_python/features/exercises/exercises_screen.dart';
+import 'package:app_python/features/learn/learn_screen.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ void main() {
   });
 
   testWidgets(
-    'resolver um exercício atualiza o progresso e reflete na aba Progresso',
+    'estuda uma aula, resolve um exercício e vê o progresso refletido',
     (tester) async {
       // Fixa o idioma em português: este teste verifica textos em PT-BR
       // ('Exercícios', 'Verificar', 'Exercício concluído!'). Sem isso, o
@@ -103,8 +104,39 @@ void main() {
       final progressRepository = ProgressRepository(db, userId: _testUserId);
       final firstChapter = chapters.first;
       final firstExercise = firstChapter.exercises.first;
+      final firstLesson = firstChapter.lessons.first;
 
-      // Editor é a aba inicial; vai para Exercícios.
+      // Editor é a aba inicial; vai para Aprenda e estuda a primeira lição.
+      // (Reaproveita o mesmo app/banco já montado neste teste: abrir um
+      // segundo AppDatabase independente com databaseFactoryFfiNoIsolate
+      // trava o processo de teste — por isso um único app por teste aqui.)
+      await tester.tap(find.text('Aprenda'));
+      await tester.pumpAndSettle();
+
+      final learnList = find.descendant(
+        of: find.byType(LearnScreen),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.text(firstLesson.title),
+        200,
+        scrollable: learnList.first,
+      );
+      await tester.ensureVisible(find.text(firstLesson.title));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(firstLesson.title));
+      await tester.pumpAndSettle();
+
+      expect(find.text(firstLesson.body), findsOneWidget);
+
+      await tester.tap(find.text('Abrir no editor'));
+      await tester.pumpAndSettle();
+
+      // Volta pra aba Editor com o exemplo da lição carregado.
+      final firstLineOfExample = firstLesson.example.split('\n').first;
+      expect(find.textContaining(firstLineOfExample), findsWidgets);
+
+      // Agora vai para Exercícios treinar valendo progresso.
       await tester.tap(find.text('Exercícios'));
       await tester.pumpAndSettle();
 

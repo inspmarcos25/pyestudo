@@ -1,0 +1,115 @@
+{
+  "id": "cap07",
+  "title": "Arquivos e módulos",
+  "order": 6,
+  "difficulty": "intermediário",
+  "lessons": [
+    {
+      "id": "cap07_l1",
+      "title": "Escrevendo e lendo arquivos",
+      "body": "A função `open()` abre um arquivo para escrever ('w') ou ler ('r'). Usar `with open(...) as arquivo:` garante que o arquivo é fechado sozinho no final, mesmo se der erro no meio.",
+      "example": "# Escreve num arquivo (cria se não existir, sobrescreve se existir)\nwith open('notas.txt', 'w') as arquivo:\n    arquivo.write('Ana: 8.5\\n')\n    arquivo.write('Bruno: 7.0\\n')\n\n# Lê o conteúdo de volta\nwith open('notas.txt', 'r') as arquivo:\n    conteudo = arquivo.read()\n\nprint(conteudo)"
+    },
+    {
+      "id": "cap07_l2",
+      "title": "Lendo linha por linha",
+      "body": "Um arquivo de texto pode ser percorrido linha por linha com um `for`, ou lido todo de uma vez com `.readlines()`, que devolve uma lista de linhas. Cada linha inclui a quebra de linha `\\n` no final, então `.strip()` é útil pra limpar isso.",
+      "example": "with open('notas.txt', 'r') as arquivo:\n    for linha in arquivo:\n        print(linha.strip())   # .strip() remove o \\n do final\n\nwith open('notas.txt', 'r') as arquivo:\n    linhas = arquivo.readlines()\n    print(f'o arquivo tem {len(linhas)} linhas')"
+    },
+    {
+      "id": "cap07_l3",
+      "title": "Módulos da biblioteca padrão",
+      "body": "Python já vem com módulos prontos para tarefas comuns — `import` traz essas funções pro seu código. `math` tem funções matemáticas, `random` gera valores aleatórios, `datetime` trabalha com datas.",
+      "example": "import math\nprint(math.sqrt(16))       # 4.0\nprint(math.ceil(4.2))      # 5 (arredonda pra cima)\n\nimport random\nprint(random.randint(1, 10))   # um número aleatório entre 1 e 10\n\nfrom datetime import date\nhoje = date.today()\nprint(hoje.year)"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap07_e1",
+      "title": "Escrever e ler de volta",
+      "prompt": "Escreva uma função `salvar_e_ler(texto)` que escreve `texto` no arquivo 'saida.txt' e retorna o conteúdo lido de volta do mesmo arquivo.",
+      "starterCode": "def salvar_e_ler(texto):\n    pass\n",
+      "tests": [
+        { "name": "salvar_e_ler('olá') == 'olá'", "code": "assert salvar_e_ler('olá') == 'olá', f\"obtido {salvar_e_ler('olá')!r}\"" },
+        { "name": "salvar_e_ler('python') == 'python'", "code": "assert salvar_e_ler('python') == 'python'" }
+      ],
+      "hints": ["Abra o arquivo com 'w' para escrever, depois com 'r' para ler.", "Use with open(...) as arquivo: para cada operação."]
+    },
+    {
+      "id": "cap07_e2",
+      "title": "Contar linhas do arquivo",
+      "prompt": "Escreva uma função `contar_linhas(linhas)` que recebe uma lista de textos, escreve cada um como uma linha no arquivo 'lista.txt' (terminando com \\n) e retorna quantas linhas o arquivo ficou, usando .readlines().",
+      "starterCode": "def contar_linhas(linhas):\n    pass\n",
+      "tests": [
+        { "name": "contar_linhas(['a','b','c']) == 3", "code": "assert contar_linhas(['a','b','c']) == 3, f\"obtido {contar_linhas(['a','b','c'])}\"" },
+        { "name": "lista vazia == 0", "code": "assert contar_linhas([]) == 0" }
+      ],
+      "hints": ["Escreva cada item com arquivo.write(item + '\\n').", "len(arquivo.readlines()) conta as linhas."]
+    },
+    {
+      "id": "cap07_e3",
+      "title": "Somar números de um arquivo",
+      "prompt": "Escreva uma função `somar_arquivo(numeros)` que escreve cada número (um por linha) no arquivo 'numeros.txt', depois lê o arquivo de volta e retorna a soma de todos os valores como inteiro.",
+      "starterCode": "def somar_arquivo(numeros):\n    pass\n",
+      "tests": [
+        { "name": "somar_arquivo([1,2,3]) == 6", "code": "assert somar_arquivo([1,2,3]) == 6, f'obtido {somar_arquivo([1,2,3])}'" },
+        { "name": "lista vazia == 0", "code": "assert somar_arquivo([]) == 0" }
+      ],
+      "hints": ["Escreva com str(numero) + '\\n' para cada item.", "Ao ler, use int(linha.strip()) para converter cada linha de volta em número."]
+    },
+    {
+      "id": "cap07_e4",
+      "title": "Raiz quadrada com math",
+      "prompt": "Use o módulo math para escrever uma função `raiz(n)` que retorna a raiz quadrada de n.",
+      "starterCode": "import math\n\ndef raiz(n):\n    pass\n",
+      "tests": [
+        { "name": "raiz(16) == 4.0", "code": "assert raiz(16) == 4.0, f'obtido {raiz(16)}'" },
+        { "name": "raiz(2) é aproximadamente 1.4142", "code": "assert abs(raiz(2) - 1.4142135623730951) < 0.0001" }
+      ],
+      "hints": ["math.sqrt(n) calcula a raiz quadrada."]
+    },
+    {
+      "id": "cap07_e5",
+      "title": "Arredondar para cima",
+      "prompt": "Use o módulo math para escrever uma função `arredondar_para_cima(n)` que retorna n arredondado para cima (o menor inteiro maior ou igual a n).",
+      "starterCode": "import math\n\ndef arredondar_para_cima(n):\n    pass\n",
+      "tests": [
+        { "name": "arredondar_para_cima(4.1) == 5", "code": "assert arredondar_para_cima(4.1) == 5, f'obtido {arredondar_para_cima(4.1)}'" },
+        { "name": "arredondar_para_cima(4.0) == 4", "code": "assert arredondar_para_cima(4.0) == 4" }
+      ],
+      "hints": ["math.ceil(n) arredonda para cima."]
+    },
+    {
+      "id": "cap07_e6",
+      "title": "Sorteio dentro de uma faixa",
+      "prompt": "Use o módulo random para escrever uma função `sortear(minimo, maximo)` que retorna um número inteiro aleatório entre minimo e maximo (incluindo os dois).",
+      "starterCode": "import random\n\ndef sortear(minimo, maximo):\n    pass\n",
+      "tests": [
+        { "name": "resultado está sempre dentro da faixa", "code": "v = sortear(1, 5)\nassert isinstance(v, int) and 1 <= v <= 5, f'obtido {v}'" },
+        { "name": "faixa de um único valor", "code": "v = sortear(10, 10)\nassert v == 10" }
+      ],
+      "hints": ["random.randint(minimo, maximo) sorteia um inteiro no intervalo, incluindo os dois extremos."]
+    },
+    {
+      "id": "cap07_e7",
+      "title": "Ano atual",
+      "prompt": "Use o módulo datetime para escrever uma função `ano_atual()` que retorna o ano de hoje.",
+      "starterCode": "from datetime import date\n\ndef ano_atual():\n    pass\n",
+      "tests": [
+        { "name": "retorna o ano corrente", "code": "import datetime\nassert ano_atual() == datetime.date.today().year, f'obtido {ano_atual()}'" }
+      ],
+      "hints": ["date.today() retorna a data de hoje.", "Acesse .year para pegar só o ano."]
+    },
+    {
+      "id": "cap07_e8",
+      "title": "Maior valor lido do arquivo",
+      "prompt": "Escreva uma função `maior_do_arquivo(numeros)` que escreve os números (um por linha) no arquivo 'valores.txt', lê de volta e retorna o maior valor (sem usar max()).",
+      "starterCode": "def maior_do_arquivo(numeros):\n    pass\n",
+      "tests": [
+        { "name": "maior_do_arquivo([3,7,2]) == 7", "code": "assert maior_do_arquivo([3,7,2]) == 7, f'obtido {maior_do_arquivo([3,7,2])}'" },
+        { "name": "não usa max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(maior_do_arquivo), 'resolva com um laço, sem max()'" }
+      ],
+      "hints": ["Leia os números de volta do arquivo e compare um a um, guardando o maior.", "Lembre de converter cada linha lida para int."]
+    }
+  ]
+}

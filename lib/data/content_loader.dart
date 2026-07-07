@@ -17,6 +17,9 @@ class ContentLoader {
     '02_controle.json',
     '03_funcoes.json',
     '04_bibliotecas.json',
+    '05_dicionarios.json',
+    '06_erros.json',
+    '07_arquivos.json',
   ];
 
   /// Carrega os capítulos de um idioma.

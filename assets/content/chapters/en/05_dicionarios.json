@@ -1,0 +1,116 @@
+{
+  "id": "cap05",
+  "title": "Dictionaries, tuples and sets",
+  "order": 4,
+  "difficulty": "intermediate",
+  "lessons": [
+    {
+      "id": "cap05_l1",
+      "title": "Dictionaries: key-value pairs",
+      "body": "A dictionary stores key-value pairs, accessed by key (not by position, like lists). You create one with `{}`, access with `dictionary[key]`, add or update by assigning a value to a key, and use `.get(key, default)` to access without risking an error when the key doesn't exist.",
+      "example": "student = {'name': 'Ana', 'age': 21, 'course': 'Python'}\n\nprint(student['name'])     # access by key\nstudent['age'] = 22         # update an existing value\nstudent['city'] = 'Recife'  # add a new key\n\n# .get() doesn't break if the key doesn't exist\nprint(student.get('phone', 'not informed'))\n\n# .items() goes through key and value pairs\nfor key, value in student.items():\n    print(f'{key}: {value}')"
+    },
+    {
+      "id": "cap05_l2",
+      "title": "Tuples: immutable collections",
+      "body": "Tuples store several values in order, like lists — but once created they cannot be changed. They're useful when the data shouldn't change (a coordinate, a fixed pair of values). You create one with `()` and can unpack the values into variables at once.",
+      "example": "point = (10, 20)\nprint(point[0])   # access by index, like a list\n\n# Unpacking: each value goes to a variable\nx, y = point\nprint(f'x={x}, y={y}')\n\n# Trying to change a tuple item gives an error:\n# point[0] = 5  -> TypeError\n\nname, age = 'Ana', 21   # a tuple without parentheses also works\nprint(name, age)"
+    },
+    {
+      "id": "cap05_l3",
+      "title": "Sets: collections without duplicates",
+      "body": "A set stores unique items, with no defined order and no duplicates — adding the same value twice has no effect. It's perfect for removing duplicates from a list or checking if an item exists quickly. You create one with `set()` or `{}` with values inside.",
+      "example": "numbers = [1, 2, 2, 3, 3, 3, 4]\n\n# set() removes duplicates automatically\nunique = set(numbers)\nprint(unique)          # {1, 2, 3, 4}\nprint(len(unique))     # 4\n\n# Set operations\neven = {2, 4, 6, 8}\nmultiples_of_3 = {3, 6, 9}\n\nprint(even & multiples_of_3)   # intersection: {6}\nprint(even | multiples_of_3)   # union: all items"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap05_e1",
+      "title": "Person's age",
+      "prompt": "Write a function `age(person)` that takes a dictionary with the keys 'name' and 'age' and returns the value of the 'age' key.",
+      "starterCode": "def age(person):\n    pass\n",
+      "tests": [
+        { "name": "age({'name': 'Ana', 'age': 21}) == 21", "code": "assert age({'name': 'Ana', 'age': 21}) == 21, f\"got {age({'name': 'Ana', 'age': 21})}\"" },
+        { "name": "age({'name': 'Bruno', 'age': 40}) == 40", "code": "assert age({'name': 'Bruno', 'age': 40}) == 40" }
+      ],
+      "hints": ["Access the value with person['age']."]
+    },
+    {
+      "id": "cap05_e2",
+      "title": "Update price",
+      "prompt": "Write a function `update_price(product, new_price)` that takes a product dictionary (with the key 'price') and returns the same dictionary with the price updated.",
+      "starterCode": "def update_price(product, new_price):\n    pass\n",
+      "tests": [
+        { "name": "updates the price to 3.0", "code": "assert update_price({'name':'Pen','price':2.5}, 3.0) == {'name':'Pen','price':3.0}" },
+        { "name": "returns the updated dictionary", "code": "assert update_price({'price':1}, 9)['price'] == 9" }
+      ],
+      "hints": ["Assign the new value: product['price'] = new_price.", "Remember to return the dictionary at the end."]
+    },
+    {
+      "id": "cap05_e3",
+      "title": "Look up with a default value",
+      "prompt": "Write a function `phone_or_default(contact)` that returns the phone from the `contact` dictionary, or 'no phone' if the key doesn't exist.",
+      "starterCode": "def phone_or_default(contact):\n    pass\n",
+      "tests": [
+        { "name": "returns the phone when it exists", "code": "assert phone_or_default({'name':'Ana','phone':'123'}) == '123'" },
+        { "name": "returns the default when it doesn't exist", "code": "assert phone_or_default({'name':'Bruno'}) == 'no phone'" }
+      ],
+      "hints": ["The .get(key, default) method solves this in one line."]
+    },
+    {
+      "id": "cap05_e4",
+      "title": "Sum dictionary values",
+      "prompt": "Write a function `total_sales(sales)` that takes a dictionary {product: quantity_sold} and returns the sum of all quantities.",
+      "starterCode": "def total_sales(sales):\n    pass\n",
+      "tests": [
+        { "name": "total_sales({'pen': 10, 'notebook': 5}) == 15", "code": "assert total_sales({'pen': 10, 'notebook': 5}) == 15, f'got {total_sales({\"pen\": 10, \"notebook\": 5})}'" },
+        { "name": "empty dictionary == 0", "code": "assert total_sales({}) == 0" }
+      ],
+      "hints": ["The .values() method gives access to just the dictionary's values.", "sum(sales.values()) adds everything up."]
+    },
+    {
+      "id": "cap05_e5",
+      "title": "Reverse coordinates",
+      "prompt": "Write a function `reverse_point(point)` that takes a tuple (x, y) and returns a new tuple (y, x).",
+      "starterCode": "def reverse_point(point):\n    pass\n",
+      "tests": [
+        { "name": "reverse_point((1, 2)) == (2, 1)", "code": "assert reverse_point((1, 2)) == (2, 1), f'got {reverse_point((1, 2))}'" },
+        { "name": "reverse_point((0, 5)) == (5, 0)", "code": "assert reverse_point((0, 5)) == (5, 0)" }
+      ],
+      "hints": ["Unpack with x, y = point and return (y, x)."]
+    },
+    {
+      "id": "cap05_e6",
+      "title": "Distance between points",
+      "prompt": "Write a function `x_distance(point_a, point_b)` that takes two tuples (x, y) and returns the absolute difference between the x coordinates.",
+      "starterCode": "def x_distance(point_a, point_b):\n    pass\n",
+      "tests": [
+        { "name": "x_distance((5,0),(2,0)) == 3", "code": "assert x_distance((5,0),(2,0)) == 3, f'got {x_distance((5,0),(2,0))}'" },
+        { "name": "x_distance((0,0),(0,10)) == 0", "code": "assert x_distance((0,0),(0,10)) == 0" }
+      ],
+      "hints": ["abs(a - b) gives the absolute difference.", "Take the first item of each tuple: point_a[0]."]
+    },
+    {
+      "id": "cap05_e7",
+      "title": "Remove duplicates with a set",
+      "prompt": "Write a function `unique_items(items)` that returns how many different items (without duplicates) exist in the list.",
+      "starterCode": "def unique_items(items):\n    pass\n",
+      "tests": [
+        { "name": "unique_items([1,2,2,3,3,3]) == 3", "code": "assert unique_items([1,2,2,3,3,3]) == 3, f'got {unique_items([1,2,2,3,3,3])}'" },
+        { "name": "empty list == 0", "code": "assert unique_items([]) == 0" }
+      ],
+      "hints": ["set(items) removes duplicates.", "len(...) counts how many items are left."]
+    },
+    {
+      "id": "cap05_e8",
+      "title": "Items in common",
+      "prompt": "Write a function `in_common(list_a, list_b)` that returns a set with the items that appear in both lists.",
+      "starterCode": "def in_common(list_a, list_b):\n    pass\n",
+      "tests": [
+        { "name": "in_common([1,2,3],[2,3,4]) == {2,3}", "code": "assert in_common([1,2,3],[2,3,4]) == {2,3}, f'got {in_common([1,2,3],[2,3,4])}'" },
+        { "name": "no items in common == set()", "code": "assert in_common([1],[2]) == set()" }
+      ],
+      "hints": ["Turn the lists into sets with set(list).", "The & operator computes the intersection of two sets."]
+    }
+  ]
+}

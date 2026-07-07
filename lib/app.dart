@@ -18,6 +18,7 @@ import 'data/models/models.dart';
 import 'features/auth/auth_gate.dart';
 import 'features/editor/editor_screen.dart';
 import 'features/exercises/exercises_screen.dart';
+import 'features/learn/learn_screen.dart';
 import 'features/progress/progress_screen.dart';
 
 class PyEstudoApp extends StatefulWidget {
@@ -129,10 +130,11 @@ class _HomeShellState extends State<HomeShell> {
                 index: _tab,
                 children: [
                   EditorScreen(state: widget.state),
-                  ExercisesScreen(
+                  LearnScreen(
                     state: widget.state,
                     onOpenInEditor: () => setState(() => _tab = 0),
                   ),
+                  ExercisesScreen(state: widget.state),
                   ProgressScreen(state: widget.state),
                 ],
               ),
@@ -148,8 +150,14 @@ class _HomeShellState extends State<HomeShell> {
                 tooltip: strings.editorTooltip,
               ),
               NavigationDestination(
-                icon: const Icon(Icons.school_outlined),
-                selectedIcon: const Icon(Icons.school),
+                icon: const Icon(Icons.menu_book_outlined),
+                selectedIcon: const Icon(Icons.menu_book),
+                label: strings.learnTab,
+                tooltip: strings.learnTooltip,
+              ),
+              NavigationDestination(
+                icon: const Icon(Icons.fitness_center_outlined),
+                selectedIcon: const Icon(Icons.fitness_center),
                 label: strings.exercisesTab,
                 tooltip: strings.exercisesTooltip,
               ),

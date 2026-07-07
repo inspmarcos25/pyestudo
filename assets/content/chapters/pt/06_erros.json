@@ -1,0 +1,117 @@
+{
+  "id": "cap06",
+  "title": "Tratamento de erros",
+  "order": 5,
+  "difficulty": "intermediário",
+  "lessons": [
+    {
+      "id": "cap06_l1",
+      "title": "Por que tratar erros",
+      "body": "Quando algo dá errado (dividir por zero, converter texto inválido em número), o programa para com uma exceção. `try`/`except` deixa você capturar esse erro e decidir o que fazer, em vez de o programa simplesmente quebrar.",
+      "example": "def dividir(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 'não é possível dividir por zero'\n\nprint(dividir(10, 2))   # 5.0\nprint(dividir(10, 0))   # não é possível dividir por zero"
+    },
+    {
+      "id": "cap06_l2",
+      "title": "Capturando tipos específicos de erro",
+      "body": "Você pode ter vários blocos `except`, um para cada tipo de erro esperado — assim trata cada problema de um jeito diferente, em vez de um bloco genérico que esconde qualquer coisa.",
+      "example": "def converter(texto):\n    try:\n        return int(texto)\n    except ValueError:\n        return None\n\nprint(converter('42'))   # 42\nprint(converter('abc'))  # None (não quebra o programa)"
+    },
+    {
+      "id": "cap06_l3",
+      "title": "else, finally e levantando seus próprios erros",
+      "body": "O bloco `else` roda só se NÃO houve erro; `finally` roda sempre, com ou sem erro (bom para 'limpeza'). Você também pode levantar seus próprios erros com `raise` quando uma condição não fizer sentido pro seu programa.",
+      "example": "def idade_valida(idade):\n    if idade < 0:\n        raise ValueError('idade não pode ser negativa')\n    return idade\n\ntry:\n    idade_valida(-5)\nexcept ValueError as erro:\n    print(f'erro: {erro}')\nfinally:\n    print('validação concluída')"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap06_e1",
+      "title": "Divisão segura",
+      "prompt": "Escreva uma função `divisao_segura(a, b)` que retorna a / b, ou 0 se b for zero (sem quebrar com ZeroDivisionError).",
+      "starterCode": "def divisao_segura(a, b):\n    pass\n",
+      "tests": [
+        { "name": "divisao_segura(10, 2) == 5.0", "code": "assert divisao_segura(10, 2) == 5.0, f'obtido {divisao_segura(10, 2)}'" },
+        { "name": "divisao_segura(10, 0) == 0", "code": "assert divisao_segura(10, 0) == 0" }
+      ],
+      "hints": ["Coloque a divisão dentro de um try.", "Capture ZeroDivisionError e retorne 0 nesse caso."]
+    },
+    {
+      "id": "cap06_e2",
+      "title": "Converter para número",
+      "prompt": "Escreva uma função `para_numero(texto)` que retorna int(texto), ou None se o texto não puder ser convertido.",
+      "starterCode": "def para_numero(texto):\n    pass\n",
+      "tests": [
+        { "name": "para_numero('10') == 10", "code": "assert para_numero('10') == 10, f\"obtido {para_numero('10')}\"" },
+        { "name": "para_numero('abc') is None", "code": "assert para_numero('abc') is None" }
+      ],
+      "hints": ["int(texto) lança ValueError quando o texto não é um número."]
+    },
+    {
+      "id": "cap06_e3",
+      "title": "Acessar índice com segurança",
+      "prompt": "Escreva uma função `item_ou_none(lista, indice)` que retorna lista[indice], ou None se o índice não existir (IndexError).",
+      "starterCode": "def item_ou_none(lista, indice):\n    pass\n",
+      "tests": [
+        { "name": "item_ou_none([1,2,3], 1) == 2", "code": "assert item_ou_none([1,2,3], 1) == 2, f'obtido {item_ou_none([1,2,3], 1)}'" },
+        { "name": "índice fora do alcance retorna None", "code": "assert item_ou_none([1,2,3], 10) is None" }
+      ],
+      "hints": ["Capture IndexError com except."]
+    },
+    {
+      "id": "cap06_e4",
+      "title": "Buscar chave com segurança",
+      "prompt": "Escreva uma função `valor_ou_none(dicionario, chave)` que retorna dicionario[chave], ou None se a chave não existir (KeyError). Não use o método .get() — use try/except.",
+      "starterCode": "def valor_ou_none(dicionario, chave):\n    pass\n",
+      "tests": [
+        { "name": "valor_ou_none({'a':1}, 'a') == 1", "code": "assert valor_ou_none({'a':1}, 'a') == 1, f\"obtido {valor_ou_none({'a':1}, 'a')}\"" },
+        { "name": "chave inexistente retorna None", "code": "assert valor_ou_none({'a':1}, 'b') is None" }
+      ],
+      "hints": ["Acessar uma chave que não existe lança KeyError."]
+    },
+    {
+      "id": "cap06_e5",
+      "title": "Validar nota",
+      "prompt": "Escreva uma função `validar_nota(nota)` que levanta um ValueError com a mensagem 'nota inválida' se nota for menor que 0 ou maior que 10, e retorna a própria nota caso contrário.",
+      "starterCode": "def validar_nota(nota):\n    pass\n",
+      "tests": [
+        { "name": "validar_nota(8) == 8", "code": "assert validar_nota(8) == 8, f'obtido {validar_nota(8)}'" },
+        { "name": "nota 15 levanta ValueError", "code": "try:\n    validar_nota(15)\n    assert False, 'deveria levantar ValueError'\nexcept ValueError:\n    pass" },
+        { "name": "nota -1 levanta ValueError", "code": "try:\n    validar_nota(-1)\n    assert False, 'deveria levantar ValueError'\nexcept ValueError:\n    pass" }
+      ],
+      "hints": ["Use if nota < 0 or nota > 10: raise ValueError('nota inválida').", "Se passou pela validação, é só retornar nota."]
+    },
+    {
+      "id": "cap06_e6",
+      "title": "Média sem lista vazia",
+      "prompt": "Escreva uma função `media_segura(numeros)` que retorna a média da lista, ou 0 se a lista estiver vazia (evite ZeroDivisionError).",
+      "starterCode": "def media_segura(numeros):\n    pass\n",
+      "tests": [
+        { "name": "media_segura([2,4,6]) == 4", "code": "assert media_segura([2,4,6]) == 4, f'obtido {media_segura([2,4,6])}'" },
+        { "name": "lista vazia == 0", "code": "assert media_segura([]) == 0" }
+      ],
+      "hints": ["sum(numeros)/len(numeros) quebra se a lista for vazia.", "Trate com try/except ou verifique antes com if."]
+    },
+    {
+      "id": "cap06_e7",
+      "title": "Somar apenas números válidos",
+      "prompt": "Escreva uma função `soma_valida(itens)` que recebe uma lista de textos, converte cada um para número e retorna a soma dos que forem convertidos com sucesso (ignore os que derem erro).",
+      "starterCode": "def soma_valida(itens):\n    pass\n",
+      "tests": [
+        { "name": "soma_valida(['1','2','abc','3']) == 6", "code": "assert soma_valida(['1','2','abc','3']) == 6, f\"obtido {soma_valida(['1','2','abc','3'])}\"" },
+        { "name": "nenhum válido == 0", "code": "assert soma_valida(['x','y']) == 0" }
+      ],
+      "hints": ["Percorra a lista com for e use try/except dentro do laço.", "Quando der erro, simplesmente continue para o próximo item."]
+    },
+    {
+      "id": "cap06_e8",
+      "title": "Idade não negativa",
+      "prompt": "Escreva uma função `cadastrar_idade(idade)` que levanta ValueError com a mensagem 'idade inválida' se idade for negativa, e retorna 'cadastrado' caso contrário.",
+      "starterCode": "def cadastrar_idade(idade):\n    pass\n",
+      "tests": [
+        { "name": "cadastrar_idade(20) == 'cadastrado'", "code": "assert cadastrar_idade(20) == 'cadastrado', f'obtido {cadastrar_idade(20)!r}'" },
+        { "name": "idade -1 levanta ValueError", "code": "try:\n    cadastrar_idade(-1)\n    assert False, 'deveria levantar ValueError'\nexcept ValueError:\n    pass" }
+      ],
+      "hints": ["Use raise ValueError('idade inválida') dentro de um if."]
+    }
+  ]
+}

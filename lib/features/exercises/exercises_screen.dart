@@ -6,24 +6,15 @@ import '../../app_state.dart';
 import '../../core/i18n/app_strings.dart';
 import '../../core/theme/duo_theme.dart';
 import '../../data/models/models.dart';
-import '../lessons/lesson_screen.dart';
 import 'exercise_screen.dart';
 
 /// Trilha de aprendizado no estilo Duolingo: cada capítulo é uma "unidade"
-/// com banner colorido e um caminho serpenteante de nós (lições e
-/// exercícios). Tudo continua acessível — o visual indica progresso, não
-/// bloqueia conteúdo.
+/// com banner colorido e um caminho serpenteante de nós de exercícios. As
+/// lições ficam na aba Aprenda — aqui é só prática valendo progresso.
 class ExercisesScreen extends StatelessWidget {
   final AppState state;
 
-  /// Chamado quando um exemplo é aberto no editor (troca para a aba Editor).
-  final VoidCallback onOpenInEditor;
-
-  const ExercisesScreen({
-    super.key,
-    required this.state,
-    required this.onOpenInEditor,
-  });
+  const ExercisesScreen({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +52,6 @@ class ExercisesScreen extends StatelessWidget {
                     chapter: chapter,
                     state: state,
                     nextExerciseId: nextExerciseId,
-                    onOpenInEditor: onOpenInEditor,
                     strings: strings,
                   ),
                 ],
@@ -240,42 +230,20 @@ class _UnitPath extends StatelessWidget {
   final Chapter chapter;
   final AppState state;
   final String? nextExerciseId;
-  final VoidCallback onOpenInEditor;
   final AppStrings strings;
 
   const _UnitPath({
     required this.chapter,
     required this.state,
     required this.nextExerciseId,
-    required this.onOpenInEditor,
     required this.strings,
   });
 
   @override
   Widget build(BuildContext context) {
     final unit = duoUnitColorFor(chapter.order);
+    // Só exercícios entram na trilha — as lições agora vivem na aba Aprenda.
     final entries = <_PathEntry>[
-      for (final lesson in chapter.lessons)
-        _PathEntry(
-          icon: Icons.menu_book_rounded,
-          title: lesson.title,
-          semantics: strings.lessonSemantics(lesson.title),
-          completedLook: false,
-          coloredLook: true,
-          isNext: false,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => LessonScreen(
-                lesson: lesson,
-                onOpenExample: () {
-                  state.openExample(lesson);
-                  onOpenInEditor();
-                },
-              ),
-            ),
-          ),
-        ),
       for (final exercise in chapter.exercises)
         _PathEntry(
           icon: state.completed.contains(exercise.id)

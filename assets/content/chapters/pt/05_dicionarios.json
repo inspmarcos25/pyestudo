@@ -1,0 +1,116 @@
+{
+  "id": "cap05",
+  "title": "Dicionários, tuplas e sets",
+  "order": 4,
+  "difficulty": "intermediário",
+  "lessons": [
+    {
+      "id": "cap05_l1",
+      "title": "Dicionários: pares chave-valor",
+      "body": "Um dicionário guarda pares chave-valor, acessados pela chave (não por posição, como nas listas). Você cria com `{}`, acessa com `dicionario[chave]`, adiciona ou atualiza atribuindo um valor à chave, e usa `.get(chave, padrao)` para acessar sem risco de erro quando a chave não existe.",
+      "example": "aluno = {'nome': 'Ana', 'idade': 21, 'curso': 'Python'}\n\nprint(aluno['nome'])       # acessa pela chave\naluno['idade'] = 22         # atualiza um valor existente\naluno['cidade'] = 'Recife'  # adiciona uma chave nova\n\n# .get() não quebra se a chave não existir\nprint(aluno.get('telefone', 'não informado'))\n\n# .items() percorre pares chave e valor\nfor chave, valor in aluno.items():\n    print(f'{chave}: {valor}')"
+    },
+    {
+      "id": "cap05_l2",
+      "title": "Tuplas: coleções imutáveis",
+      "body": "Tuplas guardam vários valores em ordem, como listas — mas depois de criadas não podem ser alteradas. São úteis quando o dado não deve mudar (uma coordenada, um par de valores fixos). Você cria com `()` e pode desempacotar os valores em variáveis de uma vez.",
+      "example": "ponto = (10, 20)\nprint(ponto[0])   # acessa por índice, como numa lista\n\n# Desempacotamento: cada valor vai para uma variável\nx, y = ponto\nprint(f'x={x}, y={y}')\n\n# Tentar mudar um item de uma tupla dá erro:\n# ponto[0] = 5  -> TypeError\n\nnome, idade = 'Ana', 21   # tupla sem parênteses também funciona\nprint(nome, idade)"
+    },
+    {
+      "id": "cap05_l3",
+      "title": "Sets: coleções sem duplicados",
+      "body": "Um set guarda itens únicos, sem ordem definida e sem duplicados — adicionar o mesmo valor duas vezes não faz efeito. É perfeito para remover duplicados de uma lista ou verificar se um item existe rapidamente. Você cria com `set()` ou `{}` com valores dentro.",
+      "example": "numeros = [1, 2, 2, 3, 3, 3, 4]\n\n# set() remove os duplicados automaticamente\nunicos = set(numeros)\nprint(unicos)          # {1, 2, 3, 4}\nprint(len(unicos))     # 4\n\n# Operações de conjunto\npares = {2, 4, 6, 8}\nmultiplos_de_3 = {3, 6, 9}\n\nprint(pares & multiplos_de_3)   # interseção: {6}\nprint(pares | multiplos_de_3)   # união: todos os itens"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap05_e1",
+      "title": "Idade da pessoa",
+      "prompt": "Escreva uma função `idade(pessoa)` que recebe um dicionário com as chaves 'nome' e 'idade' e retorna o valor da chave 'idade'.",
+      "starterCode": "def idade(pessoa):\n    pass\n",
+      "tests": [
+        { "name": "idade({'nome': 'Ana', 'idade': 21}) == 21", "code": "assert idade({'nome': 'Ana', 'idade': 21}) == 21, f\"obtido {idade({'nome': 'Ana', 'idade': 21})}\"" },
+        { "name": "idade({'nome': 'Bruno', 'idade': 40}) == 40", "code": "assert idade({'nome': 'Bruno', 'idade': 40}) == 40" }
+      ],
+      "hints": ["Acesse o valor com pessoa['idade']."]
+    },
+    {
+      "id": "cap05_e2",
+      "title": "Atualizar preço",
+      "prompt": "Escreva uma função `atualizar_preco(produto, novo_preco)` que recebe um dicionário de produto (com a chave 'preco') e retorna o mesmo dicionário com o preço atualizado.",
+      "starterCode": "def atualizar_preco(produto, novo_preco):\n    pass\n",
+      "tests": [
+        { "name": "atualiza o preço para 3.0", "code": "assert atualizar_preco({'nome':'Caneta','preco':2.5}, 3.0) == {'nome':'Caneta','preco':3.0}" },
+        { "name": "retorna o dicionário atualizado", "code": "assert atualizar_preco({'preco':1}, 9)['preco'] == 9" }
+      ],
+      "hints": ["Atribua o novo valor: produto['preco'] = novo_preco.", "Lembre de retornar o dicionário no final."]
+    },
+    {
+      "id": "cap05_e3",
+      "title": "Buscar com valor padrão",
+      "prompt": "Escreva uma função `telefone_ou_padrao(contato)` que retorna o telefone do dicionário `contato`, ou 'sem telefone' se a chave não existir.",
+      "starterCode": "def telefone_ou_padrao(contato):\n    pass\n",
+      "tests": [
+        { "name": "retorna o telefone quando existe", "code": "assert telefone_ou_padrao({'nome':'Ana','telefone':'123'}) == '123'" },
+        { "name": "retorna o padrão quando não existe", "code": "assert telefone_ou_padrao({'nome':'Bruno'}) == 'sem telefone'" }
+      ],
+      "hints": ["O método .get(chave, padrao) resolve isso em uma linha."]
+    },
+    {
+      "id": "cap05_e4",
+      "title": "Somar valores do dicionário",
+      "prompt": "Escreva uma função `total_vendas(vendas)` que recebe um dicionário {produto: quantidade_vendida} e retorna a soma de todas as quantidades.",
+      "starterCode": "def total_vendas(vendas):\n    pass\n",
+      "tests": [
+        { "name": "total_vendas({'caneta': 10, 'caderno': 5}) == 15", "code": "assert total_vendas({'caneta': 10, 'caderno': 5}) == 15, f'obtido {total_vendas({\"caneta\": 10, \"caderno\": 5})}'" },
+        { "name": "dicionário vazio == 0", "code": "assert total_vendas({}) == 0" }
+      ],
+      "hints": ["O método .values() dá acesso só aos valores do dicionário.", "sum(vendas.values()) soma tudo."]
+    },
+    {
+      "id": "cap05_e5",
+      "title": "Inverter coordenadas",
+      "prompt": "Escreva uma função `inverter_ponto(ponto)` que recebe uma tupla (x, y) e retorna uma nova tupla (y, x).",
+      "starterCode": "def inverter_ponto(ponto):\n    pass\n",
+      "tests": [
+        { "name": "inverter_ponto((1, 2)) == (2, 1)", "code": "assert inverter_ponto((1, 2)) == (2, 1), f'obtido {inverter_ponto((1, 2))}'" },
+        { "name": "inverter_ponto((0, 5)) == (5, 0)", "code": "assert inverter_ponto((0, 5)) == (5, 0)" }
+      ],
+      "hints": ["Desempacote com x, y = ponto e retorne (y, x)."]
+    },
+    {
+      "id": "cap05_e6",
+      "title": "Distância entre pontos",
+      "prompt": "Escreva uma função `distancia_x(ponto_a, ponto_b)` que recebe duas tuplas (x, y) e retorna a diferença absoluta entre as coordenadas x.",
+      "starterCode": "def distancia_x(ponto_a, ponto_b):\n    pass\n",
+      "tests": [
+        { "name": "distancia_x((5,0),(2,0)) == 3", "code": "assert distancia_x((5,0),(2,0)) == 3, f'obtido {distancia_x((5,0),(2,0))}'" },
+        { "name": "distancia_x((0,0),(0,10)) == 0", "code": "assert distancia_x((0,0),(0,10)) == 0" }
+      ],
+      "hints": ["abs(a - b) dá a diferença absoluta.", "Pegue o primeiro item de cada tupla: ponto_a[0]."]
+    },
+    {
+      "id": "cap05_e7",
+      "title": "Remover duplicados com set",
+      "prompt": "Escreva uma função `itens_unicos(lista)` que retorna quantos itens diferentes (sem duplicados) existem na lista.",
+      "starterCode": "def itens_unicos(lista):\n    pass\n",
+      "tests": [
+        { "name": "itens_unicos([1,2,2,3,3,3]) == 3", "code": "assert itens_unicos([1,2,2,3,3,3]) == 3, f'obtido {itens_unicos([1,2,2,3,3,3])}'" },
+        { "name": "lista vazia == 0", "code": "assert itens_unicos([]) == 0" }
+      ],
+      "hints": ["set(lista) remove os duplicados.", "len(...) conta quantos itens sobraram."]
+    },
+    {
+      "id": "cap05_e8",
+      "title": "Itens em comum",
+      "prompt": "Escreva uma função `em_comum(lista_a, lista_b)` que retorna um set com os itens que aparecem nas duas listas.",
+      "starterCode": "def em_comum(lista_a, lista_b):\n    pass\n",
+      "tests": [
+        { "name": "em_comum([1,2,3],[2,3,4]) == {2,3}", "code": "assert em_comum([1,2,3],[2,3,4]) == {2,3}, f'obtido {em_comum([1,2,3],[2,3,4])}'" },
+        { "name": "sem itens em comum == set()", "code": "assert em_comum([1],[2]) == set()" }
+      ],
+      "hints": ["Transforme as listas em sets com set(lista).", "O operador & faz a interseção de dois sets."]
+    }
+  ]
+}

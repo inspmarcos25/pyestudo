@@ -14,10 +14,16 @@ abstract class AppStrings {
   // Navegação
   String get editorTab;
   String get editorTooltip;
+  String get learnTab;
+  String get learnTooltip;
   String get exercisesTab;
   String get exercisesTooltip;
   String get progressTab;
   String get progressTooltip;
+
+  // Tela Aprenda
+  String get learnTitle;
+  String lessonsCount(int n);
 
   // Tela de exercícios (trilha)
   String get chapterWordUpper; // "CAPÍTULO" / "CHAPTER"
@@ -128,6 +134,10 @@ class _PtStrings extends AppStrings {
   @override
   String get editorTooltip => 'Editor e console';
   @override
+  String get learnTab => 'Aprenda';
+  @override
+  String get learnTooltip => 'Aulas e conteúdo';
+  @override
   String get exercisesTab => 'Exercícios';
   @override
   String get exercisesTooltip => 'Lições e exercícios';
@@ -160,6 +170,11 @@ class _PtStrings extends AppStrings {
   @override
   String exerciseDoneSemantics(String title) =>
       'Exercício concluído: $title';
+
+  @override
+  String get learnTitle => 'Aprenda';
+  @override
+  String lessonsCount(int n) => n == 1 ? '1 lição' : '$n lições';
 
   @override
   String get progressTitle => 'Seu progresso';
@@ -364,6 +379,10 @@ class _EnStrings extends AppStrings {
   @override
   String get editorTooltip => 'Editor and console';
   @override
+  String get learnTab => 'Learn';
+  @override
+  String get learnTooltip => 'Lessons and content';
+  @override
   String get exercisesTab => 'Exercises';
   @override
   String get exercisesTooltip => 'Lessons and exercises';
@@ -394,6 +413,11 @@ class _EnStrings extends AppStrings {
   String exerciseSemantics(String title) => 'Exercise: $title';
   @override
   String exerciseDoneSemantics(String title) => 'Exercise complete: $title';
+
+  @override
+  String get learnTitle => 'Learn';
+  @override
+  String lessonsCount(int n) => n == 1 ? '1 lesson' : '$n lessons';
 
   @override
   String get progressTitle => 'Your progress';

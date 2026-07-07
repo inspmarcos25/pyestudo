@@ -1,0 +1,115 @@
+{
+  "id": "cap07",
+  "title": "Files and modules",
+  "order": 6,
+  "difficulty": "intermediate",
+  "lessons": [
+    {
+      "id": "cap07_l1",
+      "title": "Writing and reading files",
+      "body": "The `open()` function opens a file to write ('w') or read ('r'). Using `with open(...) as file:` guarantees the file is closed automatically at the end, even if something goes wrong in the middle.",
+      "example": "# Writes to a file (creates it if missing, overwrites if it exists)\nwith open('grades.txt', 'w') as file:\n    file.write('Ana: 8.5\\n')\n    file.write('Bruno: 7.0\\n')\n\n# Reads the content back\nwith open('grades.txt', 'r') as file:\n    content = file.read()\n\nprint(content)"
+    },
+    {
+      "id": "cap07_l2",
+      "title": "Reading line by line",
+      "body": "A text file can be gone through line by line with a `for`, or read all at once with `.readlines()`, which returns a list of lines. Each line includes the trailing `\\n`, so `.strip()` is handy to clean that up.",
+      "example": "with open('grades.txt', 'r') as file:\n    for line in file:\n        print(line.strip())   # .strip() removes the trailing \\n\n\nwith open('grades.txt', 'r') as file:\n    lines = file.readlines()\n    print(f'the file has {len(lines)} lines')"
+    },
+    {
+      "id": "cap07_l3",
+      "title": "Standard library modules",
+      "body": "Python already comes with ready-made modules for common tasks — `import` brings those functions into your code. `math` has mathematical functions, `random` generates random values, `datetime` works with dates.",
+      "example": "import math\nprint(math.sqrt(16))       # 4.0\nprint(math.ceil(4.2))      # 5 (rounds up)\n\nimport random\nprint(random.randint(1, 10))   # a random number between 1 and 10\n\nfrom datetime import date\ntoday = date.today()\nprint(today.year)"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap07_e1",
+      "title": "Save and read back",
+      "prompt": "Write a function `save_and_read(text)` that writes `text` to the file 'output.txt' and returns the content read back from the same file.",
+      "starterCode": "def save_and_read(text):\n    pass\n",
+      "tests": [
+        { "name": "save_and_read('hello') == 'hello'", "code": "assert save_and_read('hello') == 'hello', f\"got {save_and_read('hello')!r}\"" },
+        { "name": "save_and_read('python') == 'python'", "code": "assert save_and_read('python') == 'python'" }
+      ],
+      "hints": ["Open the file with 'w' to write, then with 'r' to read.", "Use with open(...) as file: for each operation."]
+    },
+    {
+      "id": "cap07_e2",
+      "title": "Count lines in a file",
+      "prompt": "Write a function `count_lines(lines)` that takes a list of texts, writes each one as a line in the file 'list.txt' (ending with \\n) and returns how many lines the file has, using .readlines().",
+      "starterCode": "def count_lines(lines):\n    pass\n",
+      "tests": [
+        { "name": "count_lines(['a','b','c']) == 3", "code": "assert count_lines(['a','b','c']) == 3, f\"got {count_lines(['a','b','c'])}\"" },
+        { "name": "empty list == 0", "code": "assert count_lines([]) == 0" }
+      ],
+      "hints": ["Write each item with file.write(item + '\\n').", "len(file.readlines()) counts the lines."]
+    },
+    {
+      "id": "cap07_e3",
+      "title": "Sum numbers from a file",
+      "prompt": "Write a function `sum_file(numbers)` that writes each number (one per line) to the file 'numbers.txt', then reads the file back and returns the sum of all values as an integer.",
+      "starterCode": "def sum_file(numbers):\n    pass\n",
+      "tests": [
+        { "name": "sum_file([1,2,3]) == 6", "code": "assert sum_file([1,2,3]) == 6, f'got {sum_file([1,2,3])}'" },
+        { "name": "empty list == 0", "code": "assert sum_file([]) == 0" }
+      ],
+      "hints": ["Write with str(number) + '\\n' for each item.", "When reading, use int(line.strip()) to convert each line back to a number."]
+    },
+    {
+      "id": "cap07_e4",
+      "title": "Square root with math",
+      "prompt": "Use the math module to write a function `square_root(n)` that returns the square root of n.",
+      "starterCode": "import math\n\ndef square_root(n):\n    pass\n",
+      "tests": [
+        { "name": "square_root(16) == 4.0", "code": "assert square_root(16) == 4.0, f'got {square_root(16)}'" },
+        { "name": "square_root(2) is approximately 1.4142", "code": "assert abs(square_root(2) - 1.4142135623730951) < 0.0001" }
+      ],
+      "hints": ["math.sqrt(n) computes the square root."]
+    },
+    {
+      "id": "cap07_e5",
+      "title": "Round up",
+      "prompt": "Use the math module to write a function `round_up(n)` that returns n rounded up (the smallest integer greater than or equal to n).",
+      "starterCode": "import math\n\ndef round_up(n):\n    pass\n",
+      "tests": [
+        { "name": "round_up(4.1) == 5", "code": "assert round_up(4.1) == 5, f'got {round_up(4.1)}'" },
+        { "name": "round_up(4.0) == 4", "code": "assert round_up(4.0) == 4" }
+      ],
+      "hints": ["math.ceil(n) rounds up."]
+    },
+    {
+      "id": "cap07_e6",
+      "title": "Random draw within a range",
+      "prompt": "Use the random module to write a function `draw(minimum, maximum)` that returns a random integer between minimum and maximum (both inclusive).",
+      "starterCode": "import random\n\ndef draw(minimum, maximum):\n    pass\n",
+      "tests": [
+        { "name": "the result is always within range", "code": "v = draw(1, 5)\nassert isinstance(v, int) and 1 <= v <= 5, f'got {v}'" },
+        { "name": "single-value range", "code": "v = draw(10, 10)\nassert v == 10" }
+      ],
+      "hints": ["random.randint(minimum, maximum) draws an integer in the range, including both ends."]
+    },
+    {
+      "id": "cap07_e7",
+      "title": "Current year",
+      "prompt": "Use the datetime module to write a function `current_year()` that returns today's year.",
+      "starterCode": "from datetime import date\n\ndef current_year():\n    pass\n",
+      "tests": [
+        { "name": "returns the current year", "code": "import datetime\nassert current_year() == datetime.date.today().year, f'got {current_year()}'" }
+      ],
+      "hints": ["date.today() returns today's date.", "Access .year to get just the year."]
+    },
+    {
+      "id": "cap07_e8",
+      "title": "Largest value read from a file",
+      "prompt": "Write a function `largest_from_file(numbers)` that writes the numbers (one per line) to the file 'values.txt', reads them back and returns the largest value (without using max()).",
+      "starterCode": "def largest_from_file(numbers):\n    pass\n",
+      "tests": [
+        { "name": "largest_from_file([3,7,2]) == 7", "code": "assert largest_from_file([3,7,2]) == 7, f'got {largest_from_file([3,7,2])}'" },
+        { "name": "does not use max()", "code": "import inspect\nassert 'max(' not in inspect.getsource(largest_from_file), 'solve it with a loop, without max()'" }
+      ],
+      "hints": ["Read the numbers back from the file and compare them one by one, keeping the largest.", "Remember to convert each line read into an int."]
+    }
+  ]
+}

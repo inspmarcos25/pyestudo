@@ -1,0 +1,117 @@
+{
+  "id": "cap06",
+  "title": "Error handling",
+  "order": 5,
+  "difficulty": "intermediate",
+  "lessons": [
+    {
+      "id": "cap06_l1",
+      "title": "Why handle errors",
+      "body": "When something goes wrong (dividing by zero, converting invalid text to a number), the program stops with an exception. `try`/`except` lets you catch that error and decide what to do, instead of the program simply crashing.",
+      "example": "def divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 'cannot divide by zero'\n\nprint(divide(10, 2))   # 5.0\nprint(divide(10, 0))   # cannot divide by zero"
+    },
+    {
+      "id": "cap06_l2",
+      "title": "Catching specific error types",
+      "body": "You can have several `except` blocks, one for each expected error type — this handles each problem differently, instead of one generic block that hides anything.",
+      "example": "def convert(text):\n    try:\n        return int(text)\n    except ValueError:\n        return None\n\nprint(convert('42'))   # 42\nprint(convert('abc'))  # None (doesn't break the program)"
+    },
+    {
+      "id": "cap06_l3",
+      "title": "else, finally, and raising your own errors",
+      "body": "The `else` block runs only if there was NO error; `finally` always runs, with or without an error (good for 'cleanup'). You can also raise your own errors with `raise` when a condition doesn't make sense for your program.",
+      "example": "def valid_age(age):\n    if age < 0:\n        raise ValueError('age cannot be negative')\n    return age\n\ntry:\n    valid_age(-5)\nexcept ValueError as error:\n    print(f'error: {error}')\nfinally:\n    print('validation complete')"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "cap06_e1",
+      "title": "Safe division",
+      "prompt": "Write a function `safe_divide(a, b)` that returns a / b, or 0 if b is zero (without crashing with ZeroDivisionError).",
+      "starterCode": "def safe_divide(a, b):\n    pass\n",
+      "tests": [
+        { "name": "safe_divide(10, 2) == 5.0", "code": "assert safe_divide(10, 2) == 5.0, f'got {safe_divide(10, 2)}'" },
+        { "name": "safe_divide(10, 0) == 0", "code": "assert safe_divide(10, 0) == 0" }
+      ],
+      "hints": ["Put the division inside a try.", "Catch ZeroDivisionError and return 0 in that case."]
+    },
+    {
+      "id": "cap06_e2",
+      "title": "Convert to a number",
+      "prompt": "Write a function `to_number(text)` that returns int(text), or None if the text cannot be converted.",
+      "starterCode": "def to_number(text):\n    pass\n",
+      "tests": [
+        { "name": "to_number('10') == 10", "code": "assert to_number('10') == 10, f\"got {to_number('10')}\"" },
+        { "name": "to_number('abc') is None", "code": "assert to_number('abc') is None" }
+      ],
+      "hints": ["int(text) raises ValueError when the text isn't a number."]
+    },
+    {
+      "id": "cap06_e3",
+      "title": "Safely access an index",
+      "prompt": "Write a function `item_or_none(items, index)` that returns items[index], or None if the index doesn't exist (IndexError).",
+      "starterCode": "def item_or_none(items, index):\n    pass\n",
+      "tests": [
+        { "name": "item_or_none([1,2,3], 1) == 2", "code": "assert item_or_none([1,2,3], 1) == 2, f'got {item_or_none([1,2,3], 1)}'" },
+        { "name": "out-of-range index returns None", "code": "assert item_or_none([1,2,3], 10) is None" }
+      ],
+      "hints": ["Catch IndexError with except."]
+    },
+    {
+      "id": "cap06_e4",
+      "title": "Safely look up a key",
+      "prompt": "Write a function `value_or_none(dictionary, key)` that returns dictionary[key], or None if the key doesn't exist (KeyError). Don't use the .get() method — use try/except.",
+      "starterCode": "def value_or_none(dictionary, key):\n    pass\n",
+      "tests": [
+        { "name": "value_or_none({'a':1}, 'a') == 1", "code": "assert value_or_none({'a':1}, 'a') == 1, f\"got {value_or_none({'a':1}, 'a')}\"" },
+        { "name": "missing key returns None", "code": "assert value_or_none({'a':1}, 'b') is None" }
+      ],
+      "hints": ["Accessing a key that doesn't exist raises KeyError."]
+    },
+    {
+      "id": "cap06_e5",
+      "title": "Validate a grade",
+      "prompt": "Write a function `validate_grade(grade)` that raises a ValueError with the message 'invalid grade' if grade is less than 0 or greater than 10, and returns the grade itself otherwise.",
+      "starterCode": "def validate_grade(grade):\n    pass\n",
+      "tests": [
+        { "name": "validate_grade(8) == 8", "code": "assert validate_grade(8) == 8, f'got {validate_grade(8)}'" },
+        { "name": "grade 15 raises ValueError", "code": "try:\n    validate_grade(15)\n    assert False, 'should raise ValueError'\nexcept ValueError:\n    pass" },
+        { "name": "grade -1 raises ValueError", "code": "try:\n    validate_grade(-1)\n    assert False, 'should raise ValueError'\nexcept ValueError:\n    pass" }
+      ],
+      "hints": ["Use if grade < 0 or grade > 10: raise ValueError('invalid grade').", "If it passed validation, just return grade."]
+    },
+    {
+      "id": "cap06_e6",
+      "title": "Average without an empty list",
+      "prompt": "Write a function `safe_average(numbers)` that returns the average of the list, or 0 if the list is empty (avoid ZeroDivisionError).",
+      "starterCode": "def safe_average(numbers):\n    pass\n",
+      "tests": [
+        { "name": "safe_average([2,4,6]) == 4", "code": "assert safe_average([2,4,6]) == 4, f'got {safe_average([2,4,6])}'" },
+        { "name": "empty list == 0", "code": "assert safe_average([]) == 0" }
+      ],
+      "hints": ["sum(numbers)/len(numbers) breaks if the list is empty.", "Handle it with try/except or check first with if."]
+    },
+    {
+      "id": "cap06_e7",
+      "title": "Sum only valid numbers",
+      "prompt": "Write a function `valid_sum(items)` that takes a list of texts, converts each one to a number and returns the sum of the ones successfully converted (ignore the ones that fail).",
+      "starterCode": "def valid_sum(items):\n    pass\n",
+      "tests": [
+        { "name": "valid_sum(['1','2','abc','3']) == 6", "code": "assert valid_sum(['1','2','abc','3']) == 6, f\"got {valid_sum(['1','2','abc','3'])}\"" },
+        { "name": "none valid == 0", "code": "assert valid_sum(['x','y']) == 0" }
+      ],
+      "hints": ["Go through the list with for and use try/except inside the loop.", "When it fails, just continue to the next item."]
+    },
+    {
+      "id": "cap06_e8",
+      "title": "Non-negative age",
+      "prompt": "Write a function `register_age(age)` that raises ValueError with the message 'invalid age' if age is negative, and returns 'registered' otherwise.",
+      "starterCode": "def register_age(age):\n    pass\n",
+      "tests": [
+        { "name": "register_age(20) == 'registered'", "code": "assert register_age(20) == 'registered', f'got {register_age(20)!r}'" },
+        { "name": "age -1 raises ValueError", "code": "try:\n    register_age(-1)\n    assert False, 'should raise ValueError'\nexcept ValueError:\n    pass" }
+      ],
+      "hints": ["Use raise ValueError('invalid age') inside an if."]
+    }
+  ]
+}
