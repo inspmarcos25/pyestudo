@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../app_state.dart';
 import '../../core/progress/achievements.dart';
+import '../../core/theme/duo_theme.dart';
 
-/// Visão geral do progresso: sequência de dias, conquistas e % por capítulo.
+/// Visão geral do progresso no estilo Duolingo: card de ofensiva em
+/// destaque, grid de estatísticas, medalhas de conquistas e barras por
+/// capítulo.
 class ProgressScreen extends StatelessWidget {
   final AppState state;
 
@@ -14,122 +17,134 @@ class ProgressScreen extends StatelessWidget {
     return ListenableBuilder(
       listenable: state,
       builder: (context, _) {
+        final duo = DuoColors.of(context);
         final total = state.chapters.fold<int>(
           0,
           (s, c) => s + c.exercises.length,
         );
         final done = state.completed.length;
+        final chaptersWithExercises = state.chapters
+            .where((c) => c.exercises.isNotEmpty)
+            .length;
         final progress = AchievementProgress(
           completedCount: done,
           chaptersCompleted: state.chaptersFullyCompleted,
-          totalChapters: state.chapters
-              .where((c) => c.exercises.isNotEmpty)
-              .length,
+          totalChapters: chaptersWithExercises,
           streak: state.streak,
         );
+        final unlockedCount = achievements
+            .where((a) => a.isUnlocked(progress))
+            .length;
         return Scaffold(
-          appBar: AppBar(title: const Text('Progresso')),
-          body: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      label: 'Progresso geral: $done de $total exercícios',
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Text(
-                                '$done / $total',
-                                style: Theme.of(context).textTheme.displaySmall,
-                              ),
-                              const Text('exercícios'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+          backgroundColor: duo.background,
+          body: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 8,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Semantics(
-                      label: state.streak > 0
-                          ? 'Sequência de ${state.streak} dias estudando'
-                          : 'Sem sequência ativa hoje',
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.local_fire_department,
-                                    color: state.streak > 0
-                                        ? Colors.deepOrange
-                                        : Theme.of(context).disabledColor,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '${state.streak}',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.displaySmall,
-                                  ),
-                                ],
-                              ),
-                              const Text('dias seguidos'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Conquistas',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 2.6,
-                children: [
-                  for (final a in achievements)
-                    _AchievementChip(
-                      achievement: a,
-                      unlocked: a.isUnlocked(progress),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Text('Capítulos', style: Theme.of(context).textTheme.titleMedium),
-              for (final chapter in state.chapters)
-                ListTile(
-                  title: Text('${chapter.order}. ${chapter.title}'),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: LinearProgressIndicator(
-                      value: state.chapterProgress(chapter),
-                      minHeight: 8,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  trailing: Text(
-                    '${(state.chapterProgress(chapter) * 100).round()}%',
+                  child: Text(
+                    'Seu progresso',
+                    style: DuoText.display.copyWith(color: duo.text),
                   ),
                 ),
-            ],
+                const SizedBox(height: 12),
+                _StreakHero(streak: state.streak),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _StatCard(
+                        icon: Icons.check_circle_rounded,
+                        iconColor: DuoPalette.green,
+                        value: '$done / $total',
+                        label: 'exercícios',
+                        semantics:
+                            'Progresso geral: $done de $total exercícios',
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _StatCard(
+                        icon: Icons.auto_stories_rounded,
+                        iconColor: DuoPalette.blue,
+                        value:
+                            '${state.chaptersFullyCompleted} / '
+                            '$chaptersWithExercises',
+                        label: 'capítulos',
+                        semantics:
+                            'Capítulos completos: '
+                            '${state.chaptersFullyCompleted} de '
+                            '$chaptersWithExercises',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _StatCard(
+                        icon: Icons.workspace_premium_rounded,
+                        iconColor: DuoPalette.gold,
+                        value: '$unlockedCount / ${achievements.length}',
+                        label: 'conquistas',
+                        semantics:
+                            'Conquistas desbloqueadas: $unlockedCount de '
+                            '${achievements.length}',
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _StatCard(
+                        icon: Icons.track_changes_rounded,
+                        iconColor: DuoPalette.purple,
+                        value: total == 0
+                            ? '0%'
+                            : '${(done / total * 100).round()}%',
+                        label: 'do curso',
+                        semantics: total == 0
+                            ? 'Curso 0% concluído'
+                            : 'Curso ${(done / total * 100).round()}% '
+                                  'concluído',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 28),
+                _SectionTitle('Conquistas'),
+                const SizedBox(height: 12),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        mainAxisExtent: 96,
+                      ),
+                  itemCount: achievements.length,
+                  itemBuilder: (context, i) => _AchievementBadge(
+                    achievement: achievements[i],
+                    color: duoUnitColors[i % duoUnitColors.length],
+                    unlocked: achievements[i].isUnlocked(progress),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                _SectionTitle('Capítulos'),
+                const SizedBox(height: 12),
+                for (final chapter in state.chapters)
+                  _ChapterProgressCard(
+                    title: '${chapter.order}. ${chapter.title}',
+                    unit: duoUnitColorFor(chapter.order),
+                    value: state.chapterProgress(chapter),
+                  ),
+              ],
+            ),
           ),
         );
       },
@@ -137,52 +152,296 @@ class ProgressScreen extends StatelessWidget {
   }
 }
 
-class _AchievementChip extends StatelessWidget {
-  final Achievement achievement;
-  final bool unlocked;
+class _SectionTitle extends StatelessWidget {
+  final String text;
 
-  const _AchievementChip({required this.achievement, required this.unlocked});
+  const _SectionTitle(this.text);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final fg = unlocked ? theme.colorScheme.primary : theme.disabledColor;
+    final duo = DuoColors.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Text(text, style: DuoText.title.copyWith(color: duo.text)),
+    );
+  }
+}
+
+/// Card laranja em destaque com a chama e os dias seguidos.
+class _StreakHero extends StatelessWidget {
+  final int streak;
+
+  const _StreakHero({required this.streak});
+
+  @override
+  Widget build(BuildContext context) {
+    final duo = DuoColors.of(context);
+    final active = streak > 0;
     return Semantics(
-      label:
-          '${achievement.title}: ${achievement.description}'
-          '${unlocked ? ' (desbloqueada)' : ' (bloqueada)'}',
-      child: Card(
-        color: unlocked
-            ? theme.colorScheme.primary.withValues(alpha: 0.08)
-            : null,
+      label: active
+          ? 'Sequência de $streak dias estudando'
+          : 'Sem sequência ativa hoje',
+      child: DuoButton3D(
+        color: active ? DuoPalette.orange : duo.surface,
+        shadowColor: active ? DuoPalette.orangeShadow : duo.lockedShadow,
+        borderRadius: BorderRadius.circular(20),
+        depth: 5,
+        border: active ? null : Border.all(color: duo.border, width: 2),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           child: Row(
             children: [
-              Icon(achievement.icon, color: fg, size: 22),
-              const SizedBox(width: 8),
+              Icon(
+                Icons.local_fire_department_rounded,
+                size: 56,
+                color: active ? Colors.white : duo.lockedIcon,
+              ),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      achievement.title,
-                      style: theme.textTheme.labelLarge?.copyWith(color: fg),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      active
+                          ? (streak == 1
+                                ? '1 dia de sequência'
+                                : '$streak dias seguidos')
+                          : 'Sem sequência',
+                      style: DuoText.stat.copyWith(
+                        color: active ? Colors.white : duo.text,
+                      ),
                     ),
+                    const SizedBox(height: 4),
                     Text(
-                      achievement.description,
-                      style: theme.textTheme.labelSmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      active
+                          ? 'Continue assim! Resolva um exercício '
+                                'por dia para manter a chama acesa.'
+                          : 'Resolva um exercício hoje para '
+                                'acender a chama!',
+                      style: DuoText.body.copyWith(
+                        color: active
+                            ? Colors.white.withValues(alpha: 0.9)
+                            : duo.muted,
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Card de estatística com borda, ícone colorido e número grande.
+class _StatCard extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String value;
+  final String label;
+  final String semantics;
+
+  const _StatCard({
+    required this.icon,
+    required this.iconColor,
+    required this.value,
+    required this.label,
+    required this.semantics,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final duo = DuoColors.of(context);
+    return Semantics(
+      label: semantics,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: duo.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: duo.border, width: 2),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 30, color: iconColor),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: DuoText.stat.copyWith(
+                      color: duo.text,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: DuoText.small.copyWith(color: duo.muted),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Medalha de conquista: quadradinho colorido quando desbloqueada,
+/// acinzentado com cadeado quando ainda não.
+class _AchievementBadge extends StatelessWidget {
+  final Achievement achievement;
+  final DuoUnitColor color;
+  final bool unlocked;
+
+  const _AchievementBadge({
+    required this.achievement,
+    required this.color,
+    required this.unlocked,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final duo = DuoColors.of(context);
+    return Semantics(
+      label:
+          '${achievement.title}: ${achievement.description}'
+          '${unlocked ? ' (desbloqueada)' : ' (bloqueada)'}',
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: duo.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: unlocked
+                ? color.main.withValues(alpha: 0.55)
+                : duo.border,
+            width: 2,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: unlocked ? color.main : duo.locked,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: unlocked ? color.shadow : duo.lockedShadow,
+                    offset: const Offset(0, 3),
+                    blurRadius: 0,
+                  ),
+                ],
+              ),
+              child: Icon(
+                unlocked ? achievement.icon : Icons.lock_rounded,
+                size: 24,
+                color: unlocked ? Colors.white : duo.lockedIcon,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    achievement.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: DuoText.bold.copyWith(
+                      fontSize: 14,
+                      height: 1.15,
+                      color: unlocked ? duo.text : duo.muted,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    achievement.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: DuoText.small.copyWith(
+                      fontSize: 11.5,
+                      color: duo.muted,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Card de capítulo com barra de progresso gordinha na cor da unidade.
+class _ChapterProgressCard extends StatelessWidget {
+  final String title;
+  final DuoUnitColor unit;
+  final double value;
+
+  const _ChapterProgressCard({
+    required this.title,
+    required this.unit,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final duo = DuoColors.of(context);
+    final percent = (value * 100).round();
+    return Semantics(
+      label: '$title: $percent% concluído',
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: duo.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: duo.border, width: 2),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: DuoText.bold.copyWith(color: duo.text),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                if (percent == 100)
+                  const Icon(
+                    Icons.emoji_events_rounded,
+                    size: 20,
+                    color: DuoPalette.gold,
+                  )
+                else
+                  Text(
+                    '$percent%',
+                    style: DuoText.bold.copyWith(color: unit.main),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            DuoProgressBar(value: value, color: unit.main),
+          ],
         ),
       ),
     );

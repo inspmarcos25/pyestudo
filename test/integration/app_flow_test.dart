@@ -11,8 +11,10 @@ import 'package:app_python/core/storage/database.dart';
 import 'package:app_python/core/storage/progress_repository.dart';
 import 'package:app_python/core/sync/firestore_sync_service.dart';
 import 'package:app_python/data/content_loader.dart';
+import 'package:app_python/features/exercises/exercises_screen.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -99,16 +101,24 @@ void main() {
       await tester.tap(find.text('Exercícios'));
       await tester.pumpAndSettle();
 
-      // Expande o primeiro capítulo e abre o primeiro exercício.
-      await tester.tap(
-        find.text('${firstChapter.order}. ${firstChapter.title}'),
-      );
-      await tester.pumpAndSettle();
+      // A trilha mostra todos os nós do capítulo; rola até o primeiro
+      // exercício e abre.
       expect(
         await progressRepository.completedExercises(),
         isNot(contains(firstExercise.id)),
       );
 
+      final exercisesList = find.descendant(
+        of: find.byType(ExercisesScreen),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        find.text(firstExercise.title),
+        200,
+        scrollable: exercisesList.first,
+      );
+      await tester.ensureVisible(find.text(firstExercise.title));
+      await tester.pumpAndSettle();
       await tester.tap(find.text(firstExercise.title));
       await tester.pumpAndSettle();
 
@@ -127,7 +137,11 @@ void main() {
       await tester.tap(find.text('Progresso'));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('1 / '), findsOneWidget);
+      final totalExercises = chapters.fold<int>(
+        0,
+        (s, c) => s + c.exercises.length,
+      );
+      expect(find.text('1 / $totalExercises'), findsOneWidget);
 
       // codeRepository não usado diretamente neste teste além de confirmar
       // que o isolamento por usuário não quebra a listagem de arquivos.
