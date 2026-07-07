@@ -80,15 +80,17 @@ class DuoColors {
     lockedIcon: Color(0xFF7C8F98),
   );
 
+  // Fundo levemente tintado (azul-esverdeado frio) para os cards brancos
+  // "descolarem" — antes fundo e surface eram ambos branco e tudo achatava.
   static const light = DuoColors(
-    background: Color(0xFFFFFFFF),
+    background: Color(0xFFEEF3F5),
     surface: Color(0xFFFFFFFF),
-    border: Color(0xFFE5E5E5),
-    text: Color(0xFF3C3C3C),
-    muted: Color(0xFF707070),
-    locked: Color(0xFFE5E5E5),
-    lockedShadow: Color(0xFFCFCFCF),
-    lockedIcon: Color(0xFF9E9E9E),
+    border: Color(0xFFDCE3E6),
+    text: Color(0xFF2B3D45),
+    muted: Color(0xFF6B7C84),
+    locked: Color(0xFFE1E7EA),
+    lockedShadow: Color(0xFFC7D0D4),
+    lockedIcon: Color(0xFF9AA8AE),
   );
 
   static DuoColors of(BuildContext context) =>
