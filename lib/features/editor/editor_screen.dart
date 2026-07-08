@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../app_state.dart';
-import '../../core/theme/ide_theme.dart';
 import '../console/console_panel.dart';
-import '../settings/language_selector.dart';
+import '../settings/settings_screen.dart';
 import 'code_editor_widget.dart';
 
 /// Tela principal estilo IDE: toolbar, editor, console inferior e gaveta
@@ -135,41 +134,42 @@ class _EditorScreenState extends State<EditorScreen> {
               style: const TextStyle(fontSize: 16),
             ),
             actions: [
-              const LanguageSelector(),
-              IconButton(
-                tooltip: state.brightness == Brightness.dark
-                    ? strings.lightTheme
-                    : strings.darkTheme,
-                icon: Icon(
-                  state.brightness == Brightness.dark
-                      ? Icons.light_mode_outlined
-                      : Icons.dark_mode_outlined,
-                ),
-                onPressed: state.toggleBrightness,
-              ),
               IconButton(
                 tooltip: strings.saveFile,
                 icon: const Icon(Icons.save_outlined),
                 onPressed: state.saveCurrentFile,
               ),
-              IconButton(
-                tooltip: strings.runCode,
-                icon: state.isRunning
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Icon(
-                        Icons.play_arrow,
-                        color: IdeColors.of(context).successColor,
-                      ),
-                onPressed: state.isRunning ? null : _run,
+              // Executar é A ação do editor: botão cheio, não iconezinho.
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFF1B8A3E),
+                    foregroundColor: Colors.white,
+                  ),
+                  icon: state.isRunning
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Icon(Icons.play_arrow_rounded),
+                  label: Text(strings.runLabel),
+                  onPressed: state.isRunning ? null : _run,
+                ),
               ),
               IconButton(
-                tooltip: strings.signOut,
-                icon: const Icon(Icons.logout),
-                onPressed: () => state.signOut(),
+                tooltip: strings.settingsTitle,
+                icon: const Icon(Icons.settings_outlined),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SettingsScreen(state: state),
+                  ),
+                ),
               ),
             ],
           ),

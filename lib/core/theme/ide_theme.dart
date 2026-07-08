@@ -6,7 +6,9 @@ ThemeData buildIdeTheme({required Brightness brightness}) {
   final isDark = brightness == Brightness.dark;
   final background = isDark ? const Color(0xFF1E1E1E) : const Color(0xFFFAFAFA);
   final surface = isDark ? const Color(0xFF252526) : const Color(0xFFFFFFFF);
-  final accent = isDark ? const Color(0xFF4FC3F7) : const Color(0xFF0277BD);
+  // Laranja da landing (terminal-HUD): amarra a marca entre site e app.
+  // No claro, tom mais escuro para manter contraste AA com texto branco.
+  final accent = isDark ? const Color(0xFFFF6A3D) : const Color(0xFFBC3E10);
   final error = isDark ? const Color(0xFFFF6E6E) : const Color(0xFFB3261E);
 
   final base = isDark
@@ -84,9 +86,10 @@ class IdeColors {
       Theme.of(context).brightness == Brightness.dark ? dark : light;
 }
 
-/// Estilo monoespaçado do editor e do console (escala com a fonte do sistema).
+/// Estilo monoespaçado do editor e do console (escala com a fonte do
+/// sistema). JetBrains Mono: a mesma fonte de código da landing.
 const codeTextStyle = TextStyle(
-  fontFamily: 'monospace',
+  fontFamily: 'JetBrainsMono',
   fontSize: 16,
   height: 1.4,
 );
