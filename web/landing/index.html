@@ -7,6 +7,12 @@
 <meta name="description" content="Editor Python real no navegador (Pyodide), trilha de exercícios com correção automática, sem IA respondendo por você. Grátis, para sempre.">
 <meta property="og:title" content="PyEstudo // Escreva código de verdade">
 <meta property="og:description" content="Editor Python real no navegador, sem atalhos de IA. Grátis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyestudo-app.netlify.app/landing/">
+<meta property="og:image" content="https://pyestudo-app.netlify.app/landing/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +33,7 @@
     --line-2:#333333;
     --text:#F4F4F1;
     --muted:#8C8C8C;
-    --muted-2:#5A5A5A;
+    --muted-2:#757575; /* mínimo AA sobre #0A0A0A em texto pequeno */
     --accent:#EA5124;
     --accent-2:#FF6a3d;
     --green:#43D17A;
@@ -113,8 +119,8 @@
     transition:color .15s, background .15s;
   }
   .cell.initiate:hover{ background:var(--accent); color:#0A0A0A; }
-  .cell.initiate .menu{ display:inline-flex; flex-direction:column; gap:3px; margin-left:14px; }
-  .cell.initiate .menu span{ width:18px; height:2px; background:currentColor; }
+  /* seta de "sair para o app" — antes era um falso hambúrguer de menu */
+  .cell.initiate .go{ margin-left:12px; font-size:16px; line-height:1; }
   @media(max-width:820px){
     .statusbar{ grid-template-columns: 1fr auto; }
     .cell.telemetry{ display:none; }
@@ -148,7 +154,7 @@
     margin:0;
   }
   .ln.fill{ color:var(--text); }
-  .ln.mut{ color:#2c2c2c; }
+  .ln.mut{ color:#3d3d3d; } /* ghost proposital, mas ainda legível de perto */
   .ln.outline{
     color:transparent;
     -webkit-text-stroke:1.5px var(--text);
@@ -256,10 +262,16 @@
   .fxlist{ }
   .fx{
     border-top:1px solid var(--line);
-    cursor:pointer;
   }
   .fx:last-child{ border-bottom:1px solid var(--line); }
-  .fx-row{ display:grid; grid-template-columns: 90px 1fr auto 60px; align-items:center; gap:20px; padding:26px 24px; transition:background .18s; }
+  /* linha do acordeão é um <button> de verdade: teclado + leitor de tela */
+  .fx-row{
+    display:grid; grid-template-columns: 90px 1fr auto 60px; align-items:center;
+    gap:20px; padding:26px 24px; transition:background .18s;
+    width:100%; background:none; border:0; color:inherit; font:inherit;
+    text-align:left; cursor:pointer;
+  }
+  .fx-row:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; }
   .fx:hover .fx-row{ background:#111; }
   .fx-num{ font-family:var(--mono); font-size:14px; color:var(--accent); }
   .fx-name{ font-family:var(--display); font-weight:800; text-transform:uppercase; font-size:clamp(1.5rem,3.4vw,2.6rem); letter-spacing:-0.01em; }
@@ -318,7 +330,6 @@
     border-bottom:4px solid #0A0A0A; padding-bottom:6px; transition:opacity .15s, transform .15s;
   }
   .cta-links a:hover{ opacity:.6; transform:translateY(-3px); }
-  .cta-links .sep{ font-family:var(--mono); font-weight:700; font-size:clamp(1rem,3vw,2rem); }
   .cta-top{ position:absolute; top:22px; left:24px; right:24px; display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(0,0,0,0.55); }
 
   /* ===== FOOTER ===== */
@@ -349,7 +360,7 @@
   <div class="cell telemetry"><span class="dot"></span> RUNTIME: <span id="latency">PYODIDE // WASM</span></div>
   <div class="cell telemetry">LANG: <span id="loc">PT-BR // EN-US</span></div>
   <a class="cell initiate" href="https://pyestudo-app.netlify.app">ABRIR_APP
-    <span class="menu" aria-hidden="true"><span></span><span></span><span></span></span>
+    <span class="go" aria-hidden="true">↗</span>
   </a>
 </header>
 
@@ -464,48 +475,48 @@
     </div>
     <div class="fxlist">
       <div class="fx">
-        <div class="fx-row">
+        <button class="fx-row" aria-expanded="false">
           <span class="fx-num">/01</span>
           <span class="fx-name display">Editor Python</span>
           <span class="fx-desc">Pyodide // WASM</span>
           <span class="fx-plus"><span class="bar"></span></span>
-        </div>
+        </button>
         <div class="fx-detail"><div class="fx-detail-inner">Um interpretador Python de verdade rodando dentro do navegador. Console interativo, input() funcionando, arquivos salvos e sincronizados com a sua conta. Nada de sandbox simulado.</div></div>
       </div>
       <div class="fx">
-        <div class="fx-row">
+        <button class="fx-row" aria-expanded="false">
           <span class="fx-num">/02</span>
           <span class="fx-name display">Trilha Gamificada</span>
           <span class="fx-desc">8 Módulos</span>
           <span class="fx-plus"><span class="bar"></span></span>
-        </div>
+        </button>
         <div class="fx-detail"><div class="fx-detail-inner">Lições e exercícios organizados como um caminho — da lógica de programação ao Python intermediário. Você sempre sabe exatamente qual é o próximo passo.</div></div>
       </div>
       <div class="fx">
-        <div class="fx-row">
+        <button class="fx-row" aria-expanded="false">
           <span class="fx-num">/03</span>
           <span class="fx-name display">Correção Automática</span>
           <span class="fx-desc">Assert // Feedback</span>
           <span class="fx-plus"><span class="bar"></span></span>
-        </div>
+        </button>
         <div class="fx-detail"><div class="fx-detail-inner">Cada exercício roda testes reais sobre o seu código e mostra o resultado teste a teste. Travou? Peça uma dica — nunca a resposta pronta.</div></div>
       </div>
       <div class="fx">
-        <div class="fx-row">
+        <button class="fx-row" aria-expanded="false">
           <span class="fx-num">/04</span>
           <span class="fx-name display">Bilíngue PT / EN</span>
           <span class="fx-desc">Interface + Curso</span>
           <span class="fx-plus"><span class="bar"></span></span>
-        </div>
+        </button>
         <div class="fx-detail"><div class="fx-detail-inner">Interface e curso inteiro traduzidos. Troque de idioma quando quiser — o seu progresso continua valendo.</div></div>
       </div>
       <div class="fx">
-        <div class="fx-row">
+        <button class="fx-row" aria-expanded="false">
           <span class="fx-num">/05</span>
           <span class="fx-name display">Zero IA</span>
           <span class="fx-desc">No Autocomplete</span>
           <span class="fx-plus"><span class="bar"></span></span>
-        </div>
+        </button>
         <div class="fx-detail"><div class="fx-detail-inner">Sem autocomplete que termina sua função, sem chat que resolve o exercício. A única forma de passar num teste é entender o problema — por isso funciona.</div></div>
       </div>
     </div>
@@ -527,8 +538,6 @@
     </div>
     <div class="mark display">PYESTUDO</div>
     <div class="cta-links">
-      <a href="https://pyestudo-app.netlify.app">Abrir o App</a>
-      <span class="sep">///</span>
       <a href="https://pyestudo-app.netlify.app">Começar Agora</a>
     </div>
   </section>
@@ -572,9 +581,14 @@
       }).join('');
     }
 
-    // Acordeão das core functions
+    // Acordeão das core functions (botões reais, com estado para leitores
+    // de tela)
     document.querySelectorAll('.fx').forEach(function(fx){
-      fx.addEventListener('click', function(){ fx.classList.toggle('open'); });
+      var btn = fx.querySelector('.fx-row');
+      btn.addEventListener('click', function(){
+        var open = fx.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     });
 
     // Telemetria "viva": alterna leituras no topo, dando sensação de sistema ativo.
