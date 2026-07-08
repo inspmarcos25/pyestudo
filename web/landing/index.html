@@ -226,12 +226,27 @@
   /* arte 1: código */
   .art-code{ padding:52px 20px; font-family:var(--mono); font-size:12px; line-height:1.9; color:#4a4a4a; }
   .art-code .k{ color:#6f6f6f; } .mod:hover .art-code .k{ color:var(--accent); }
-  /* arte 2: grade de pontos */
-  .art-dots{ background-image:radial-gradient(var(--line-2) 1px, transparent 1px); background-size:20px 20px; }
-  /* arte 3: wireframe hexagonal */
-  .art-hex{ background:
-    repeating-linear-gradient(60deg, transparent 0 22px, rgba(255,255,255,0.05) 22px 23px),
-    repeating-linear-gradient(-60deg, transparent 0 22px, rgba(255,255,255,0.05) 22px 23px); }
+
+  /* arte 2: trilha de progresso (nós conectados) */
+  .art-trail{ padding:52px 24px; display:flex; flex-direction:column; gap:0;
+    background-image:radial-gradient(var(--line) 1px, transparent 1px); background-size:22px 22px; }
+  .art-trail .step{ display:flex; align-items:center; gap:14px; }
+  .art-trail .node{ position:relative; width:16px; height:16px; border-radius:50%; border:2px solid var(--line-2); background:var(--bg-2); flex:none; }
+  .art-trail .step.done .node{ border-color:var(--green); background:var(--green); box-shadow:0 0 10px rgba(67,209,122,0.5); }
+  .art-trail .step.now .node{ border-color:var(--accent); background:var(--accent); box-shadow:0 0 12px var(--accent); }
+  .art-trail .link{ width:2px; height:26px; margin-left:7px; background:var(--line-2); }
+  .art-trail .step.done + .link{ background:var(--green); }
+  .art-trail .txt{ font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:#4a4a4a; }
+  .art-trail .step.done .txt{ color:#6f6f6f; }
+  .art-trail .step.now .txt{ color:var(--accent); }
+  .mod:hover .art-trail .step:not(.done):not(.now) .node{ border-color:var(--muted); }
+
+  /* arte 3: saída de testes */
+  .art-tests{ padding:52px 22px; font-family:var(--mono); font-size:12px; line-height:2; color:#4a4a4a; }
+  .art-tests .pass{ color:var(--green); }
+  .art-tests .fail{ color:var(--accent); }
+  .art-tests .sum{ margin-top:10px; color:#6f6f6f; }
+  .mod:hover .art-tests .sum{ color:var(--accent); }
   @media(max-width:820px){ .modgrid{ grid-template-columns:1fr; } .mod{ border-right:none; border-bottom:1px solid var(--line); aspect-ratio:16/9; } }
 
   /* ===== CORE FUNCTIONS (lista numerada / acordeão) ===== */
@@ -416,12 +431,25 @@
         <div class="caption display">Python real,<br>no navegador</div>
       </div>
       <div class="mod rv">
-        <div class="art art-dots"></div>
+        <div class="art art-trail mono">
+          <div class="step done"><span class="node"></span><span class="txt">lógica</span></div>
+          <div class="link"></div>
+          <div class="step done"><span class="node"></span><span class="txt">fundamentos</span></div>
+          <div class="link"></div>
+          <div class="step now"><span class="node"></span><span class="txt">funções</span></div>
+          <div class="link"></div>
+          <div class="step"><span class="node"></span><span class="txt">numpy · pandas</span></div>
+        </div>
         <div class="num">/ 02 — TRILHA</div>
         <div class="caption display">Do zero ao<br>avançado</div>
       </div>
       <div class="mod rv">
-        <div class="art art-hex"></div>
+        <div class="art art-tests mono">
+          <div><span class="pass">✓ PASS</span> test_media_par</div>
+          <div><span class="pass">✓ PASS</span> test_media_neg</div>
+          <div><span class="fail">✗ FAIL</span> test_lista_vazia</div>
+          <div class="sum">&gt; 2 passed, 1 failed</div>
+        </div>
         <div class="num">/ 03 — TESTES</div>
         <div class="caption display">Correção<br>automática</div>
       </div>
