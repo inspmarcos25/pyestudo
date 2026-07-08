@@ -61,9 +61,7 @@ class CodeEditorWidgetState extends State<CodeEditorWidget> {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: AppStrings.of(
-        LocaleScope.languageOf(context),
-      ).codeEditorSemantics,
+      label: AppStrings.of(LocaleScope.languageOf(context)).codeEditorSemantics,
       textField: true,
       child: CodeTheme(
         data: CodeThemeData(

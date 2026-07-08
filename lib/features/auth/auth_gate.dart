@@ -60,10 +60,7 @@ class _AuthGateState extends State<AuthGate> {
   Future<AppState> _buildState(String uid) async {
     final codeRepository = CodeRepository(widget.db, userId: uid);
     final progressRepository = ProgressRepository(widget.db, userId: uid);
-    final syncService = FirestoreSyncService(
-      uid,
-      firestore: widget.firestore,
-    );
+    final syncService = FirestoreSyncService(uid, firestore: widget.firestore);
     await SyncCoordinator(
       codeRepository: codeRepository,
       progressRepository: progressRepository,

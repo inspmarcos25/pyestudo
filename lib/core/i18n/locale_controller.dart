@@ -36,8 +36,7 @@ class LocaleScope extends InheritedNotifier<LocaleController> {
   }) : super(notifier: controller);
 
   static LocaleController of(BuildContext context) {
-    final scope = context
-        .dependOnInheritedWidgetOfExactType<LocaleScope>();
+    final scope = context.dependOnInheritedWidgetOfExactType<LocaleScope>();
     assert(scope != null, 'Nenhum LocaleScope encontrado no contexto');
     return scope!.notifier!;
   }
@@ -45,8 +44,7 @@ class LocaleScope extends InheritedNotifier<LocaleController> {
   /// Idioma atual, com fallback para português quando não há [LocaleScope]
   /// no contexto (ex.: widgets montados isoladamente em testes).
   static AppLanguage languageOf(BuildContext context) {
-    final scope = context
-        .dependOnInheritedWidgetOfExactType<LocaleScope>();
+    final scope = context.dependOnInheritedWidgetOfExactType<LocaleScope>();
     return scope?.notifier?.language ?? AppLanguage.pt;
   }
 }

@@ -66,11 +66,7 @@ const achievements = <Achievement>[
     icon: Icons.whatshot_outlined,
     isUnlocked: _streak3,
   ),
-  Achievement(
-    id: 'streak_7',
-    icon: Icons.whatshot,
-    isUnlocked: _streak7,
-  ),
+  Achievement(id: 'streak_7', icon: Icons.whatshot, isUnlocked: _streak7),
 ];
 
 bool _atLeast1Exercise(AchievementProgress p) => p.completedCount >= 1;
