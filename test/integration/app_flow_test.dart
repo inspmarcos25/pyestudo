@@ -129,7 +129,8 @@ void main() {
 
       expect(find.text(firstLesson.body), findsOneWidget);
 
-      await tester.tap(find.text('Abrir no editor'));
+      // O botão fica fixo no rodapé da lição, sempre visível.
+      await tester.tap(find.text('ABRIR NO EDITOR'));
       await tester.pumpAndSettle();
 
       // Volta pra aba Editor com o exemplo da lição carregado.
@@ -161,7 +162,7 @@ void main() {
       await tester.tap(find.text(firstExercise.title));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Verificar'));
+      await tester.tap(find.text('VERIFICAR'));
       await tester.pumpAndSettle();
 
       expect(find.text('Exercício concluído!'), findsOneWidget);
@@ -170,11 +171,9 @@ void main() {
         contains(firstExercise.id),
       );
 
-      // Volta e confere que a aba Progresso reflete a conclusão.
-      // (Usa o BackButton por tipo em vez de tester.pageBack(): com o app
-      // em português, o tooltip do botão é "Voltar", e pageBack() procura
-      // fixo por "Back".)
-      await tester.tap(find.byType(BackButton));
+      // Volta pelo "CONTINUAR" (o botão de verificar vira continuar quando
+      // todos os testes passam) e confere a aba Progresso.
+      await tester.tap(find.text('CONTINUAR'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Progresso'));
       await tester.pumpAndSettle();

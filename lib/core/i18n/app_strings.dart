@@ -61,18 +61,24 @@ abstract class AppStrings {
   String get exerciseComplete;
   String get hint;
   String get check;
+  String get exerciseWordUpper; // rótulo pequeno em caixa alta no cabeçalho
+  String get continueLabel;
+  String get almostThere; // título do painel quando algum teste falha
+  String testsPassedCount(int passed, int total);
   String get executionLabel; // nome do "teste" quando a execução falha
   String runFailed(Object error);
   String checkFailed(Object error);
 
   // Tela de lição
   String get openInEditor;
+  String get lessonWordUpper; // rótulo pequeno em caixa alta no cabeçalho
 
   // Editor
   String get lightTheme;
   String get darkTheme;
   String get saveFile;
   String get runCode;
+  String get runLabel; // rótulo curto do botão Executar no toolbar
   String get signOut;
   String get newFile;
   String get newFileDefaultName;
@@ -122,6 +128,9 @@ abstract class AppStrings {
   String get languageLabel;
   String get chooseLanguage;
 
+  // Ajustes
+  String get settingsTitle;
+
   // Código inicial do editor para um usuário novo
   String get defaultCode;
 }
@@ -168,8 +177,7 @@ class _PtStrings extends AppStrings {
   @override
   String exerciseSemantics(String title) => 'Exercício: $title';
   @override
-  String exerciseDoneSemantics(String title) =>
-      'Exercício concluído: $title';
+  String exerciseDoneSemantics(String title) => 'Exercício concluído: $title';
 
   @override
   String get learnTitle => 'Aprenda';
@@ -254,6 +262,15 @@ class _PtStrings extends AppStrings {
   @override
   String get check => 'Verificar';
   @override
+  String get exerciseWordUpper => 'EXERCÍCIO';
+  @override
+  String get continueLabel => 'Continuar';
+  @override
+  String get almostThere => 'Quase lá!';
+  @override
+  String testsPassedCount(int passed, int total) =>
+      '$passed de $total testes passaram';
+  @override
   String get executionLabel => 'Execução';
   @override
   String runFailed(Object error) => 'não foi possível executar: $error';
@@ -262,6 +279,8 @@ class _PtStrings extends AppStrings {
 
   @override
   String get openInEditor => 'Abrir no editor';
+  @override
+  String get lessonWordUpper => 'LIÇÃO';
 
   @override
   String get lightTheme => 'Tema claro';
@@ -271,6 +290,8 @@ class _PtStrings extends AppStrings {
   String get saveFile => 'Salvar arquivo';
   @override
   String get runCode => 'Executar código';
+  @override
+  String get runLabel => 'Executar';
   @override
   String get signOut => 'Sair da conta';
   @override
@@ -364,6 +385,8 @@ class _PtStrings extends AppStrings {
   String get languageLabel => 'Idioma';
   @override
   String get chooseLanguage => 'Escolher idioma';
+  @override
+  String get settingsTitle => 'Ajustes';
 
   @override
   String get defaultCode =>
@@ -496,6 +519,15 @@ class _EnStrings extends AppStrings {
   @override
   String get check => 'Check';
   @override
+  String get exerciseWordUpper => 'EXERCISE';
+  @override
+  String get continueLabel => 'Continue';
+  @override
+  String get almostThere => 'Almost there!';
+  @override
+  String testsPassedCount(int passed, int total) =>
+      '$passed of $total tests passed';
+  @override
   String get executionLabel => 'Execution';
   @override
   String runFailed(Object error) => 'could not run: $error';
@@ -504,6 +536,8 @@ class _EnStrings extends AppStrings {
 
   @override
   String get openInEditor => 'Open in editor';
+  @override
+  String get lessonWordUpper => 'LESSON';
 
   @override
   String get lightTheme => 'Light theme';
@@ -513,6 +547,8 @@ class _EnStrings extends AppStrings {
   String get saveFile => 'Save file';
   @override
   String get runCode => 'Run code';
+  @override
+  String get runLabel => 'Run';
   @override
   String get signOut => 'Sign out';
   @override
@@ -597,8 +633,7 @@ class _EnStrings extends AppStrings {
     'email-already-in-use' => 'an account already exists with this email',
     'weak-password' => 'password must be at least 6 characters',
     'sign-in-canceled' => 'sign-in canceled',
-    'unauthorized-domain' =>
-      'this domain is not authorized for Google sign-in',
+    'unauthorized-domain' => 'this domain is not authorized for Google sign-in',
     _ => 'could not sign in: ${fallbackMessage ?? code}',
   };
 
@@ -606,6 +641,8 @@ class _EnStrings extends AppStrings {
   String get languageLabel => 'Language';
   @override
   String get chooseLanguage => 'Choose language';
+  @override
+  String get settingsTitle => 'Settings';
 
   @override
   String get defaultCode =>

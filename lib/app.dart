@@ -113,64 +113,65 @@ class _HomeShellState extends State<HomeShell> {
       builder: (context, _) {
         final strings = AppStrings.of(widget.state.language);
         return Theme(
-        data: buildIdeTheme(brightness: widget.state.brightness),
-        child: Scaffold(
-          body: Stack(
-            children: [
-              // WebView headless que executa o Pyodide (tamanho zero, invisível).
-              if (runtime is PyodideRuntime)
-                Offstage(
-                  child: SizedBox(
-                    width: 1,
-                    height: 1,
-                    child: WebViewWidget(controller: runtime.controller),
+          data: buildIdeTheme(brightness: widget.state.brightness),
+          child: Scaffold(
+            body: Stack(
+              children: [
+                // WebView headless que executa o Pyodide (tamanho zero, invisível).
+                if (runtime is PyodideRuntime)
+                  Offstage(
+                    child: SizedBox(
+                      width: 1,
+                      height: 1,
+                      child: WebViewWidget(controller: runtime.controller),
+                    ),
                   ),
+                IndexedStack(
+                  index: _tab,
+                  children: [
+                    EditorScreen(state: widget.state),
+                    LearnScreen(
+                      state: widget.state,
+                      onOpenInEditor: () => setState(() => _tab = 0),
+                    ),
+                    ExercisesScreen(state: widget.state),
+                    ProgressScreen(state: widget.state),
+                  ],
                 ),
-              IndexedStack(
-                index: _tab,
-                children: [
-                  EditorScreen(state: widget.state),
-                  LearnScreen(
-                    state: widget.state,
-                    onOpenInEditor: () => setState(() => _tab = 0),
-                  ),
-                  ExercisesScreen(state: widget.state),
-                  ProgressScreen(state: widget.state),
-                ],
-              ),
-            ],
+              ],
+            ),
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: _tab,
+              onDestinationSelected: (i) => setState(() => _tab = i),
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.code),
+                  label: strings.editorTab,
+                  tooltip: strings.editorTooltip,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.menu_book_outlined),
+                  selectedIcon: const Icon(Icons.menu_book),
+                  label: strings.learnTab,
+                  tooltip: strings.learnTooltip,
+                ),
+                NavigationDestination(
+                  // Raio (energia/prática), não halter de academia.
+                  icon: const Icon(Icons.bolt_outlined),
+                  selectedIcon: const Icon(Icons.bolt),
+                  label: strings.exercisesTab,
+                  tooltip: strings.exercisesTooltip,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.insights_outlined),
+                  selectedIcon: const Icon(Icons.insights),
+                  label: strings.progressTab,
+                  tooltip: strings.progressTooltip,
+                ),
+              ],
+            ),
           ),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: _tab,
-            onDestinationSelected: (i) => setState(() => _tab = i),
-            destinations: [
-              NavigationDestination(
-                icon: const Icon(Icons.code),
-                label: strings.editorTab,
-                tooltip: strings.editorTooltip,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.menu_book_outlined),
-                selectedIcon: const Icon(Icons.menu_book),
-                label: strings.learnTab,
-                tooltip: strings.learnTooltip,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.fitness_center_outlined),
-                selectedIcon: const Icon(Icons.fitness_center),
-                label: strings.exercisesTab,
-                tooltip: strings.exercisesTooltip,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.insights_outlined),
-                selectedIcon: const Icon(Icons.insights),
-                label: strings.progressTab,
-                tooltip: strings.progressTooltip,
-              ),
-            ],
-          ),
-        ),
-      );
+        );
       },
     );
   }

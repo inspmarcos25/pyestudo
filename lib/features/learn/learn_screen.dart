@@ -5,6 +5,8 @@ import '../../core/i18n/app_strings.dart';
 import '../../core/theme/duo_theme.dart';
 import '../../data/models/models.dart';
 import '../lessons/lesson_screen.dart';
+import '../settings/settings_screen.dart';
+import '../shared/duo_screen_header.dart';
 
 /// Tela "Aprenda": lista os capítulos com suas lições, para o aluno estudar
 /// antes de treinar em Exercícios. Cada lição abre a LessonScreen já
@@ -34,14 +36,15 @@ class LearnScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 8,
-                  ),
-                  child: Text(
-                    strings.learnTitle,
-                    style: DuoText.display.copyWith(color: duo.text),
+                DuoScreenHeader(
+                  title: strings.learnTitle,
+                  streak: state.streak,
+                  strings: strings,
+                  onSettings: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SettingsScreen(state: state),
+                    ),
                   ),
                 ),
                 for (final chapter in state.chapters) ...[
@@ -152,6 +155,7 @@ class _ChapterCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => LessonScreen(
                     lesson: lesson,
+                    chapter: chapter,
                     onOpenExample: () {
                       state.openExample(lesson);
                       onOpenInEditor();

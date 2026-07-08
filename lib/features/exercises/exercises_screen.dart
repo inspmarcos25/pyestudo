@@ -6,6 +6,8 @@ import '../../app_state.dart';
 import '../../core/i18n/app_strings.dart';
 import '../../core/theme/duo_theme.dart';
 import '../../data/models/models.dart';
+import '../settings/settings_screen.dart';
+import '../shared/duo_screen_header.dart';
 import 'exercise_screen.dart';
 
 /// Trilha de aprendizado no estilo Duolingo: cada capítulo é uma "unidade"
@@ -40,7 +42,17 @@ class ExercisesScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
               children: [
-                _ScreenHeader(streak: state.streak, strings: strings),
+                DuoScreenHeader(
+                  title: strings.exercisesTab,
+                  streak: state.streak,
+                  strings: strings,
+                  onSettings: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SettingsScreen(state: state),
+                    ),
+                  ),
+                ),
                 for (final chapter in state.chapters) ...[
                   const SizedBox(height: 20),
                   _UnitBanner(
@@ -60,62 +72,6 @@ class ExercisesScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-/// Título da tela + chip de ofensiva (dias seguidos).
-class _ScreenHeader extends StatelessWidget {
-  final int streak;
-  final AppStrings strings;
-
-  const _ScreenHeader({required this.streak, required this.strings});
-
-  @override
-  Widget build(BuildContext context) {
-    final duo = DuoColors.of(context);
-    final active = streak > 0;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'PyEstudo',
-              style: DuoText.display.copyWith(color: DuoPalette.green),
-            ),
-          ),
-          Semantics(
-            label: strings.streakSemantics(streak),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: duo.surface,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: duo.border, width: 2),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.local_fire_department_rounded,
-                    size: 22,
-                    color: active ? DuoPalette.orange : duo.lockedIcon,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '$streak',
-                    style: DuoText.bold.copyWith(
-                      color: active ? DuoPalette.orange : duo.muted,
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -280,9 +236,7 @@ class _UnitPath extends StatelessWidget {
           width / 2 + math.sin(i * math.pi / 4) * amp,
           _topPad + _nodeSize / 2 + i * _pitch,
         );
-        final centers = [
-          for (var i = 0; i < entries.length; i++) center(i),
-        ];
+        final centers = [for (var i = 0; i < entries.length; i++) center(i)];
         final height = centers.last.dy + _nodeSize / 2 + 28;
 
         return Padding(

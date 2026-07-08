@@ -4,6 +4,8 @@ import '../../app_state.dart';
 import '../../core/i18n/app_strings.dart';
 import '../../core/progress/achievements.dart';
 import '../../core/theme/duo_theme.dart';
+import '../settings/settings_screen.dart';
+import '../shared/duo_screen_header.dart';
 
 /// Visão geral do progresso no estilo Duolingo: card de ofensiva em
 /// destaque, grid de estatísticas, medalhas de conquistas e barras por
@@ -43,14 +45,15 @@ class ProgressScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 8,
-                  ),
-                  child: Text(
-                    strings.progressTitle,
-                    style: DuoText.display.copyWith(color: duo.text),
+                DuoScreenHeader(
+                  title: strings.progressTitle,
+                  streak: state.streak,
+                  strings: strings,
+                  onSettings: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SettingsScreen(state: state),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -124,13 +127,12 @@ class ProgressScreen extends StatelessWidget {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        mainAxisExtent: 96,
-                      ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 96,
+                  ),
                   itemCount: achievements.length,
                   itemBuilder: (context, i) => _AchievementBadge(
                     achievement: achievements[i],
@@ -274,10 +276,7 @@ class _StatCard extends StatelessWidget {
                     value,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: DuoText.stat.copyWith(
-                      color: duo.text,
-                      fontSize: 20,
-                    ),
+                    style: DuoText.stat.copyWith(color: duo.text, fontSize: 20),
                   ),
                   Text(
                     label,
@@ -323,9 +322,7 @@ class _AchievementBadge extends StatelessWidget {
           color: duo.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: unlocked
-                ? color.main.withValues(alpha: 0.55)
-                : duo.border,
+            color: unlocked ? color.main.withValues(alpha: 0.55) : duo.border,
             width: 2,
           ),
         ),
