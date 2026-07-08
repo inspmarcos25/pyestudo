@@ -518,28 +518,16 @@
 </footer>
 
 <script>
-  // Ano
-  document.getElementById('year').textContent = '© ' + new Date().getFullYear();
-
-  // Telemetria "viva": alterna leituras no topo, dando sensação de sistema ativo.
   (function(){
-    const runtimes = ['PYODIDE // WASM','CPYTHON 3.12','SANDBOX // OK','LATENCY: 12MS'];
-    const langs = ['PT-BR // EN-US','LOCALE: AUTO','I18N: 2 LOCALES','UTF-8'];
-    let i = 0;
-    const lat = document.getElementById('latency');
-    const loc = document.getElementById('loc');
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      setInterval(function(){
-        i++;
-        lat.textContent = runtimes[i % runtimes.length];
-        loc.textContent = langs[i % langs.length];
-      }, 2600);
-    }
-  })();
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Syllabus — capítulos reais do curso.
-  (function(){
-    const chapters = [
+    // Ano
+    var y = document.getElementById('year');
+    if (y) y.textContent = '© ' + new Date().getFullYear();
+
+    // Syllabus — capítulos reais do curso. Montado ANTES de configurar o
+    // reveal, para que os cards já estejam no DOM quando ele rodar.
+    var chapters = [
       ['00','Lógica de Programação','INICIANTE'],
       ['01','Fundamentos','INICIANTE'],
       ['02','Controle de Fluxo','INICIANTE'],
@@ -549,31 +537,49 @@
       ['06','Arquivos e Módulos','INTERMEDIÁRIO'],
       ['07','numpy e pandas','INTERMEDIÁRIO'],
     ];
-    const grid = document.getElementById('sylgrid');
-    grid.innerHTML = chapters.map(function(c){
-      return '<div class="syl rv"><div class="top"><span class="n">/'+c[0]+'</span><span class="diff">'+c[2]+'</span></div><div class="name display">'+c[1]+'</div></div>';
-    }).join('');
-    // re-observa os novos elementos
-    document.querySelectorAll('#sylgrid .rv').forEach(function(el){ io.observe(el); });
+    var grid = document.getElementById('sylgrid');
+    if (grid){
+      grid.innerHTML = chapters.map(function(c){
+        return '<div class="syl rv"><div class="top"><span class="n">/'+c[0]+'</span><span class="diff">'+c[2]+'</span></div><div class="name display">'+c[1]+'</div></div>';
+      }).join('');
+    }
+
+    // Acordeão das core functions
+    document.querySelectorAll('.fx').forEach(function(fx){
+      fx.addEventListener('click', function(){ fx.classList.toggle('open'); });
+    });
+
+    // Telemetria "viva": alterna leituras no topo, dando sensação de sistema ativo.
+    var runtimes = ['PYODIDE // WASM','CPYTHON 3.12','SANDBOX // OK','LATENCY: 12MS'];
+    var langs = ['PT-BR // EN-US','LOCALE: AUTO','I18N: 2 LOCALES','UTF-8'];
+    var lat = document.getElementById('latency');
+    var loc = document.getElementById('loc');
+    if (!reduce && lat && loc){
+      var i = 0;
+      setInterval(function(){
+        i++;
+        lat.textContent = runtimes[i % runtimes.length];
+        loc.textContent = langs[i % langs.length];
+      }, 2600);
+    }
+
+    // Reveal on scroll — por último, com TODOS os .rv (inclusive o syllabus
+    // recém-montado) já no DOM. Rede de segurança garante que nada fique
+    // invisível para sempre, mesmo se o observer não disparar.
+    var els = document.querySelectorAll('.rv');
+    function revealAll(){ els.forEach(function(el){ el.classList.add('in'); }); }
+    if (!reduce && 'IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries, obs){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(function(el){ io.observe(el); });
+      setTimeout(revealAll, 1500);
+    } else {
+      revealAll();
+    }
   })();
-
-  // Acordeão das core functions
-  document.querySelectorAll('.fx').forEach(function(fx){
-    fx.addEventListener('click', function(){ fx.classList.toggle('open'); });
-  });
-
-  // Reveal on scroll
-  var io;
-  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold:0.12 });
-    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
-    setTimeout(function(){ document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); }); }, 2500);
-  } else {
-    io = { observe:function(el){ el.classList.add('in'); } };
-    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
-  }
 </script>
 
 </body>
