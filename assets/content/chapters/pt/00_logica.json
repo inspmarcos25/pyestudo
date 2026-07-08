@@ -7,20 +7,56 @@
     {
       "id": "cap00_l1",
       "title": "O que é um algoritmo",
-      "body": "Um algoritmo é uma sequência de passos bem definidos para resolver um problema — como uma receita de bolo. Um programa é só um algoritmo escrito numa linguagem que o computador entende. Antes de aprender a sintaxe do Python, o mais importante é aprender a pensar em passos.",
-      "example": "# Um algoritmo é uma sequência de passos para resolver um problema.\n# Este programa calcula o troco de uma compra, passo a passo:\n\npreco = 12.50          # passo 1: guardar o preço do produto\npago = 20.00           # passo 2: guardar quanto a pessoa pagou\ntroco = pago - preco   # passo 3: calcular o troco\nprint(troco)           # passo 4: mostrar o resultado"
+      "body": "Um algoritmo é uma sequência de passos bem definidos para resolver um problema — como uma receita de bolo ou o passo a passo para trocar um pneu. Um programa é só um algoritmo escrito numa linguagem que o computador entende. O computador é rápido, mas não pensa: ele faz exatamente o que você mandar, na ordem em que você mandar. Por isso, antes de aprender a sintaxe do Python, o mais importante é aprender a pensar em passos — claros, na ordem certa e sem pular etapas.",
+      "example": "# Um algoritmo é uma sequência de passos para resolver um problema.\n# Este programa calcula o troco de uma compra, passo a passo:\n\npreco = 12.50          # passo 1: guardar o preço do produto\npago = 20.00           # passo 2: guardar quanto a pessoa pagou\ntroco = pago - preco   # passo 3: calcular o troco\nprint(troco)           # passo 4: mostrar o resultado\n\n# Troque a ordem dos passos e veja: se você calcular o troco\n# ANTES de dizer quanto foi pago, o programa não funciona.\n# A ordem importa."
     },
     {
       "id": "cap00_l2",
-      "title": "Sequência e decisão",
-      "body": "Um programa roda de cima para baixo, uma linha de cada vez — isso é a sequência. Mas às vezes o programa precisa escolher entre dois caminhos diferentes, dependendo de uma condição. Isso é uma decisão, e em Python ela é feita com `if` e `else`.",
-      "example": "# Sequência: as linhas rodam de cima para baixo, uma de cada vez.\nidade = 16\n\n# Decisão: o programa escolhe um caminho dependendo da condição.\nif idade >= 18:\n    print('Pode dirigir')\nelse:\n    print('Ainda não pode dirigir')"
+      "title": "Variáveis: guardando informação",
+      "body": "Todo programa precisa guardar informações para usar depois: um nome, um preço, uma nota, um placar. Uma variável é justamente isso — um nome que aponta para um valor guardado na memória. Pense numa etiqueta que você cola numa caixa: a etiqueta é o nome (`idade`), o conteúdo da caixa é o valor (`21`). Sempre que você escrever `idade`, o computador vai olhar dentro da caixa e usar o que estiver lá. O grande poder da variável é que o valor pode mudar ao longo do programa, mas o nome continua o mesmo.",
+      "example": "# Criar uma variável é dar um nome a um valor.\nplacar = 0        # a caixa 'placar' guarda o número 0\nprint(placar)     # mostra 0\n\n# O valor pode mudar; o nome continua o mesmo.\nplacar = placar + 10   # pega o valor atual (0), soma 10, guarda de volta\nprint(placar)          # mostra 10\n\nplacar = placar + 5\nprint(placar)          # mostra 15\n\n# Uma variável sempre guarda o ÚLTIMO valor que você colocou nela."
     },
     {
       "id": "cap00_l3",
+      "title": "Tipos de informação",
+      "body": "Nem toda informação é igual: um preço é um número, um nome é um texto, e a resposta de 'está chovendo?' é um sim ou não. O computador precisa saber com que tipo de informação está lidando, porque as operações mudam. Somar dois números (2 + 3 = 5) faz sentido; 'juntar' dois textos ('bom' + 'dia' = 'bomdia') também, mas é uma operação diferente. Os três tipos mais básicos são: números, textos e valores lógicos (verdadeiro/falso). Entender que cada valor tem um tipo evita muita confusão mais para frente.",
+      "example": "# Número: dá para fazer contas\nidade = 21\nprint(idade + 1)     # 22\n\n# Texto (fica entre aspas): representa palavras, não quantidades\nnome = 'Ana'\nprint(nome)          # Ana\n\n# Cuidado: '10' entre aspas é TEXTO, não número!\nquantidade = '10'\n# quantidade + 1  ->  daria erro, porque texto não soma com número\n\n# Valor lógico: só pode ser verdadeiro ou falso\nmaior_de_idade = idade >= 18\nprint(maior_de_idade)   # True (verdadeiro)"
+    },
+    {
+      "id": "cap00_l4",
+      "title": "Entrada e saída",
+      "body": "Quase todo programa útil faz três coisas: recebe dados (entrada), processa esses dados seguindo um algoritmo, e mostra um resultado (saída). Pense numa calculadora: você digita os números (entrada), ela faz a conta (processamento) e mostra o resultado no visor (saída). No Python, a saída mais comum é o `print()`, que mostra algo na tela. A entrada pode vir do teclado, de um arquivo ou de outro programa. Todo o resto — variáveis, decisões, repetições — acontece no meio, no processamento.",
+      "example": "# ENTRADA: os dados que o programa recebe para trabalhar\nnota1 = 8\nnota2 = 6\n\n# PROCESSAMENTO: o algoritmo que transforma a entrada em resultado\nmedia = (nota1 + nota2) / 2\n\n# SAÍDA: o resultado que o programa mostra\nprint('A média é:', media)\n\n# Entrada -> Processamento -> Saída é o esqueleto\n# de praticamente todo programa que você vai escrever."
+    },
+    {
+      "id": "cap00_l5",
+      "title": "Sequência e decisão",
+      "body": "Um programa roda de cima para baixo, uma linha de cada vez — isso é a sequência. Mas às vezes o programa precisa escolher entre caminhos diferentes, dependendo de uma condição. Isso é uma decisão: 'SE tal coisa for verdade, faça isto; SENÃO, faça aquilo'. É como uma bifurcação na estrada — o programa segue por um lado ou pelo outro, nunca pelos dois ao mesmo tempo. Em Python isso é feito com `if` (se) e `else` (senão).",
+      "example": "# Sequência: as linhas rodam de cima para baixo, uma de cada vez.\nidade = 16\n\n# Decisão: o programa escolhe UM caminho dependendo da condição.\nif idade >= 18:\n    print('Pode dirigir')\nelse:\n    print('Ainda não pode dirigir')\n\n# Só uma das duas mensagens aparece — nunca as duas.\n# Mude o valor de idade para 20 e rode de novo para ver o outro caminho."
+    },
+    {
+      "id": "cap00_l6",
+      "title": "Condições: verdadeiro ou falso",
+      "body": "Toda decisão depende de uma condição, e toda condição só tem duas respostas possíveis: verdadeiro ou falso. 'A idade é maior que 18?' é verdadeiro ou falso. 'A senha está certa?' é verdadeiro ou falso. Para montar condições usamos comparações: igual (`==`), diferente (`!=`), maior (`>`), menor (`<`), maior ou igual (`>=`), menor ou igual (`<=`). E podemos combinar várias condições com E (`and`, todas precisam ser verdadeiras) e OU (`or`, basta uma ser verdadeira). Pensar em verdadeiro/falso é a base de toda lógica de programação.",
+      "example": "idade = 20\ntem_habilitacao = True\n\n# Comparações resultam em verdadeiro (True) ou falso (False)\nprint(idade >= 18)          # True\nprint(idade == 18)          # False (usamos == para comparar)\n\n# 'and': precisa das DUAS condições verdadeiras\npode_dirigir = idade >= 18 and tem_habilitacao\nprint(pode_dirigir)         # True\n\n# 'or': basta UMA condição ser verdadeira\nfim_de_semana = False\ndescansar = fim_de_semana or idade > 65\nprint(descansar)            # False"
+    },
+    {
+      "id": "cap00_l7",
       "title": "Repetição",
-      "body": "Às vezes é preciso repetir um mesmo passo várias vezes. Em vez de escrever o mesmo código de novo e de novo, usamos um laço de repetição — em Python, o `for`. É a mesma ideia de uma receita que diz 'bata o ovo 50 vezes' em vez de escrever a instrução 50 vezes.",
-      "example": "# Repetição: em vez de repetir o código, usamos um laço.\nfor volta in range(3):\n    print('Bom dia!')\n\n# Isso é bem mais curto do que escrever\n# print('Bom dia!') três vezes seguidas."
+      "body": "Às vezes é preciso repetir um mesmo passo várias vezes: somar 100 números, enviar um e-mail para cada aluno, contar até 10. Em vez de escrever o mesmo código de novo e de novo, usamos um laço de repetição — em Python, o `for`. É a mesma ideia de uma receita que diz 'bata o ovo 50 vezes' em vez de escrever a instrução 50 vezes. O laço executa o mesmo bloco de código repetidamente, e a cada volta pode usar um valor diferente. Isso é o que permite um programa curto fazer um trabalho enorme.",
+      "example": "# Repetição: em vez de repetir o código, usamos um laço.\nfor volta in range(3):\n    print('Bom dia!')\n\n# A cada volta, a variável do laço muda de valor.\n# Aqui somamos os números de 1 a 5 automaticamente:\nsoma = 0\nfor numero in range(1, 6):   # numero vale 1, depois 2, 3, 4 e 5\n    soma = soma + numero\nprint(soma)                  # 15\n\n# Imagine fazer isso com 1000 números — o laço não muda de tamanho."
+    },
+    {
+      "id": "cap00_l8",
+      "title": "Quebrando um problema em partes",
+      "body": "Problemas grandes assustam. O segredo de quem programa é decompor: quebrar um problema grande em partes pequenas, resolver cada parte separadamente e depois juntar tudo. 'Calcular a média final do aluno' parece difícil, mas vira fácil quando você separa: (1) somar as notas, (2) contar quantas notas são, (3) dividir a soma pela quantidade, (4) decidir se passou. Cada passo é simples. Antes de sair escrevendo código, descreva a solução em passos, na sua própria língua — isso se chama pseudocódigo, e é a habilidade mais importante de todas.",
+      "example": "# Problema: dizer se um aluno passou, a partir de duas notas.\n# Em vez de tentar tudo de uma vez, quebramos em passos:\n\nnota1 = 7\nnota2 = 5\n\n# passo 1: somar as notas\nsoma = nota1 + nota2\n\n# passo 2: calcular a média\nmedia = soma / 2\n\n# passo 3: decidir o resultado com base na média\nif media >= 6:\n    resultado = 'aprovado'\nelse:\n    resultado = 'reprovado'\n\n# passo 4: mostrar\nprint(resultado)"
+    },
+    {
+      "id": "cap00_l9",
+      "title": "Testar e corrigir erros",
+      "body": "Errar faz parte de programar — até quem programa há anos erra o tempo todo. Um erro no programa é chamado de 'bug', e caçá-lo é 'depurar' (debug). Existem dois tipos: erros que travam o programa (o Python reclama e aponta a linha) e erros silenciosos, em que o programa roda mas dá a resposta errada. Para achar os dois, você testa: dá entradas que você já sabe o resultado e confere se a saída bate. Se `dobro(4)` deveria dar 8 e deu 6, tem um bug. Programar não é acertar de primeira — é testar, achar o erro e corrigir, quantas vezes for preciso.",
+      "example": "# Este programa tem um bug de lógica: ele deveria calcular o DOBRO,\n# mas está SOMANDO 2 em vez de multiplicar por 2.\n\ndef dobro(n):\n    return n + 2      # <- o erro está aqui\n\n# Testamos com um valor cujo resultado já conhecemos:\nprint(dobro(4))       # esperado: 8   |  obtido: 6  -> tem bug!\n\n# Corrigindo:\ndef dobro_certo(n):\n    return n * 2\n\nprint(dobro_certo(4)) # 8  -> agora bate com o esperado"
     }
   ],
   "exercises": [

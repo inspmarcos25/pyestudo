@@ -6,21 +6,57 @@
   "lessons": [
     {
       "id": "cap01_l1",
-      "title": "print e variáveis",
-      "body": "Em Python, `print()` mostra algo na tela e variáveis guardam valores. Uma variável é criada na hora em que você atribui um valor a ela com `=`. Experimente mudar o nome e rodar o exemplo.",
-      "example": "# print() mostra texto na tela\nprint('Olá, mundo!')\n\n# Uma variável guarda um valor para usar depois\nnome = 'Ana'\nidade = 21\n\n# f-strings inserem variáveis dentro do texto\nprint(f'{nome} tem {idade} anos')"
+      "title": "print: mostrando na tela",
+      "body": "`print()` é o comando que mostra algo na tela — é como o programa 'fala' com você. Você coloca dentro dos parênteses o que quer exibir: um texto (sempre entre aspas), um número, uma variável, ou vários itens separados por vírgula. É a primeira ferramenta de todo programador: quando algo não funciona, colocar um `print()` no meio do código para ver o que está acontecendo é a forma mais simples de investigar.",
+      "example": "# Mostrar um texto (fica entre aspas)\nprint('Olá, mundo!')\n\n# Mostrar um número (números não usam aspas)\nprint(42)\n\n# Vários itens de uma vez, separados por vírgula:\n# o print põe um espaço entre eles automaticamente\nprint('A resposta é', 42)\n\n# Um print sem nada pula uma linha em branco\nprint()\nprint('Fim.')"
     },
     {
       "id": "cap01_l2",
-      "title": "Números e operações",
-      "body": "Python tem inteiros (`int`) e decimais (`float`). Os operadores são `+`, `-`, `*`, `/` (divisão sempre dá float), `//` (divisão inteira), `%` (resto) e `**` (potência).",
-      "example": "# Operações básicas\na = 7\nb = 2\n\nprint(a + b)   # 9\nprint(a / b)   # 3.5  (divisão sempre retorna float)\nprint(a // b)  # 3    (divisão inteira descarta o resto)\nprint(a % b)   # 1    (resto da divisão)\nprint(a ** b)  # 49   (7 elevado a 2)"
+      "title": "Variáveis: criando e alterando",
+      "body": "Uma variável guarda um valor para você usar depois. Ela é criada no momento em que você atribui um valor com o sinal `=` — que aqui NÃO significa 'igual', e sim 'receba este valor'. Leia `idade = 21` como 'idade recebe 21'. Você pode mudar o valor a qualquer momento: a nova atribuição substitui a antiga. E pode usar o valor atual de uma variável para calcular o próximo — inclusive dela mesma, como em `pontos = pontos + 10`. Regras para nomes: use letras, números e `_`, comece com letra, não use espaços nem acentos, e escolha nomes que expliquem o que a variável guarda (`preco_total` é melhor que `x`).",
+      "example": "# '=' quer dizer 'receba', não 'é igual a'\nnome = 'Ana'      # a variável nome recebe o texto 'Ana'\nidade = 21        # a variável idade recebe o número 21\nprint(nome, idade)\n\n# Reatribuir substitui o valor anterior\nidade = 22\nprint(idade)      # 22 (o 21 foi embora)\n\n# Usar o valor atual para calcular o novo\npontos = 100\npontos = pontos + 50   # pega 100, soma 50, guarda 150 de volta\nprint(pontos)          # 150\n\n# f-strings inserem variáveis dentro do texto (note o f antes das aspas)\nprint(f'{nome} tem {idade} anos e {pontos} pontos')"
     },
     {
       "id": "cap01_l3",
-      "title": "Strings",
-      "body": "Strings são textos entre aspas. Você pode juntá-las com `+`, repetir com `*`, medir com `len()` e transformar com métodos como `.upper()` e `.lower()`.",
-      "example": "frase = 'python é divertido'\n\n# len() conta os caracteres\nprint(len(frase))\n\n# Métodos transformam a string (sem alterar a original)\nprint(frase.upper())\nprint(frase.capitalize())\n\n# Fatias pegam pedaços: [início:fim]\nprint(frase[0:6])"
+      "title": "Tipos de dados",
+      "body": "Todo valor em Python tem um tipo, e o tipo define o que dá para fazer com ele. Os quatro tipos básicos são: `int` (número inteiro, como 7), `float` (número com casas decimais, como 3.14), `str` (texto, sempre entre aspas) e `bool` (lógico, só `True` ou `False`). Você não declara o tipo — o Python descobre sozinho pelo valor que você escreve. A função `type()` mostra o tipo de qualquer valor. Saber o tipo é essencial: `'10' + '5'` junta dois textos e dá `'105'`, enquanto `10 + 5` soma dois números e dá `15`.",
+      "example": "# int: número inteiro\nquantidade = 7\nprint(type(quantidade))    # <class 'int'>\n\n# float: número com casas decimais\npreco = 3.14\nprint(type(preco))         # <class 'float'>\n\n# str: texto, sempre entre aspas\nnome = 'Ana'\nprint(type(nome))          # <class 'str'>\n\n# bool: só True ou False (começam com maiúscula)\nativo = True\nprint(type(ativo))         # <class 'bool'>\n\n# O tipo muda o comportamento do '+':\nprint('10' + '5')          # '105'  (juntou textos)\nprint(10 + 5)              # 15      (somou números)"
+    },
+    {
+      "id": "cap01_l4",
+      "title": "Convertendo tipos",
+      "body": "Muitas vezes um valor vem no tipo errado e você precisa convertê-lo. O caso mais comum: números digitados pelo usuário chegam como texto e não dá para fazer contas com eles até virarem número. As funções de conversão têm o nome do tipo de destino: `int()` transforma em inteiro, `float()` em decimal, e `str()` em texto. Se você tentar somar um texto com um número, o Python dá erro — a conversão resolve isso. Atenção: só converta para número aquilo que realmente é um número; `int('abc')` dá erro.",
+      "example": "# Texto que representa um número NÃO faz conta enquanto for texto\nidade_texto = '21'\n# idade_texto + 1  ->  erro! não dá para somar texto com número\n\n# Convertendo texto para número inteiro\nidade = int(idade_texto)\nprint(idade + 1)           # 22\n\n# Convertendo texto para número decimal\npreco = float('19.90')\nprint(preco * 2)           # 39.8\n\n# Convertendo número para texto (útil para juntar com outros textos)\nplacar = 3\nprint('Gols: ' + str(placar))   # 'Gols: 3'\n\n# int() de um float descarta as casas decimais (não arredonda)\nprint(int(3.99))           # 3"
+    },
+    {
+      "id": "cap01_l5",
+      "title": "Números e operações",
+      "body": "Python tem inteiros (`int`) e decimais (`float`). Os operadores são `+` (soma), `-` (subtração), `*` (multiplicação), `/` (divisão, que sempre resulta em float), `//` (divisão inteira, que descarta o resto), `%` (resto da divisão) e `**` (potência). As contas seguem a ordem da matemática — multiplicação e divisão antes de soma e subtração — e você pode usar parênteses para forçar a ordem que quiser. Os operadores `//` e `%` parecem estranhos no começo, mas são muito úteis: `%` diz se um número é par (`n % 2 == 0`) e `//` reparte quantidades em grupos.",
+      "example": "# Operações básicas\na = 7\nb = 2\n\nprint(a + b)   # 9\nprint(a / b)   # 3.5  (divisão sempre retorna float)\nprint(a // b)  # 3    (divisão inteira descarta o resto)\nprint(a % b)   # 1    (resto da divisão)\nprint(a ** b)  # 49   (7 elevado a 2)\n\n# Parênteses mudam a ordem das contas\nprint(2 + 3 * 4)     # 14  (multiplica primeiro)\nprint((2 + 3) * 4)   # 20  (parênteses primeiro)\n\n# Truque comum: número par deixa resto 0 na divisão por 2\nprint(10 % 2 == 0)   # True  (10 é par)\nprint(7 % 2 == 0)    # False (7 é ímpar)"
+    },
+    {
+      "id": "cap01_l6",
+      "title": "Recebendo dados com input()",
+      "body": "O `input()` faz o programa parar e esperar o usuário digitar algo no teclado. O texto que você passa dentro dos parênteses aparece como pergunta. Um detalhe fundamental: `input()` SEMPRE devolve texto (`str`), mesmo que a pessoa digite números. Por isso, para fazer contas com o que foi digitado, você precisa converter com `int()` ou `float()`. Esquecer essa conversão é um dos erros mais comuns de quem está começando. (No app, a entrada é simulada, mas o conceito é o mesmo de qualquer programa Python.)",
+      "example": "# input() mostra a pergunta e devolve o que foi digitado (como texto)\nnome = input('Qual é o seu nome? ')\nprint(f'Olá, {nome}!')\n\n# Como input() devolve TEXTO, converta antes de calcular\nidade_texto = input('Sua idade: ')\nidade = int(idade_texto)          # texto -> número inteiro\nprint(f'Ano que vem você terá {idade + 1} anos')\n\n# Dá para converter na mesma linha:\npreco = float(input('Preço do produto: '))\nprint(f'Com 10% de desconto: {preco * 0.9}')"
+    },
+    {
+      "id": "cap01_l7",
+      "title": "Strings: trabalhando com texto",
+      "body": "Strings são textos entre aspas (simples ou duplas, tanto faz). Você pode juntá-las com `+` (concatenar), repetir com `*`, e medir o tamanho com `len()`. Cada caractere tem uma posição, começando do zero: em `'python'`, o `'p'` está na posição 0. Você acessa um caractere com `texto[posicao]` e pega pedaços (fatias) com `texto[inicio:fim]` — o fim não entra. As strings também têm métodos, que são funções embutidas nelas: `.upper()`, `.lower()`, `.strip()` (remove espaços das pontas), `.replace()` (troca trechos). Importante: métodos não alteram a string original, eles devolvem uma nova.",
+      "example": "frase = 'python é divertido'\n\n# len() conta os caracteres (incluindo espaços)\nprint(len(frase))          # 18\n\n# Posições começam em 0\nprint(frase[0])            # 'p'  (primeiro caractere)\nprint(frase[-1])           # 'o'  (último caractere)\n\n# Fatias pegam pedaços: [início:fim] (o fim não entra)\nprint(frase[0:6])          # 'python'\n\n# Métodos transformam a string (sem alterar a original)\nprint(frase.upper())       # 'PYTHON É DIVERTIDO'\nprint(frase.replace('divertido', 'incrível'))\nprint(frase)               # continua 'python é divertido'\n\n# Juntar e repetir\nprint('ab' + 'cd')         # 'abcd'\nprint('=' * 10)            # '=========='"
+    },
+    {
+      "id": "cap01_l8",
+      "title": "Booleanos e comparações",
+      "body": "O tipo `bool` só tem dois valores: `True` (verdadeiro) e `False` (falso). Eles nascem, na maioria das vezes, de comparações. Os operadores de comparação são: `==` (igual — cuidado, são DOIS sinais de igual; um só é atribuição!), `!=` (diferente), `>`, `<`, `>=` e `<=`. Você combina condições com `and` (verdadeiro só se ambas forem), `or` (verdadeiro se pelo menos uma for) e `not` (inverte). Booleanos são a base das decisões (`if`) que você vai ver no próximo capítulo.",
+      "example": "idade = 20\ntem_ingresso = True\n\n# Comparações resultam em True ou False\nprint(idade == 20)     # True  (== compara; = atribuiria!)\nprint(idade != 18)     # True  (é diferente de 18)\nprint(idade >= 21)     # False\n\n# and: precisa das duas condições verdadeiras\nprint(idade >= 18 and tem_ingresso)   # True\n\n# or: basta uma ser verdadeira\nprint(idade < 12 or tem_ingresso)     # True\n\n# not: inverte o valor\nprint(not tem_ingresso)               # False"
+    },
+    {
+      "id": "cap01_l9",
+      "title": "Comentários e bons nomes",
+      "body": "Comentários são trechos que o Python ignora — servem para VOCÊ (e quem lê o código depois) entender o que está acontecendo. Tudo que vem depois de `#` na linha é comentário. Use-os para explicar o 'porquê' de algo, não o óbvio. Igualmente importante é escolher bons nomes de variáveis: `preco_total` diz o que guarda; `x` ou `a1` não dizem nada. Código bem comentado e com bons nomes é código que você ainda entende daqui a três meses. Programar é comunicar — tanto com o computador quanto com pessoas.",
+      "example": "# Isto é um comentário: o Python ignora esta linha inteira\n\npreco = 100\ndesconto = 0.15   # 15% de desconto de aniversário\n\n# Bons nomes tornam o código quase autoexplicativo:\npreco_final = preco * (1 - desconto)\nprint(preco_final)   # 85.0\n\n# Compare com a versão de nomes ruins (funciona, mas ninguém entende):\nx = 100\ny = 0.15\nz = x * (1 - y)\nprint(z)             # 85.0  -> mas o que é z?\n\n# Prefira sempre nomes que expliquem o conteúdo."
     }
   ],
   "exercises": [

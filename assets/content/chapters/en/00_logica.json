@@ -7,20 +7,56 @@
     {
       "id": "cap00_l1",
       "title": "What is an algorithm",
-      "body": "An algorithm is a sequence of well-defined steps to solve a problem — like a cooking recipe. A program is just an algorithm written in a language the computer understands. Before learning Python's syntax, the most important thing is learning to think in steps.",
-      "example": "# An algorithm is a sequence of steps to solve a problem.\n# This program calculates the change for a purchase, step by step:\n\nprice = 12.50           # step 1: store the product's price\npaid = 20.00            # step 2: store how much the person paid\nchange = paid - price   # step 3: calculate the change\nprint(change)           # step 4: show the result"
+      "body": "An algorithm is a sequence of well-defined steps to solve a problem — like a cooking recipe or the steps to change a tire. A program is just an algorithm written in a language the computer understands. The computer is fast, but it doesn't think: it does exactly what you tell it, in the order you tell it. That's why, before learning Python's syntax, the most important thing is learning to think in steps — clear ones, in the right order, without skipping anything.",
+      "example": "# An algorithm is a sequence of steps to solve a problem.\n# This program calculates the change for a purchase, step by step:\n\nprice = 12.50           # step 1: store the product's price\npaid = 20.00            # step 2: store how much the person paid\nchange = paid - price   # step 3: calculate the change\nprint(change)           # step 4: show the result\n\n# Swap the order of the steps and see: if you calculate the change\n# BEFORE saying how much was paid, the program breaks.\n# Order matters."
     },
     {
       "id": "cap00_l2",
-      "title": "Sequence and decision",
-      "body": "A program runs from top to bottom, one line at a time — that's sequence. But sometimes the program needs to choose between two different paths, depending on a condition. That's a decision, and in Python it's done with `if` and `else`.",
-      "example": "# Sequence: lines run from top to bottom, one at a time.\nage = 16\n\n# Decision: the program chooses a path depending on the condition.\nif age >= 18:\n    print('Can drive')\nelse:\n    print('Cannot drive yet')"
+      "title": "Variables: storing information",
+      "body": "Every program needs to store information to use later: a name, a price, a grade, a score. A variable is exactly that — a name that points to a value stored in memory. Think of a label you stick on a box: the label is the name (`age`), the contents of the box are the value (`21`). Whenever you write `age`, the computer looks inside the box and uses whatever is there. The real power of a variable is that the value can change throughout the program, but the name stays the same.",
+      "example": "# Creating a variable means giving a name to a value.\nscore = 0        # the box 'score' holds the number 0\nprint(score)     # shows 0\n\n# The value can change; the name stays the same.\nscore = score + 10   # take the current value (0), add 10, store it back\nprint(score)         # shows 10\n\nscore = score + 5\nprint(score)         # shows 15\n\n# A variable always holds the LAST value you put in it."
     },
     {
       "id": "cap00_l3",
+      "title": "Kinds of information",
+      "body": "Not all information is the same: a price is a number, a name is text, and the answer to 'is it raining?' is a yes or no. The computer needs to know what kind of information it's dealing with, because the operations differ. Adding two numbers (2 + 3 = 5) makes sense; 'joining' two texts ('good' + 'day' = 'goodday') does too, but it's a different operation. The three most basic kinds are: numbers, text, and logical values (true/false). Understanding that every value has a type saves you a lot of confusion later.",
+      "example": "# Number: you can do math with it\nage = 21\nprint(age + 1)      # 22\n\n# Text (goes in quotes): represents words, not amounts\nname = 'Ann'\nprint(name)         # Ann\n\n# Careful: '10' in quotes is TEXT, not a number!\namount = '10'\n# amount + 1  ->  would be an error, text doesn't add to a number\n\n# Logical value: can only be true or false\nis_adult = age >= 18\nprint(is_adult)     # True"
+    },
+    {
+      "id": "cap00_l4",
+      "title": "Input and output",
+      "body": "Almost every useful program does three things: it receives data (input), processes that data following an algorithm, and shows a result (output). Think of a calculator: you type the numbers (input), it does the math (processing) and shows the result on the screen (output). In Python, the most common output is `print()`, which shows something on the screen. Input can come from the keyboard, a file, or another program. Everything else — variables, decisions, loops — happens in the middle, in the processing.",
+      "example": "# INPUT: the data the program receives to work with\ngrade1 = 8\ngrade2 = 6\n\n# PROCESSING: the algorithm that turns input into a result\naverage = (grade1 + grade2) / 2\n\n# OUTPUT: the result the program shows\nprint('The average is:', average)\n\n# Input -> Processing -> Output is the skeleton\n# of nearly every program you'll ever write."
+    },
+    {
+      "id": "cap00_l5",
+      "title": "Sequence and decision",
+      "body": "A program runs from top to bottom, one line at a time — that's sequence. But sometimes the program needs to choose between different paths, depending on a condition. That's a decision: 'IF something is true, do this; OTHERWISE, do that'. It's like a fork in the road — the program goes one way or the other, never both at once. In Python this is done with `if` and `else`.",
+      "example": "# Sequence: lines run from top to bottom, one at a time.\nage = 16\n\n# Decision: the program chooses ONE path depending on the condition.\nif age >= 18:\n    print('Can drive')\nelse:\n    print('Cannot drive yet')\n\n# Only one of the two messages shows — never both.\n# Change age to 20 and run again to see the other path."
+    },
+    {
+      "id": "cap00_l6",
+      "title": "Conditions: true or false",
+      "body": "Every decision depends on a condition, and every condition has only two possible answers: true or false. 'Is age greater than 18?' is true or false. 'Is the password correct?' is true or false. To build conditions we use comparisons: equal (`==`), not equal (`!=`), greater (`>`), less (`<`), greater or equal (`>=`), less or equal (`<=`). And we can combine several conditions with AND (`and`, all must be true) and OR (`or`, just one needs to be true). Thinking in true/false is the foundation of all programming logic.",
+      "example": "age = 20\nhas_license = True\n\n# Comparisons result in true (True) or false (False)\nprint(age >= 18)          # True\nprint(age == 18)          # False (we use == to compare)\n\n# 'and': needs BOTH conditions true\ncan_drive = age >= 18 and has_license\nprint(can_drive)          # True\n\n# 'or': just ONE condition needs to be true\nweekend = False\nrest = weekend or age > 65\nprint(rest)               # False"
+    },
+    {
+      "id": "cap00_l7",
       "title": "Repetition",
-      "body": "Sometimes you need to repeat the same step several times. Instead of writing the same code over and over, we use a loop — in Python, `for`. It's the same idea as a recipe that says 'beat the egg 50 times' instead of writing the instruction 50 times.",
-      "example": "# Repetition: instead of repeating the code, we use a loop.\nfor lap in range(3):\n    print('Good morning!')\n\n# That's much shorter than writing\n# print('Good morning!') three times in a row."
+      "body": "Sometimes you need to repeat the same step several times: add up 100 numbers, send an email to each student, count to 10. Instead of writing the same code over and over, we use a loop — in Python, `for`. It's the same idea as a recipe that says 'beat the egg 50 times' instead of writing the instruction 50 times. The loop runs the same block of code repeatedly, and each pass can use a different value. That's what lets a short program do an enormous amount of work.",
+      "example": "# Repetition: instead of repeating the code, we use a loop.\nfor lap in range(3):\n    print('Good morning!')\n\n# On each pass, the loop variable changes value.\n# Here we add up the numbers from 1 to 5 automatically:\ntotal = 0\nfor number in range(1, 6):   # number is 1, then 2, 3, 4 and 5\n    total = total + number\nprint(total)                 # 15\n\n# Imagine doing this with 1000 numbers — the loop stays the same size."
+    },
+    {
+      "id": "cap00_l8",
+      "title": "Breaking a problem into parts",
+      "body": "Big problems are scary. The secret of people who program is decomposition: break a big problem into small parts, solve each part separately, then put it all together. 'Calculate the student's final average' sounds hard, but it becomes easy once you split it: (1) add the grades, (2) count how many grades there are, (3) divide the sum by the count, (4) decide if they passed. Each step is simple. Before you start writing code, describe the solution in steps, in your own language — this is called pseudocode, and it's the single most important skill of all.",
+      "example": "# Problem: tell whether a student passed, from two grades.\n# Instead of trying it all at once, we break it into steps:\n\ngrade1 = 7\ngrade2 = 5\n\n# step 1: add the grades\ntotal = grade1 + grade2\n\n# step 2: calculate the average\naverage = total / 2\n\n# step 3: decide the result based on the average\nif average >= 6:\n    result = 'passed'\nelse:\n    result = 'failed'\n\n# step 4: show it\nprint(result)"
+    },
+    {
+      "id": "cap00_l9",
+      "title": "Testing and fixing errors",
+      "body": "Making mistakes is part of programming — even people who've coded for years make them all the time. An error in a program is called a 'bug', and hunting it down is 'debugging'. There are two kinds: errors that crash the program (Python complains and points at the line) and silent errors, where the program runs but gives the wrong answer. To catch both, you test: give inputs whose result you already know and check that the output matches. If `double(4)` should give 8 but gave 6, there's a bug. Programming isn't about getting it right the first time — it's about testing, finding the error, and fixing it, as many times as needed.",
+      "example": "# This program has a logic bug: it should calculate the DOUBLE,\n# but it's ADDING 2 instead of multiplying by 2.\n\ndef double(n):\n    return n + 2      # <- the error is here\n\n# We test with a value whose result we already know:\nprint(double(4))      # expected: 8   |  got: 6  -> there's a bug!\n\n# Fixing it:\ndef double_fixed(n):\n    return n * 2\n\nprint(double_fixed(4)) # 8  -> now it matches what we expected"
     }
   ],
   "exercises": [
