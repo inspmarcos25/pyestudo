@@ -1,11 +1,11 @@
 {
-    "name": "app_python",
-    "short_name": "app_python",
+    "name": "PyEstudo",
+    "short_name": "PyEstudo",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#131F24",
+    "theme_color": "#58CC02",
+    "description": "Aprenda Python escrevendo código de verdade — editor real e correção automática.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
