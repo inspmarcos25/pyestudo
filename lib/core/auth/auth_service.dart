@@ -5,11 +5,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 /// Login com Google ou e-mail/senha via Firebase Auth.
 class AuthService {
   final FirebaseAuth _auth;
-  final GoogleSignIn _googleSignIn;
+
+  // Nulo na web: lá o login com Google usa signInWithPopup do Firebase
+  // (abaixo), e o pacote GoogleSignIn nem chega a ser instanciado. Construí-lo
+  // sempre, incondicionalmente, lançava uma exceção não tratada em toda carga
+  // de página (falta client_id configurado para a web), correndo em paralelo
+  // à primeira renderização do app.
+  final GoogleSignIn? _googleSignIn;
 
   AuthService({FirebaseAuth? auth, GoogleSignIn? googleSignIn})
     : _auth = auth ?? FirebaseAuth.instance,
-      _googleSignIn = googleSignIn ?? GoogleSignIn();
+      _googleSignIn = kIsWeb ? null : (googleSignIn ?? GoogleSignIn());
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
@@ -19,7 +25,7 @@ class AuthService {
     if (kIsWeb) {
       return _auth.signInWithPopup(GoogleAuthProvider());
     }
-    final googleUser = await _googleSignIn.signIn();
+    final googleUser = await _googleSignIn!.signIn();
     if (googleUser == null) {
       throw FirebaseAuthException(
         code: 'sign-in-canceled',
@@ -52,7 +58,7 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
     if (!kIsWeb) {
-      await _googleSignIn.signOut();
+      await _googleSignIn!.signOut();
     }
   }
 }
