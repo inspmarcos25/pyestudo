@@ -1,11 +1,23 @@
 # O Netlify não tem Flutter instalado por padrão: o comando de build baixa
-# o SDK (canal stable) antes de compilar a versão web.
+# o SDK (canal stable) antes de compilar. O scripts/build_site.sh monta o
+# dist/ com a landing na raiz e o app Flutter em /app/.
 [build]
-  publish = "build/web"
-  command = "[ -d _flutter ] || git clone https://github.com/flutter/flutter.git --depth 1 -b stable _flutter && export PATH=\"$PATH:$(pwd)/_flutter/bin\" && flutter pub get && flutter build web --release"
+  publish = "dist"
+  command = "[ -d _flutter ] || git clone https://github.com/flutter/flutter.git --depth 1 -b stable _flutter && export PATH=\"$PATH:$(pwd)/_flutter/bin\" && flutter pub get && ./scripts/build_site.sh"
 
 # Headers para o WebAssembly do Pyodide carregar corretamente.
 [[headers]]
   for = "/*.wasm"
   [headers.values]
     Content-Type = "application/wasm"
+
+# Links antigos da landing (quando ela morava em /landing/) seguem valendo.
+[[redirects]]
+  from = "/landing"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/landing/*"
+  to = "/:splat"
+  status = 301

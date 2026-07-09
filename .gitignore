@@ -49,3 +49,9 @@ app.*.map.json
 
 # Local Netlify folder
 .netlify
+
+# Site montado para o Netlify (landing na raiz + app em /app/)
+/dist/
+
+# SDK Flutter clonado pelo build do Netlify quando roda localmente
+/_flutter/
